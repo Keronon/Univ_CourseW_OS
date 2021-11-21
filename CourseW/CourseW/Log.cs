@@ -9,11 +9,11 @@ namespace CourseW
 {
     class Log
     {
-        private static StreamWriter writer = new StreamWriter(DataKeeper.res_folder + "Log.debug");
+        private static StreamWriter writer = new StreamWriter(Data_Keeper.res_folder + "Log");
 
-        public static void Write(string text)
+        public static async void Write(string text)
         {
-            writer.Write(text);
+            await Task.Run(() => writer.Write(text));
         }
     }
 }

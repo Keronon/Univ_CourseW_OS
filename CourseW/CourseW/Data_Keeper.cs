@@ -7,11 +7,11 @@ using System.Windows.Forms;
 
 namespace CourseW
 {
-    struct DataKeeper
+    struct Data_Keeper
     {
         #region DATA
-        public const string res_folder = "e:/studying/half_5/1) ОС/Курсовая/University_CourseW_OS/CourseW/CourseW/Resources/";
-        public static File_System file_System = new File_System();
+        public const string res_folder = "../../Resources/";
+        public static File_System file_system = new File_System(res_folder + "File_System");
         #endregion DATA
 
         #region FORMS

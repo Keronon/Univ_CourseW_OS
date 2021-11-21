@@ -99,6 +99,7 @@
             // 
             this.TAB_system.Controls.Add(this.PANEL_change_password);
             this.TAB_system.Controls.Add(this.GROUP_profile);
+            this.TAB_system.Controls.Add(this.IMG_logo);
             this.TAB_system.Location = new System.Drawing.Point(4, 24);
             this.TAB_system.Name = "TAB_system";
             this.TAB_system.Size = new System.Drawing.Size(778, 434);
@@ -113,7 +114,6 @@
             this.PANEL_change_password.Controls.Add(this.TXT_repeat);
             this.PANEL_change_password.Controls.Add(this.TXT_new_password);
             this.PANEL_change_password.Controls.Add(this.TXT_old_password);
-            this.PANEL_change_password.Controls.Add(this.IMG_logo);
             this.PANEL_change_password.Location = new System.Drawing.Point(311, 4);
             this.PANEL_change_password.Name = "PANEL_change_password";
             this.PANEL_change_password.Size = new System.Drawing.Size(464, 421);
@@ -173,7 +173,7 @@
             // IMG_logo
             // 
             this.IMG_logo.Image = global::CourseW.Properties.Resources.tech;
-            this.IMG_logo.Location = new System.Drawing.Point(0, 0);
+            this.IMG_logo.Location = new System.Drawing.Point(311, 4);
             this.IMG_logo.Name = "IMG_logo";
             this.IMG_logo.Size = new System.Drawing.Size(464, 421);
             this.IMG_logo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -228,6 +228,7 @@
             // 
             // TXT_user
             // 
+            this.TXT_user.Enabled = false;
             this.TXT_user.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.TXT_user.Location = new System.Drawing.Point(50, 214);
             this.TXT_user.Name = "TXT_user";

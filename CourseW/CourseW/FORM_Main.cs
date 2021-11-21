@@ -16,8 +16,9 @@ namespace CourseW
         {
             Log.Write("FORM_Main | Initialization\n");
 
-            DataKeeper.FORM_Main = this;
+            Data_Keeper.FORM_Main = this;
             InitializeComponent();
+            PANEL_change_password.Hide();
 
             Log.Write("FORM_Main | Initialized\n");
         }
@@ -28,11 +29,15 @@ namespace CourseW
         private void BTN_change_password_Click(object sender, EventArgs e)
         {
             Log.Write("FORM_Main | Change password Clicked\n");
+
+            PANEL_change_password.Show();
         }
 
         private void BTN_cancel_Click(object sender, EventArgs e)
         {
             Log.Write("FORM_Main | Cancel Clicked\n");
+
+            PANEL_change_password.Hide();
         }
 
         private void BTN_accept_Click(object sender, EventArgs e)
@@ -46,7 +51,9 @@ namespace CourseW
             Log.Write("FORM_Main | Logout Clicked\n");
 
             Hide();
-            DataKeeper.FORM_Authorization.Show();
+            Data_Keeper.FORM_Authorization.Show();
+
+            Log.Write("FORM_Main | Logged out\n");
         }
 
         private void BTN_quit_Click(object sender, EventArgs e)

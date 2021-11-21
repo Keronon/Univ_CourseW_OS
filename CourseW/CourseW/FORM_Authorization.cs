@@ -17,18 +17,38 @@ namespace CourseW
         {
             Log.Write("FORM_Authorization | Initialization\n");
 
-            DataKeeper.FORM_Authorization = this;
+            Data_Keeper.FORM_Authorization = this;
             InitializeComponent();
 
             Log.Write("FORM_Authorization | Initialized\n");
+        }
+
+        private void BTN_reboot_file_system_Click(object sender, EventArgs e)
+        {
+            Log.Write("FORM_Authorization | Reboot file system Clicked\n");
+
+            DialogResult result = MessageBox.Show("Подтвердите действие", "Сброс файловой системы", MessageBoxButtons.YesNo);
+
+            if (result == DialogResult.Yes)
+            {
+                Log.Write("FORM_Authorization | Rebooting accepted\n");
+
+                File_System.Create(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+            }
+            else
+            {
+                Log.Write("FORM_Authorization | Rebooting canceled\n");
+            }
         }
 
         private void BTN_login_Click(object sender, EventArgs e)
         {
             Log.Write("FORM_Authorization | Login Clicked\n");
 
-            if (DataKeeper.FORM_Main is null) { Hide(); new FORM_Main().Show(); }
-            else                              { Hide(); DataKeeper.FORM_Main.Show(); }
+            if (Data_Keeper.FORM_Main is null) { Hide(); new FORM_Main().Show(); }
+            else                               { Hide(); Data_Keeper.FORM_Main.Show(); }
+
+            Log.Write("FORM_Authorization | Logged in\n");
         }
 
         private void BTN_quit_Click(object sender, EventArgs e)
