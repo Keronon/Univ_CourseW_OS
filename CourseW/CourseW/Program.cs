@@ -14,6 +14,8 @@ namespace CourseW
         [STAThread]
         static void Main()
         {
+            Log.Start();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FORM_Authorization());

@@ -11,7 +11,8 @@ namespace CourseW
     {
         #region DATA
         public const string res_folder = "../../Resources/";
-        public static File_System file_system = new File_System(res_folder + "File_System");
+        public const string file_system_path = res_folder + "File_System";
+        public static File_System file_system = null;
         #endregion DATA
 
         #region FORMS

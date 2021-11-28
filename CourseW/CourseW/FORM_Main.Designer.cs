@@ -34,26 +34,33 @@
             this.TREE_view = new System.Windows.Forms.TreeView();
             this.TAB_processes = new System.Windows.Forms.TabPage();
             this.TAB_system = new System.Windows.Forms.TabPage();
+            this.PANEL_users = new System.Windows.Forms.Panel();
+            this.BTN_edit_user = new System.Windows.Forms.Button();
+            this.BTN_delete_user = new System.Windows.Forms.Button();
+            this.BTN_add_user = new System.Windows.Forms.Button();
+            this.LIST_users = new System.Windows.Forms.ListBox();
             this.PANEL_change_password = new System.Windows.Forms.Panel();
             this.BTN_accept = new System.Windows.Forms.Button();
             this.BTN_cancel = new System.Windows.Forms.Button();
             this.TXT_repeat = new System.Windows.Forms.TextBox();
             this.TXT_new_password = new System.Windows.Forms.TextBox();
             this.TXT_old_password = new System.Windows.Forms.TextBox();
-            this.IMG_logo = new System.Windows.Forms.PictureBox();
             this.GROUP_profile = new System.Windows.Forms.GroupBox();
+            this.BTN_users = new System.Windows.Forms.Button();
             this.BTN_change_password = new System.Windows.Forms.Button();
             this.BTN_logout = new System.Windows.Forms.Button();
             this.BTN_quit = new System.Windows.Forms.Button();
             this.TXT_user = new System.Windows.Forms.TextBox();
             this.IMG_avatar = new System.Windows.Forms.PictureBox();
+            this.IMG_logo = new System.Windows.Forms.PictureBox();
             this.TAB_box.SuspendLayout();
             this.TAB_files.SuspendLayout();
             this.TAB_system.SuspendLayout();
+            this.PANEL_users.SuspendLayout();
             this.PANEL_change_password.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.IMG_logo)).BeginInit();
             this.GROUP_profile.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.IMG_avatar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.IMG_logo)).BeginInit();
             this.SuspendLayout();
             // 
             // TAB_box
@@ -97,6 +104,7 @@
             // 
             // TAB_system
             // 
+            this.TAB_system.Controls.Add(this.PANEL_users);
             this.TAB_system.Controls.Add(this.PANEL_change_password);
             this.TAB_system.Controls.Add(this.GROUP_profile);
             this.TAB_system.Controls.Add(this.IMG_logo);
@@ -106,6 +114,59 @@
             this.TAB_system.TabIndex = 2;
             this.TAB_system.Text = "System";
             this.TAB_system.UseVisualStyleBackColor = true;
+            // 
+            // PANEL_users
+            // 
+            this.PANEL_users.Controls.Add(this.BTN_edit_user);
+            this.PANEL_users.Controls.Add(this.BTN_delete_user);
+            this.PANEL_users.Controls.Add(this.BTN_add_user);
+            this.PANEL_users.Controls.Add(this.LIST_users);
+            this.PANEL_users.Location = new System.Drawing.Point(311, 4);
+            this.PANEL_users.Name = "PANEL_users";
+            this.PANEL_users.Size = new System.Drawing.Size(464, 421);
+            this.PANEL_users.TabIndex = 6;
+            // 
+            // BTN_edit_user
+            // 
+            this.BTN_edit_user.Location = new System.Drawing.Point(312, 392);
+            this.BTN_edit_user.Name = "BTN_edit_user";
+            this.BTN_edit_user.Size = new System.Drawing.Size(149, 23);
+            this.BTN_edit_user.TabIndex = 3;
+            this.BTN_edit_user.Text = "EDIT";
+            this.BTN_edit_user.UseVisualStyleBackColor = true;
+            this.BTN_edit_user.Click += new System.EventHandler(this.BTN_edit_user_Click);
+            // 
+            // BTN_delete_user
+            // 
+            this.BTN_delete_user.ForeColor = System.Drawing.Color.DarkRed;
+            this.BTN_delete_user.Location = new System.Drawing.Point(158, 392);
+            this.BTN_delete_user.Name = "BTN_delete_user";
+            this.BTN_delete_user.Size = new System.Drawing.Size(148, 23);
+            this.BTN_delete_user.TabIndex = 2;
+            this.BTN_delete_user.Text = "DELETE";
+            this.BTN_delete_user.UseVisualStyleBackColor = true;
+            this.BTN_delete_user.Click += new System.EventHandler(this.BTN_delete_user_Click);
+            // 
+            // BTN_add_user
+            // 
+            this.BTN_add_user.ForeColor = System.Drawing.Color.DarkGreen;
+            this.BTN_add_user.Location = new System.Drawing.Point(3, 392);
+            this.BTN_add_user.Name = "BTN_add_user";
+            this.BTN_add_user.Size = new System.Drawing.Size(149, 23);
+            this.BTN_add_user.TabIndex = 1;
+            this.BTN_add_user.Text = "ADD";
+            this.BTN_add_user.UseVisualStyleBackColor = true;
+            this.BTN_add_user.Click += new System.EventHandler(this.BTN_add_user_Click);
+            // 
+            // LIST_users
+            // 
+            this.LIST_users.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.LIST_users.FormattingEnabled = true;
+            this.LIST_users.ItemHeight = 15;
+            this.LIST_users.Location = new System.Drawing.Point(3, 3);
+            this.LIST_users.Name = "LIST_users";
+            this.LIST_users.Size = new System.Drawing.Size(458, 379);
+            this.LIST_users.TabIndex = 0;
             // 
             // PANEL_change_password
             // 
@@ -170,18 +231,9 @@
             this.TXT_old_password.TabIndex = 0;
             this.TXT_old_password.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // IMG_logo
-            // 
-            this.IMG_logo.Image = global::CourseW.Properties.Resources.tech;
-            this.IMG_logo.Location = new System.Drawing.Point(311, 4);
-            this.IMG_logo.Name = "IMG_logo";
-            this.IMG_logo.Size = new System.Drawing.Size(464, 421);
-            this.IMG_logo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.IMG_logo.TabIndex = 5;
-            this.IMG_logo.TabStop = false;
-            // 
             // GROUP_profile
             // 
+            this.GROUP_profile.Controls.Add(this.BTN_users);
             this.GROUP_profile.Controls.Add(this.BTN_change_password);
             this.GROUP_profile.Controls.Add(this.BTN_logout);
             this.GROUP_profile.Controls.Add(this.BTN_quit);
@@ -193,6 +245,16 @@
             this.GROUP_profile.TabIndex = 0;
             this.GROUP_profile.TabStop = false;
             this.GROUP_profile.Text = "PROFILE";
+            // 
+            // BTN_users
+            // 
+            this.BTN_users.Location = new System.Drawing.Point(50, 302);
+            this.BTN_users.Name = "BTN_users";
+            this.BTN_users.Size = new System.Drawing.Size(200, 23);
+            this.BTN_users.TabIndex = 5;
+            this.BTN_users.Text = "USERS";
+            this.BTN_users.UseVisualStyleBackColor = true;
+            this.BTN_users.Click += new System.EventHandler(this.BTN_users_Click);
             // 
             // BTN_change_password
             // 
@@ -248,6 +310,16 @@
             this.IMG_avatar.TabIndex = 0;
             this.IMG_avatar.TabStop = false;
             // 
+            // IMG_logo
+            // 
+            this.IMG_logo.Image = global::CourseW.Properties.Resources.tech;
+            this.IMG_logo.Location = new System.Drawing.Point(311, 4);
+            this.IMG_logo.Name = "IMG_logo";
+            this.IMG_logo.Size = new System.Drawing.Size(464, 421);
+            this.IMG_logo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.IMG_logo.TabIndex = 5;
+            this.IMG_logo.TabStop = false;
+            // 
             // FORM_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -265,12 +337,13 @@
             this.TAB_box.ResumeLayout(false);
             this.TAB_files.ResumeLayout(false);
             this.TAB_system.ResumeLayout(false);
+            this.PANEL_users.ResumeLayout(false);
             this.PANEL_change_password.ResumeLayout(false);
             this.PANEL_change_password.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.IMG_logo)).EndInit();
             this.GROUP_profile.ResumeLayout(false);
             this.GROUP_profile.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.IMG_avatar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.IMG_logo)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -295,5 +368,11 @@
         private System.Windows.Forms.TextBox TXT_new_password;
         private System.Windows.Forms.TextBox TXT_old_password;
         private System.Windows.Forms.PictureBox IMG_logo;
+        private System.Windows.Forms.Button BTN_users;
+        private System.Windows.Forms.Panel PANEL_users;
+        private System.Windows.Forms.Button BTN_edit_user;
+        private System.Windows.Forms.Button BTN_delete_user;
+        private System.Windows.Forms.Button BTN_add_user;
+        private System.Windows.Forms.ListBox LIST_users;
     }
 }

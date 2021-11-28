@@ -9,11 +9,20 @@ namespace CourseW
 {
     class Log
     {
-        private static StreamWriter writer = new StreamWriter(Data_Keeper.res_folder + "Log");
-
-        public static async void Write(string text)
+        public static async void Start()
         {
-            await Task.Run(() => writer.Write(text));
+            using (StreamWriter stream_writer = new StreamWriter(Data_Keeper.res_folder + "Log", false))
+            {
+                await stream_writer.WriteLineAsync("========== LOG START ==========");
+            }
+        }
+
+        public static async void Write(string _text)
+        {
+            using (StreamWriter stream_writer = new StreamWriter(Data_Keeper.res_folder + "Log", true))
+            {
+                await stream_writer.WriteAsync(_text);
+            }
         }
     }
 }

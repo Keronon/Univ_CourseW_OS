@@ -19,6 +19,7 @@ namespace CourseW
             Data_Keeper.FORM_Main = this;
             InitializeComponent();
             PANEL_change_password.Hide();
+            PANEL_users.Hide();
 
             Log.Write("FORM_Main | Initialized\n");
         }
@@ -46,6 +47,34 @@ namespace CourseW
         }
         #endregion change password
 
+        #region users
+        private void BTN_users_Click(object sender, EventArgs e)
+        {
+            Log.Write("FORM_Main | Users Clicked\n");
+
+            if (PANEL_users.Visible) PANEL_users.Hide();
+            else PANEL_users.Show();
+        }
+
+        private void BTN_add_user_Click(object sender, EventArgs e)
+        {
+            Log.Write("FORM_Main | Add user Clicked\n");
+
+        }
+
+        private void BTN_delete_user_Click(object sender, EventArgs e)
+        {
+            Log.Write("FORM_Main | Delete user Clicked\n");
+
+        }
+
+        private void BTN_edit_user_Click(object sender, EventArgs e)
+        {
+            Log.Write("FORM_Main | Edit user Clicked\n");
+
+        }
+        #endregion users
+
         private void BTN_logout_Click(object sender, EventArgs e)
         {
             Log.Write("FORM_Main | Logout Clicked\n");
@@ -63,6 +92,7 @@ namespace CourseW
             Application.Exit();
         }
         #endregion System
+
         #endregion INTERFACE
     }
 }

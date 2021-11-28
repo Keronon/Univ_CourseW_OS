@@ -35,6 +35,7 @@
             this.COMBO_user = new System.Windows.Forms.ComboBox();
             this.BTN_reboot_file_system = new System.Windows.Forms.Button();
             this.IMG_avatar = new System.Windows.Forms.PictureBox();
+            this.BTN_testing = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.IMG_avatar)).BeginInit();
             this.SuspendLayout();
             // 
@@ -82,6 +83,7 @@
             this.COMBO_user.Name = "COMBO_user";
             this.COMBO_user.Size = new System.Drawing.Size(260, 23);
             this.COMBO_user.TabIndex = 1;
+            this.COMBO_user.SelectedIndexChanged += new System.EventHandler(this.COMBO_user_SelectedIndexChanged);
             // 
             // BTN_reboot_file_system
             // 
@@ -92,7 +94,7 @@
             this.BTN_reboot_file_system.Size = new System.Drawing.Size(35, 35);
             this.BTN_reboot_file_system.TabIndex = 6;
             this.BTN_reboot_file_system.Text = "RB";
-            this.BTN_reboot_file_system.UseVisualStyleBackColor = false;
+            this.BTN_reboot_file_system.UseVisualStyleBackColor = true;
             this.BTN_reboot_file_system.Click += new System.EventHandler(this.BTN_reboot_file_system_Click);
             // 
             // IMG_avatar
@@ -106,12 +108,25 @@
             this.IMG_avatar.TabIndex = 5;
             this.IMG_avatar.TabStop = false;
             // 
+            // BTN_testing
+            // 
+            this.BTN_testing.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BTN_testing.ForeColor = System.Drawing.Color.Transparent;
+            this.BTN_testing.Location = new System.Drawing.Point(237, 53);
+            this.BTN_testing.Name = "BTN_testing";
+            this.BTN_testing.Size = new System.Drawing.Size(35, 35);
+            this.BTN_testing.TabIndex = 7;
+            this.BTN_testing.Text = "T";
+            this.BTN_testing.UseVisualStyleBackColor = true;
+            this.BTN_testing.Click += new System.EventHandler(this.BTN_testing_Click);
+            // 
             // FORM_Authorization
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
             this.ControlBox = false;
+            this.Controls.Add(this.BTN_testing);
             this.Controls.Add(this.BTN_reboot_file_system);
             this.Controls.Add(this.IMG_avatar);
             this.Controls.Add(this.BTN_quit);
@@ -138,6 +153,7 @@
         private System.Windows.Forms.PictureBox IMG_avatar;
         private System.Windows.Forms.ComboBox COMBO_user;
         private System.Windows.Forms.Button BTN_reboot_file_system;
+        private System.Windows.Forms.Button BTN_testing;
     }
 }
 

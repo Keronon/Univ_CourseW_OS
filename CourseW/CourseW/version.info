@@ -1,5 +1,4 @@
-﻿=== version: 0.2 ===
+﻿=== version: 0.3 ===
 
-File system preparing
-Superblock structure creating
-File system commands preparing
+Log reworking
+File system changes (control functions elaboration)
