@@ -26,7 +26,7 @@ namespace CourseW
         {
             Log.Write("File_System | Creating\n");
 
-            using (BinaryWriter writer = new BinaryWriter(File.Open(Data_Keeper.res_folder + _file_system_name, FileMode.OpenOrCreate)))
+            using (BinaryWriter writer = new BinaryWriter(File.Open(Data_Keeper.res_folder + _file_system_name, FileMode.OpenOrCreate), Encoding.Default))
             {
                 // superblock
                 writer.Write(_super_block.file_system_type);
@@ -42,59 +42,63 @@ namespace CourseW
                 writer.Write(_super_block.data_clusters_count);
                 writer.Write(_super_block.available_clusters_count);
                 // clusters bitmap
+                writer.Seek(Get_offset(_super_block, FILE_SYSTEM_STRUCTURE.clusters_bitmap), SeekOrigin.Begin);
                 writer.Write(true); writer.Write(true); // root  directory - cluster 1 - flag 11 - engaged
                 writer.Write(true); writer.Write(true); // admin directory - cluster 2 - flag 11 - engaged
                 // inode bitmap
-                writer.Seek(Get_offset(_super_block, FILE_SYSTEM_STRUCTURE.inode_bitmap), SeekOrigin.Begin);
+                writer.Seek(Get_offset(_super_block, FILE_SYSTEM_STRUCTURE.inods_bitmap), SeekOrigin.Begin);
                 writer.Write(true); writer.Write(true); // root  directory - inode 1 - flag 11 - engaged
                 writer.Write(true); writer.Write(true); // admin directory - inode 2 - flag 11 - engaged
                 // inode mass
-                writer.Seek(Get_offset(_super_block, FILE_SYSTEM_STRUCTURE.inode_mass), SeekOrigin.Begin);
                 // --- root directory
-                writer.Write(true);  writer.Write(false);                      // atributes 0-1  - flag 10  - directory
-                writer.Write(true);  writer.Write(true);  writer.Write(false); // atributes 2-4  - flag 110 - (rw-)
-                writer.Write(false); writer.Write(false); writer.Write(false); // atributes 5-7  - flag 000 - (---)
-                writer.Write(false); writer.Write(false); writer.Write(false); // atributes 8-10 - flag 000 - (---)
-                writer.Write(false);                                           // hidden         - flag 0   - false
-                writer.Write(true);                                            // system         - flag 1   - true
-                writer.Write(false); writer.Write(false); writer.Write(false); // [reserved]
-                writer.Write((byte)0);                                         // owner id       - 0        - system
-                writer.Write((byte)0);                                         // owner group id - 0        - system
-                writer.Write(1);                                               // first cluster  - 1
-                writer.Write(1);                                               // file size / elements in dir - 1
-                writer.Write((long)DateTime.Now.ToBinary());                   // creation date-time          - now
-                writer.Write((long)DateTime.Now.ToBinary());                   // changing date-time          - now
+                writer.Seek(Get_offset(_super_block, FILE_SYSTEM_STRUCTURE.inode_mass), SeekOrigin.Begin);
+                foreach (bool atribute in new bool[] { true,  false,          // atributes 0-1  - flag 10  - directory
+                                                       true,  true,  false,   // atributes 2-4  - flag 110 - (rw-)
+                                                       false, false, false,   // atributes 5-7  - flag 000 - (---)
+                                                       false, false, false,   // atributes 8-10 - flag 000 - (---)
+                                                       false,                 // hidden         - flag 0   - false
+                                                       true,                  // system         - flag 1   - true
+                                                       false, false, false }) // [reserved]
+                    writer.Write(atribute);
+                writer.Write((byte)0);                       // owner id       - 0          - system
+                writer.Write((byte)0);                       // owner group id - 0          - system
+                writer.Write(1);                             // first cluster  - 1
+                writer.Write(1);                             // file size / elements in dir - 1
+                writer.Write((long)DateTime.Now.ToBinary()); // creation date-time          - now
+                writer.Write((long)DateTime.Now.ToBinary()); // changing date-time          - now
                 // --- admin directory
-                writer.Write(true);  writer.Write(false);                      // atributes 0-1  - flag 10  - directory
-                writer.Write(true);  writer.Write(true);  writer.Write(false); // atributes 2-4  - flag 110 - (rw-) owner
-                writer.Write(false); writer.Write(false); writer.Write(false); // atributes 5-7  - flag 000 - (---) owner group
-                writer.Write(false); writer.Write(false); writer.Write(false); // atributes 8-10 - flag 000 - (---) other
-                writer.Write(false);                                           // hidden         - flag 0   - false
-                writer.Write(true);                                            // system         - flag 1   - true
-                writer.Write(false); writer.Write(false); writer.Write(false); // [reserved]
-                writer.Write((byte)0);                                         // owner id       - 0        - system
-                writer.Write((byte)0);                                         // owner group id - 0        - system
-                writer.Write(2);                                               // first cluster  - 2
-                writer.Write(0);                                               // file size / elements in dir - 0
-                writer.Write((long)DateTime.Now.ToBinary());                   // creation date-time          - now
-                writer.Write((long)DateTime.Now.ToBinary());                   // changing date-time          - now
+                foreach (bool atribute in new bool[] { true,  false,          // atributes 0-1  - flag 10  - directory
+                                                       true,  true,  false,   // atributes 2-4  - flag 110 - (rw-)
+                                                       false, false, false,   // atributes 5-7  - flag 000 - (---)
+                                                       false, false, false,   // atributes 8-10 - flag 000 - (---)
+                                                       false,                 // hidden         - flag 0   - false
+                                                       true,                  // system         - flag 1   - true
+                                                       false, false, false }) // [reserved]
+                    writer.Write(atribute);
+                writer.Write((byte)0);                       // owner id       - 0          - system
+                writer.Write((byte)0);                       // owner group id - 0          - system
+                writer.Write(2);                             // first cluster  - 2
+                writer.Write(0);                             // file size / elements in dir - 0
+                writer.Write((long)DateTime.Now.ToBinary()); // creation date-time          - now
+                writer.Write((long)DateTime.Now.ToBinary()); // changing date-time          - now
                 // users data
-                writer.Seek(Get_offset(_super_block, FILE_SYSTEM_STRUCTURE.users_data), SeekOrigin.Begin);
                 // --- admin
-                writer.Write((byte)1);                                                                // id             - admin
-                writer.Write((byte)1);                                                                // group id       - admins
-                writer.Write(new char[10] { 'a', 'd', 'm', 'i', 'n', '\0', '\0', '\0', '\0', '\0' }); // login          - admin
-                writer.Write("password".GetHashCode());                                               // password hash  - of "password"
-                writer.Write(2);                                                                      // home dir inode - 2
+                writer.Seek(Get_offset(_super_block, FILE_SYSTEM_STRUCTURE.users_data), SeekOrigin.Begin); // id             - admin
+                writer.Write((byte)1);                                                                     // group id       - admins
+                writer.Write((byte)1);                                                                     // login          - admin
+                writer.Write(new char[10] { 'a', 'd', 'm', 'i', 'n', '\0', '\0', '\0', '\0', '\0' });      // password hash  - of "password"
+                writer.Write("password".GetHashCode());                                                    // home dir inode - 2
+                writer.Write(2);
                 // data
                 // --- root directory
-                writer.Seek(Get_offset(_super_block, FILE_SYSTEM_STRUCTURE.users_data), SeekOrigin.Begin);
+                writer.Seek(Get_offset(_super_block, FILE_SYSTEM_STRUCTURE.data), SeekOrigin.Begin);
                 writer.Write(0);       // next cluster - neither
                 // --- --- first record - admin home directory
                 writer.Write(2);       // inode pos    - 2
                 writer.Write("admin"); // name         - admin
                 // --- admin directory
-                writer.Seek(Get_offset(_super_block, FILE_SYSTEM_STRUCTURE.users_data) + (1 /*(cluster pos) - 1*/ * (int)Math.Pow(2, _super_block.cluster_size_pow)), SeekOrigin.Begin);
+                writer.Seek(Get_offset(_super_block, FILE_SYSTEM_STRUCTURE.data) +
+                                      (1 /*(cluster pos) - 1*/ * (int)Math.Pow(2, _super_block.cluster_size_pow)), SeekOrigin.Begin);
                 writer.Write(0);       // next cluster - neither
             }
 
@@ -109,7 +113,7 @@ namespace CourseW
         {
             Log.Write("File_System | Initialization\n");
 
-            using (BinaryReader reader = new BinaryReader(File.Open(Data_Keeper.file_system_path, FileMode.Open)))
+            using (BinaryReader reader = new BinaryReader(File.Open(Data_Keeper.file_system_path, FileMode.Open), Encoding.Default))
             {
                 if (reader.PeekChar() > -1)
                 {
@@ -127,9 +131,6 @@ namespace CourseW
                         super_block.cluster_size_pow         = reader.ReadByte();
                         super_block.data_clusters_count      = reader.ReadInt32();
                         super_block.available_clusters_count = reader.ReadInt32();
-
-                        CONTROL_BITS_TYPE._cluster = 30;
-                        CONTROL_BITS_TYPE._inode   = 30 + super_block.clusters_bitmap_size;
                     }
                     catch (Exception)
                     {
@@ -234,11 +235,11 @@ namespace CourseW
 
         public Control_Bits? Read_control_bits(int _offset, int _bits_pos)
         {
-            Log.Write(String.Format($"File_System | Reading control bits at {0}, offset {1}\n", _bits_pos, _offset));
+            Log.Write($"File_System | Reading control bits at {_bits_pos}, offset {_offset}\n");
 
-            using (BinaryReader reader = new BinaryReader(File.Open(Data_Keeper.file_system_path, FileMode.Open)))
+            using (BinaryReader reader = new BinaryReader(File.Open(Data_Keeper.file_system_path, FileMode.Open), Encoding.Default))
             {
-                while (reader.PeekChar() > -1)
+                if (reader.PeekChar() > -1)
                 {
                     try
                     {
@@ -262,9 +263,9 @@ namespace CourseW
 
         public void Write_control_bits(int _offset, int _bits_pos, Control_Bits _bits)
         {
-            Log.Write(String.Format($"File_System | Writing control bits at {0}, offset {1}\n", _bits_pos, _offset));
+            Log.Write($"File_System | Writing control bits at {_bits_pos}, offset {_offset}\n");
 
-            using (BinaryWriter writer = new BinaryWriter(File.Open(Data_Keeper.file_system_path, FileMode.OpenOrCreate)))
+            using (BinaryWriter writer = new BinaryWriter(File.Open(Data_Keeper.file_system_path, FileMode.OpenOrCreate), Encoding.Default))
             {
                 try
                 {
@@ -285,11 +286,11 @@ namespace CourseW
 
         public Inode? Read_inode(int _inode_pos)
         {
-            Log.Write(String.Format($"File_System | Reading inode at {0}\n", _inode_pos));
+            Log.Write($"File_System | Reading inode at {_inode_pos}\n");
 
-            using (BinaryReader reader = new BinaryReader(File.Open(Data_Keeper.file_system_path, FileMode.Open)))
+            using (BinaryReader reader = new BinaryReader(File.Open(Data_Keeper.file_system_path, FileMode.Open), Encoding.Default))
             {
-                while (reader.PeekChar() > -1)
+                if (reader.PeekChar() > -1)
                 {
                     try
                     {
@@ -323,9 +324,9 @@ namespace CourseW
 
         public void Write_inode(int _inode_pos, Inode _inode)
         {
-            Log.Write(String.Format($"File_System | Writing inode at {0}\n", _inode_pos));
+            Log.Write($"File_System | Writing inode at {_inode_pos}\n");
 
-            using (BinaryWriter writer = new BinaryWriter(File.Open(Data_Keeper.file_system_path, FileMode.OpenOrCreate)))
+            using (BinaryWriter writer = new BinaryWriter(File.Open(Data_Keeper.file_system_path, FileMode.OpenOrCreate), Encoding.Default))
             {
                 try
                 {
@@ -352,11 +353,11 @@ namespace CourseW
 
         public User? Read_user(int _user_pos)
         {
-            Log.Write(String.Format($"File_System | Reading user at {0}\n", _user_pos));
+            Log.Write($"File_System | Reading user at {_user_pos}\n");
 
-            using (BinaryReader reader = new BinaryReader(File.Open(Data_Keeper.file_system_path, FileMode.Open)))
+            using (BinaryReader reader = new BinaryReader(File.Open(Data_Keeper.file_system_path, FileMode.Open), Encoding.Default))
             {
-                while (reader.PeekChar() > -1)
+                if (reader.PeekChar() > -1)
                 {
                     try
                     {
@@ -385,9 +386,9 @@ namespace CourseW
 
         public void Write_user(int _user_pos, User _user)
         {
-            Log.Write(String.Format($"File_System | Writing inode at {0}\n", _user_pos));
+            Log.Write($"File_System | Writing inode at {_user_pos}\n");
 
-            using (BinaryWriter writer = new BinaryWriter(File.Open(Data_Keeper.file_system_path, FileMode.OpenOrCreate)))
+            using (BinaryWriter writer = new BinaryWriter(File.Open(Data_Keeper.file_system_path, FileMode.OpenOrCreate), Encoding.Default))
             {
                 try
                 {
@@ -413,7 +414,7 @@ namespace CourseW
 
         #region Other functions
 
-        public enum FILE_SYSTEM_STRUCTURE { super_block, clusters_bitmap, inode_bitmap, inode_mass, users_data, data };
+        public enum FILE_SYSTEM_STRUCTURE { super_block, clusters_bitmap, inods_bitmap, inode_mass, users_data, data };
         public static int Get_offset(Super_Block _super_block, FILE_SYSTEM_STRUCTURE _system_part)
         {
             switch (_system_part)
@@ -423,7 +424,7 @@ namespace CourseW
                     return 0;
                 case FILE_SYSTEM_STRUCTURE.clusters_bitmap:
                     return 32;
-                case FILE_SYSTEM_STRUCTURE.inode_bitmap:
+                case FILE_SYSTEM_STRUCTURE.inods_bitmap:
                     return 32 + _super_block.clusters_bitmap_size;
                 case FILE_SYSTEM_STRUCTURE.inode_mass:
                     return 32 + _super_block.clusters_bitmap_size + _super_block.inode_bitmap_size;
@@ -477,11 +478,6 @@ namespace CourseW
             }
         }
 
-        public struct CONTROL_BITS_TYPE
-        {
-            public static int _cluster;
-            public static int _inode;
-        }
         public struct Control_Bits
         {
             public bool[] bits;
@@ -523,6 +519,19 @@ namespace CourseW
             public int  file_size;
             public long creation_date_time;
             public long changing_date_time;
+
+            public Inode(bool[] _atributes, byte _owner_id, byte _owner_group_id,
+                                            int _first_cluster_pos, int _file_size,
+                                            long _creation_date_time, long _changing_date_time)
+            {
+                atributes = _atributes;
+                owner_id = _owner_id;
+                owner_group_id = _owner_group_id;
+                first_cluster_pos = _first_cluster_pos;
+                file_size = _file_size;
+                creation_date_time = _creation_date_time;
+                changing_date_time = _changing_date_time;
+            }
         }
 
         public struct User
@@ -532,6 +541,15 @@ namespace CourseW
             public char[] login; // 10
             public int    password_hash;
             public int    home_dir_inode;
+
+            public User(byte _id, byte _group, char[] _login, int _password_hash, int _home_dir_inode)
+            {
+                id = _id;
+                group = _group;
+                login = _login;
+                password_hash = _password_hash;
+                home_dir_inode = _home_dir_inode;
+            }
 
             public override string ToString()
             {

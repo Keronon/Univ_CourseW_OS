@@ -10,8 +10,7 @@ namespace CourseW
     {
         public static void START()
         {
-            char[] chars = new char[] { 'H', 'i', ' ', ' ' };
-            Console.WriteLine(chars);
+
         }
     }
 }

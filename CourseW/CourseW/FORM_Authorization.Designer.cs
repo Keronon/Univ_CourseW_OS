@@ -76,8 +76,6 @@
             this.COMBO_user.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.COMBO_user.Font = new System.Drawing.Font("Consolas", 9.75F);
             this.COMBO_user.FormattingEnabled = true;
-            this.COMBO_user.Items.AddRange(new object[] {
-            "ADMINISTRATOR"});
             this.COMBO_user.Location = new System.Drawing.Point(12, 168);
             this.COMBO_user.MaxLength = 35;
             this.COMBO_user.Name = "COMBO_user";

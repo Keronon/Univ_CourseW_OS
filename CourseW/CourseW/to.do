@@ -1,2 +1,3 @@
 ﻿========== To Do List ==========
-Исправить некорректное считывание пользователя
+
+Begin user file system functions elaboration
