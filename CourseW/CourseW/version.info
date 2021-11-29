@@ -1,5 +1,5 @@
-﻿=== version: 0.5.1 ===
+﻿=== version: 0.5.2 ===
 
 File system changes
-(Getting directories added)
-(Getting atributes added)
+(Creating file system object added)
+(Deleting file system object added)

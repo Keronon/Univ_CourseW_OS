@@ -58,6 +58,8 @@ namespace CourseW
                 if (Data_Keeper.FORM_Main is null) { Hide(); new FORM_Main().Show(); }
                 else                               { Hide(); Data_Keeper.FORM_Main.Show(); }
 
+                Data_Keeper.cur_user = (File_System.User)COMBO_user.SelectedItem;
+
                 Log.Write("FORM_Authorization | Logged in\n");
             }
             else
