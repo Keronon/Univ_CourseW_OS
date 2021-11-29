@@ -1,5 +1,5 @@
-﻿=== version: 0.4 ===
+﻿=== version: 0.5.1 ===
 
 File system changes
-(control functions elaboration)
-(creating file system modification)
+(Getting directories added)
+(Getting atributes added)

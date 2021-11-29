@@ -5,9 +5,7 @@ File_System | Initialized
 File_System | Reading user at 1
 File_System | Reading user SUCCESS
 FORM_Authorization | Initialized
-FORM_Authorization | Selected user changed
-FORM_Authorization | Login Clicked
-FORM_Main | Initialization
-FORM_Main | Initialized
-FORM_Authorization | Logged in
-FORM_Main | Quit Clicked
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+FORM_Authorization | Quit Clicked

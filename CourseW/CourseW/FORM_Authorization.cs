@@ -25,10 +25,18 @@ namespace CourseW
             Data_Keeper.file_system = new File_System();
 
             COMBO_user.Items.Clear();
-            for (int i = 1; i <= Data_Keeper.file_system.super_block.cur_users_count; i++)
+            try
             {
-                File_System.User user = Data_Keeper.file_system.Read_user(1).Value;
-                COMBO_user.Items.Add(user);
+                for (int i = 1; i <= Data_Keeper.file_system.super_block.cur_users_count; i++)
+                {
+                    File_System.User user = Data_Keeper.file_system.Read_user(1).Value;
+                    COMBO_user.Items.Add(user);
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Reading users ERROR");
+                Log.Write("FORM_Authorization | Initialization - Reading users ERROR\n");
             }
 
             Log.Write("FORM_Authorization | Initialized\n");
@@ -77,7 +85,7 @@ namespace CourseW
             {
                 Log.Write("FORM_Authorization | Rebooting accepted\n");
 
-                File_System.Create(new File_System.Super_Block(0, 1024, 12, 512, 510, 1024, 42, 512, 510, 20, 32, 1));
+                File_System.Create(new File_System.Super_Block(34, 0, 1024, 12, 512, 510, 1024, 42, 512, 510, 20, 32, 1, 36));
                 Data_Keeper.file_system = new File_System();
 
                 COMBO_user.Items.Clear();
