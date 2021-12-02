@@ -1,4 +1,6 @@
 ﻿========== To Do List ==========
 
-Continue user control functions elaboration
-- from copying
+File system
+(User groups adding)
+(File and dir sizes elaborate)
+(borders for naming)

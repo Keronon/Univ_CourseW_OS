@@ -67,11 +67,23 @@
   <ItemGroup>
     <Compile Include="Data_Keeper.cs" />
     <Compile Include="File_System.cs" />
+    <Compile Include="FORM_Append.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FORM_Append.Designer.cs">
+      <DependentUpon>FORM_Append.cs</DependentUpon>
+    </Compile>
     <Compile Include="FORM_Authorization.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FORM_Authorization.Designer.cs">
       <DependentUpon>FORM_Authorization.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FORM_Input.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FORM_Input.Designer.cs">
+      <DependentUpon>FORM_Input.cs</DependentUpon>
     </Compile>
     <Compile Include="FORM_Main.cs">
       <SubType>Form</SubType>
@@ -79,15 +91,30 @@
     <Compile Include="FORM_Main.Designer.cs">
       <DependentUpon>FORM_Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="FORM_Write.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FORM_Write.Designer.cs">
+      <DependentUpon>FORM_Write.cs</DependentUpon>
+    </Compile>
     <Compile Include="Log.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TEST_CLASS.cs" />
+    <EmbeddedResource Include="FORM_Append.resx">
+      <DependentUpon>FORM_Append.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FORM_Authorization.resx">
       <DependentUpon>FORM_Authorization.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FORM_Input.resx">
+      <DependentUpon>FORM_Input.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FORM_Main.resx">
       <DependentUpon>FORM_Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FORM_Write.resx">
+      <DependentUpon>FORM_Write.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -135,7 +162,8 @@
     <None Include="Resources\power.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\reload.ico" />
+    <Content Include="Resources\file_sys.ico" />
+    <Content Include="Resources\folder.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

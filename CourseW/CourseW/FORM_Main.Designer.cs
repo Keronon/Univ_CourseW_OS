@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FORM_Main));
             this.TAB_box = new System.Windows.Forms.TabControl();
             this.TAB_files = new System.Windows.Forms.TabPage();
@@ -51,8 +52,10 @@
             this.BTN_logout = new System.Windows.Forms.Button();
             this.BTN_quit = new System.Windows.Forms.Button();
             this.TXT_user = new System.Windows.Forms.TextBox();
+            this.CONTEXT_directory = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.IMG_avatar = new System.Windows.Forms.PictureBox();
             this.IMG_logo = new System.Windows.Forms.PictureBox();
+            this.CONTEXT_file = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.TAB_box.SuspendLayout();
             this.TAB_files.SuspendLayout();
             this.TAB_system.SuspendLayout();
@@ -299,6 +302,11 @@
             this.TXT_user.TabIndex = 1;
             this.TXT_user.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // CONTEXT_directory
+            // 
+            this.CONTEXT_directory.Name = "CONTEXT_menu";
+            this.CONTEXT_directory.Size = new System.Drawing.Size(61, 4);
+            // 
             // IMG_avatar
             // 
             this.IMG_avatar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -319,6 +327,11 @@
             this.IMG_logo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.IMG_logo.TabIndex = 5;
             this.IMG_logo.TabStop = false;
+            // 
+            // CONTEXT_file
+            // 
+            this.CONTEXT_file.Name = "CONTEXT_file";
+            this.CONTEXT_file.Size = new System.Drawing.Size(181, 26);
             // 
             // FORM_Main
             // 
@@ -374,5 +387,7 @@
         private System.Windows.Forms.Button BTN_delete_user;
         private System.Windows.Forms.Button BTN_add_user;
         private System.Windows.Forms.ListBox LIST_users;
+        private System.Windows.Forms.ContextMenuStrip CONTEXT_directory;
+        private System.Windows.Forms.ContextMenuStrip CONTEXT_file;
     }
 }

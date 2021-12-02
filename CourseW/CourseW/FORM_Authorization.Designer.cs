@@ -46,7 +46,7 @@
             this.TXT_password.Name = "TXT_password";
             this.TXT_password.PasswordChar = '^';
             this.TXT_password.Size = new System.Drawing.Size(260, 23);
-            this.TXT_password.TabIndex = 2;
+            this.TXT_password.TabIndex = 1;
             // 
             // BTN_login
             // 
@@ -54,7 +54,7 @@
             this.BTN_login.Location = new System.Drawing.Point(12, 226);
             this.BTN_login.Name = "BTN_login";
             this.BTN_login.Size = new System.Drawing.Size(205, 23);
-            this.BTN_login.TabIndex = 3;
+            this.BTN_login.TabIndex = 2;
             this.BTN_login.Text = "LOG-IN";
             this.BTN_login.UseVisualStyleBackColor = true;
             this.BTN_login.Click += new System.EventHandler(this.BTN_login_Click);
@@ -66,7 +66,7 @@
             this.BTN_quit.Location = new System.Drawing.Point(223, 226);
             this.BTN_quit.Name = "BTN_quit";
             this.BTN_quit.Size = new System.Drawing.Size(49, 23);
-            this.BTN_quit.TabIndex = 4;
+            this.BTN_quit.TabIndex = 3;
             this.BTN_quit.Text = "QUIT";
             this.BTN_quit.UseVisualStyleBackColor = true;
             this.BTN_quit.Click += new System.EventHandler(this.BTN_quit_Click);
@@ -80,7 +80,8 @@
             this.COMBO_user.MaxLength = 35;
             this.COMBO_user.Name = "COMBO_user";
             this.COMBO_user.Size = new System.Drawing.Size(260, 23);
-            this.COMBO_user.TabIndex = 1;
+            this.COMBO_user.TabIndex = 0;
+            this.COMBO_user.TabStop = false;
             this.COMBO_user.SelectedIndexChanged += new System.EventHandler(this.COMBO_user_SelectedIndexChanged);
             // 
             // BTN_reboot_file_system
@@ -90,7 +91,8 @@
             this.BTN_reboot_file_system.Location = new System.Drawing.Point(237, 12);
             this.BTN_reboot_file_system.Name = "BTN_reboot_file_system";
             this.BTN_reboot_file_system.Size = new System.Drawing.Size(35, 35);
-            this.BTN_reboot_file_system.TabIndex = 6;
+            this.BTN_reboot_file_system.TabIndex = 0;
+            this.BTN_reboot_file_system.TabStop = false;
             this.BTN_reboot_file_system.Text = "RB";
             this.BTN_reboot_file_system.UseVisualStyleBackColor = true;
             this.BTN_reboot_file_system.Click += new System.EventHandler(this.BTN_reboot_file_system_Click);
@@ -113,7 +115,8 @@
             this.BTN_testing.Location = new System.Drawing.Point(237, 53);
             this.BTN_testing.Name = "BTN_testing";
             this.BTN_testing.Size = new System.Drawing.Size(35, 35);
-            this.BTN_testing.TabIndex = 7;
+            this.BTN_testing.TabIndex = 0;
+            this.BTN_testing.TabStop = false;
             this.BTN_testing.Text = "T";
             this.BTN_testing.UseVisualStyleBackColor = true;
             this.BTN_testing.Click += new System.EventHandler(this.BTN_testing_Click);

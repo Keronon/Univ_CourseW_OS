@@ -1,5 +1,5 @@
-﻿=== version: 0.5.2 ===
+﻿=== version: 0.5.3 ===
 
-File system changes
-(Creating file system object added)
-(Deleting file system object added)
+File system changes ending
+Debug file system
+File system interface elaboration
