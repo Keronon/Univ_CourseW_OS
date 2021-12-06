@@ -8,9 +8,13 @@ using System.Threading.Tasks;
 
 namespace CourseW
 {
-    class File_System // структура: суперблок (34B), битовая карта кластеров, битовая карта inode, массив inode, данные о пользователях, данные (начиная с корневого каталога)
+    class File_System
     {
         #region VARIABLES
+
+        public enum SUPERBLOCK_OFFSETS { available_inodes_count = 6, cur_users_count = 13, available_clusters_count = 20 };
+        public enum FILE_SYSTEM_STRUCTURE { super_block, clusters_bitmap, inods_bitmap, inode_mass, users_data, data };
+        public enum FILE_SYSTEM_OBJECT { directory, file };
 
         public Super_Block super_block;
 
@@ -26,13 +30,10 @@ namespace CourseW
         {
             Log.Write("File_System | Creating\n");
 
-            using (BinaryWriter writer = new BinaryWriter(File.Open(Data_Keeper.res_folder + _file_system_name, FileMode.Create), Encoding.Default))
+            using (BinaryWriter writer = new BinaryWriter(File.Open(Data_Keeper.res_folder + _file_system_name, FileMode.Create), Encoding.ASCII))
             {
                 // superblock
                 writer.Write(_super_block.super_block_size);
-                writer.Write(_super_block.file_system_type);
-                writer.Write(_super_block.clusters_bitmap_size);
-                writer.Write(_super_block.inods_bitmap_size);
                 writer.Write(_super_block.inode_size);
                 writer.Write(_super_block.inods_count);
                 writer.Write(_super_block.available_inodes_count);
@@ -40,17 +41,17 @@ namespace CourseW
                 writer.Write(_super_block.max_users_count);
                 writer.Write(_super_block.cur_users_count);
                 writer.Write(_super_block.cluster_size_pow);
-                writer.Write(_super_block.data_clusters_count);
+                writer.Write(_super_block.clusters_count);
                 writer.Write(_super_block.available_clusters_count);
                 writer.Write(_super_block.directory_record_size);
                 // clusters bitmap
                 writer.Seek(Get_offset(_super_block, FILE_SYSTEM_STRUCTURE.clusters_bitmap), SeekOrigin.Begin);
-                writer.Write(true); writer.Write(true); // root  directory - cluster 1 - flag 11 - engaged
-                writer.Write(true); writer.Write(true); // admin directory - cluster 2 - flag 11 - engaged
+                writer.Write(true); // root  directory - cluster 1 - flag 1 - engaged
+                writer.Write(true); // admin directory - cluster 2 - flag 1 - engaged
                 // inode bitmap
                 writer.Seek(Get_offset(_super_block, FILE_SYSTEM_STRUCTURE.inods_bitmap), SeekOrigin.Begin);
-                writer.Write(true); writer.Write(true); // root  directory - inode 1 - flag 11 - engaged
-                writer.Write(true); writer.Write(true); // admin directory - inode 2 - flag 11 - engaged
+                writer.Write(true); // root  directory - inode 1 - flag 1 - engaged
+                writer.Write(true); // admin directory - inode 2 - flag 1 - engaged
                 // inode mass
                 // --- root directory
                 writer.Seek(Get_offset(_super_block, FILE_SYSTEM_STRUCTURE.inode_mass), SeekOrigin.Begin);
@@ -62,12 +63,12 @@ namespace CourseW
                                                   true,                  // system         - flag 1   - true
                                                   false, false, false }) // [reserved]
                     writer.Write(atribute);
-                writer.Write((byte)0);                       // owner id       - 0          - system
-                writer.Write((byte)0);                       // owner group id - 0          - system
-                writer.Write(1);                             // first cluster  - 1
-                writer.Write(1);                             // file size / elements in dir - 1
-                writer.Write((long)DateTime.Now.ToBinary()); // creation date-time          - now
-                writer.Write((long)DateTime.Now.ToBinary()); // changing date-time          - now
+                writer.Write((byte)0);                 // owner id       - 0          - system
+                writer.Write((byte)0);                 // owner group id - 0          - system
+                writer.Write(1);                       // first cluster  - 1
+                writer.Write(1);                       // file size / elements in dir - 1
+                writer.Write(DateTime.Now.ToBinary()); // creation date-time          - now
+                writer.Write(DateTime.Now.ToBinary()); // changing date-time          - now
                 // --- admin directory
                 foreach (bool atribute in new[] { true,  false,          // atributes 0-1  - flag 10  - directory
                                                   true,  true,  false,   // atributes 2-4  - flag 110 - (rw-) owner
@@ -115,16 +116,13 @@ namespace CourseW
         {
             Log.Write("File_System | Initialization\n");
 
-            using (BinaryReader reader = new BinaryReader(File.Open(Data_Keeper.file_system_path, FileMode.Open), Encoding.Default))
+            using (BinaryReader reader = new BinaryReader(File.Open(Data_Keeper.file_system_path, FileMode.Open), Encoding.ASCII))
             {
                 if (reader.PeekChar() > -1)
                 {
                     try
                     {
                         super_block.super_block_size = reader.ReadByte();
-                        super_block.file_system_type = reader.ReadByte();
-                        super_block.clusters_bitmap_size = reader.ReadInt32();
-                        super_block.inods_bitmap_size = reader.ReadInt32();
                         super_block.inode_size = reader.ReadByte();
                         super_block.inods_count = reader.ReadInt32();
                         super_block.available_inodes_count = reader.ReadInt32();
@@ -132,7 +130,7 @@ namespace CourseW
                         super_block.max_users_count = reader.ReadInt16();
                         super_block.cur_users_count = reader.ReadInt16();
                         super_block.cluster_size_pow = reader.ReadByte();
-                        super_block.data_clusters_count = reader.ReadInt32();
+                        super_block.clusters_count = reader.ReadInt32();
                         super_block.available_clusters_count = reader.ReadInt32();
                         super_block.directory_record_size = reader.ReadByte();
                     }
@@ -202,8 +200,7 @@ namespace CourseW
 
             List<string> path_parts = new List<string>(_path.Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries));
             Cluster? cluster = Read_cluster(1);
-
-            if (cluster == null) { return null; }
+            if (cluster == null) return null;
 
             System_Directory directory = new System_Directory(1, new List<Directory_Record>());
 
@@ -226,7 +223,7 @@ namespace CourseW
                 if (cluster.Value.next_cluster != 0)
                 {
                     cluster = Read_cluster(cluster.Value.next_cluster);
-                    if (cluster == null) { return null; }
+                    if (cluster == null) return null;
                 }
                 else runner = false;
             }
@@ -241,7 +238,7 @@ namespace CourseW
             if (inode.atributes[0] != true && inode.atributes[1] != false) { return null; }
 
             Cluster? cluster = Read_cluster(Read_inode(_inode).Value.first_cluster_pos);
-            if (cluster == null) { return null; }
+            if (cluster == null) return null;
 
             _path_parts.RemoveAt(1);
             System_Directory directory = new System_Directory(_inode, new List<Directory_Record>());
@@ -265,7 +262,7 @@ namespace CourseW
                 if (cluster.Value.next_cluster != 0)
                 {
                     cluster = Read_cluster(cluster.Value.next_cluster);
-                    if (cluster == null) { return null; }
+                    if (cluster == null) return null;
                 }
                 else runner = false;
             }
@@ -287,22 +284,23 @@ namespace CourseW
 
                 int dir_cluster_pos = inode.first_cluster_pos;
                 Cluster? cluster = Read_cluster(dir_cluster_pos);
+                if (cluster == null) throw new Exception();
 
                 if (Data_Keeper.cur_user.group != 1 && (Data_Keeper.cur_user.id != inode.owner_id || inode.atributes[3] != true)) throw new Exception();
                 if (super_block.available_clusters_count == 0 || super_block.available_inodes_count == 0) throw new Exception();
 
-                int cluster_pos = Search_available_control_bits(FILE_SYSTEM_STRUCTURE.clusters_bitmap);
+                int cluster_pos = Search_available_control_bit(FILE_SYSTEM_STRUCTURE.clusters_bitmap);
                 if (cluster_pos != 0)
                 {
-                    Write_control_bits(FILE_SYSTEM_STRUCTURE.clusters_bitmap, cluster_pos, new Control_Bits(1, 1));
+                    Write_control_bits(FILE_SYSTEM_STRUCTURE.clusters_bitmap, cluster_pos, true);
                     Write_cluster(cluster_pos, new Cluster(0, new List<byte>()));
                 }
                 else throw new Exception();
 
-                int inode_pos = Search_available_control_bits(FILE_SYSTEM_STRUCTURE.inods_bitmap);
+                int inode_pos = Search_available_control_bit(FILE_SYSTEM_STRUCTURE.inods_bitmap);
                 if (inode_pos != 0)
                 {
-                    Write_control_bits(FILE_SYSTEM_STRUCTURE.inods_bitmap, inode_pos, new Control_Bits(1, 1));
+                    Write_control_bits(FILE_SYSTEM_STRUCTURE.inods_bitmap, inode_pos, true);
                     bool[] atributes = null;
                     switch (_object)
                     {
@@ -363,23 +361,25 @@ namespace CourseW
                     {
                         dir_cluster_pos = cluster.Value.next_cluster;
                         cluster = Read_cluster(dir_cluster_pos);
-                        if (cluster == null) { throw new Exception(); }
+                        if (cluster == null) throw new Exception();
                     }
                     else
                     {
-                        using (BinaryWriter writer = new BinaryWriter(File.Open(Data_Keeper.file_system_path, FileMode.OpenOrCreate), Encoding.Default))
+                        using (BinaryWriter writer = new BinaryWriter(File.Open(Data_Keeper.file_system_path, FileMode.OpenOrCreate), Encoding.ASCII))
                         {
                             try
                             {
                                 writer.Seek(Get_offset(super_block, FILE_SYSTEM_STRUCTURE.data) + (dir_cluster_pos - 1) * (int)Math.Pow(2, super_block.cluster_size_pow),
                                                 SeekOrigin.Begin);
 
-                                dir_cluster_pos = Search_available_control_bits(FILE_SYSTEM_STRUCTURE.clusters_bitmap);
+                                dir_cluster_pos = Search_available_control_bit(FILE_SYSTEM_STRUCTURE.clusters_bitmap);
+                                if (dir_cluster_pos == 0) throw new Exception();
                                 writer.Write(dir_cluster_pos);
-                                Write_control_bits(FILE_SYSTEM_STRUCTURE.clusters_bitmap, dir_cluster_pos, new Control_Bits(1, 1));
+                                Write_control_bits(FILE_SYSTEM_STRUCTURE.clusters_bitmap, dir_cluster_pos, true);
                                 Write_cluster(dir_cluster_pos, new Cluster(0, new List<byte>()));
 
                                 cluster = Read_cluster(dir_cluster_pos);
+                                if (cluster == null) throw new Exception();
                             }
                             catch (Exception)
                             {
@@ -416,7 +416,7 @@ namespace CourseW
                     {
                         foreach (Directory_Record record in Get_directory(_path).Value.records)
                         {
-                            Delete_file_system_object($"{_path}\\{record.name}");
+                            if (!Delete_file_system_object($"{_path}\\{record.name}")) throw new Exception();
                         }
                     }
 
@@ -425,6 +425,7 @@ namespace CourseW
 
                     int dir_cluster_pos = parent_inode.first_cluster_pos;
                     Cluster? cluster = Read_cluster(dir_cluster_pos);
+                    if (cluster == null) throw new Exception();
 
                     for (int i = 0; i < cluster.Value.data.Count; i += super_block.directory_record_size)
                     {
@@ -432,15 +433,15 @@ namespace CourseW
                         record.inode = BitConverter.ToInt32(cluster.Value.data.ToArray(), i);
                         if (record.inode == cur_record.Value.inode)
                         {
-                            cluster.Value.data.RemoveRange(i, 8);
-                            cluster.Value.data.InsertRange(i, new List<byte>() { 0, 0, 0, 0, 0, 0, 0, 0 });
+                            cluster.Value.data.RemoveRange(i, 4);
+                            cluster.Value.data.InsertRange(i, new List<byte>() { 0, 0, 0, 0 });
                             Write_cluster(dir_cluster_pos, cluster.Value);
                             break;
                         }
                     }
 
                     Clear_cluster_line(inode.first_cluster_pos);
-                    Write_control_bits(FILE_SYSTEM_STRUCTURE.inods_bitmap, cur_record.Value.inode, new Control_Bits(0, 0));
+                    Write_control_bits(FILE_SYSTEM_STRUCTURE.inods_bitmap, cur_record.Value.inode, false);
                 }
                 else throw new Exception();
             }
@@ -457,17 +458,10 @@ namespace CourseW
         {
             Cluster cluster = Read_cluster(cluster_pos).Value;
             if (cluster.next_cluster != 0) Clear_cluster_line(cluster.next_cluster);
-            Write_control_bits(FILE_SYSTEM_STRUCTURE.clusters_bitmap, cluster_pos, new Control_Bits(0, 0));
+            cluster.next_cluster = 0; cluster.data.Clear();
+            Write_cluster(cluster_pos, cluster);
+            Write_control_bits(FILE_SYSTEM_STRUCTURE.clusters_bitmap, cluster_pos, false);
         }
-
-        /* public bool Copy_directory(string _path)
-        {
-            Log.Write("File_System | Copying directory\n");
-
-            List<string> path_parts = new List<string>(_path.Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries));
-
-            return true;
-        } */
 
         public bool Copy_file(string _file_path, string _target_path)
         {
@@ -480,8 +474,8 @@ namespace CourseW
 
                 System_File file = Read_file($"{_file_path}\\{copy_name}").Value;
 
-                Create_system_object($"{_target_path}\\{copy_name}", FILE_SYSTEM_OBJECT.file);
-                Write_file($"{_target_path}\\{copy_name}", file.data);
+                if (!Create_system_object($"{_target_path}\\{copy_name}", FILE_SYSTEM_OBJECT.file)) throw new Exception();
+                if (!Write_file($"{_target_path}\\{copy_name}", file.data)) throw new Exception();
             }
             catch (Exception)
             {
@@ -525,27 +519,30 @@ namespace CourseW
                 string write_name = _path.Substring(_path.LastIndexOf('\\') + 1);
                 _path = _path.Remove(_path.LastIndexOf('\\'));
 
-                Delete_file_system_object($"{_path}\\{write_name}");
-                Create_system_object($"{_path}\\{write_name}", FILE_SYSTEM_OBJECT.file);
+                if (!Delete_file_system_object($"{_path}\\{write_name}")) throw new Exception();
+                if (!Create_system_object($"{_path}\\{write_name}", FILE_SYSTEM_OBJECT.file)) throw new Exception();
 
                 int cluster_pos = Read_inode(Search_record_by_name($"{_path}\\{write_name}").Value.inode).Value.first_cluster_pos;
 
                 List<List<byte>> clusters_data = new List<List<byte>>();
                 int data_size = ((int)Math.Pow(2, super_block.cluster_size_pow)) - 4;
-                int clusters_count = _write_bytes.Count / data_size + 1;
-                for (int i = 0; i < clusters_count; i++)
+                int clusters_count = _write_bytes.Count / data_size;
+                int i = 0;
+                for ( ; i < clusters_count; i++)
                 {
-                    clusters_data.Add(new List<byte>(_write_bytes.GetRange(i * data_size, (_write_bytes.Count - i * data_size) % data_size)));
+                    clusters_data.Add(new List<byte>(_write_bytes.GetRange(i * data_size, data_size)));
                 }
+                if (_write_bytes.Count % data_size > 0) clusters_data.Add(new List<byte>(_write_bytes.GetRange(i * data_size, _write_bytes.Count % data_size)));
 
-                for(int i = 0; i < clusters_data.Count; i++)
+                for (i = 0; i < clusters_data.Count; i++)
                 {
                     if (i == clusters_data.Count - 1) Write_cluster(cluster_pos, new Cluster(0, clusters_data[i]));
                     else
                     {
-                        int available_cluster = Search_available_control_bits(FILE_SYSTEM_STRUCTURE.clusters_bitmap);
+                        int available_cluster = Search_available_control_bit(FILE_SYSTEM_STRUCTURE.clusters_bitmap);
+                        if (available_cluster == 0) throw new Exception();
                         Write_cluster(cluster_pos, new Cluster(available_cluster, clusters_data[i]));
-                        Write_control_bits(FILE_SYSTEM_STRUCTURE.clusters_bitmap, available_cluster, new Control_Bits(1, 1));
+                        Write_control_bits(FILE_SYSTEM_STRUCTURE.clusters_bitmap, available_cluster, true);
                         cluster_pos = available_cluster;
                     }
                 }
@@ -567,10 +564,8 @@ namespace CourseW
             {
                 System_File file = Read_file(_path).Value;
                 List<char> chars = new List<char>(Encoding.ASCII.GetChars(file.data.ToArray()));
-                chars = chars.GetRange(0, chars.IndexOf('\0') - 1);
-                chars.Add('\n');
                 chars.AddRange(_append_chars);
-                Write_file(_path, Encoding.ASCII.GetBytes(chars.ToArray()).ToList());
+                if (!Write_file(_path, Encoding.ASCII.GetBytes(chars.ToArray()).ToList())) throw new Exception();
             }
             catch (Exception)
             {
@@ -586,22 +581,22 @@ namespace CourseW
 
         #region System control functions
 
-        public Control_Bits? Read_control_bits(FILE_SYSTEM_STRUCTURE _file_system_part, int _bits_pos)
+        public bool? Read_control_bits(FILE_SYSTEM_STRUCTURE _file_system_part, int _bit_pos)
         {
-            Log.Write($"File_System | Reading control bits at {_bits_pos}, file system part {_file_system_part}\n");
+            Log.Write($"File_System | Reading control bits at {_bit_pos}, file system part {_file_system_part}\n");
 
-            using (BinaryReader reader = new BinaryReader(File.Open(Data_Keeper.file_system_path, FileMode.Open), Encoding.Default))
+            using (BinaryReader reader = new BinaryReader(File.Open(Data_Keeper.file_system_path, FileMode.Open), Encoding.ASCII))
             {
                 if (reader.PeekChar() > -1)
                 {
                     try
                     {
-                        reader.ReadChars(Get_offset(super_block, _file_system_part) + (_bits_pos - 1) * 2);
-                        Control_Bits bits = new Control_Bits(reader.ReadBoolean(), reader.ReadBoolean());
+                        reader.ReadChars(Get_offset(super_block, _file_system_part) + _bit_pos - 1);
+                        bool bit = reader.ReadBoolean();
 
                         Log.Write("File_System | Reading control bits SUCCESS\n");
 
-                        return bits;
+                        return bit;
                     }
                     catch (Exception)
                     {
@@ -614,11 +609,11 @@ namespace CourseW
             return null;
         }
 
-        public void Write_control_bits(FILE_SYSTEM_STRUCTURE _file_system_part, int _bits_pos, Control_Bits _bits)
+        public void Write_control_bits(FILE_SYSTEM_STRUCTURE _file_system_part, int _bit_pos, bool _bit)
         {
-            Log.Write($"File_System | Writing control bits at {_bits_pos}, file system part {_file_system_part}\n");
+            Log.Write($"File_System | Writing control bits at {_bit_pos}, file system part {_file_system_part}\n");
 
-            using (BinaryWriter writer = new BinaryWriter(File.Open(Data_Keeper.file_system_path, FileMode.OpenOrCreate), Encoding.Default))
+            using (BinaryWriter writer = new BinaryWriter(File.Open(Data_Keeper.file_system_path, FileMode.OpenOrCreate), Encoding.ASCII))
             {
                 try
                 {
@@ -626,23 +621,30 @@ namespace CourseW
                     {
                         case FILE_SYSTEM_STRUCTURE.clusters_bitmap:
                             {
-                                writer.Seek(29, SeekOrigin.Begin);
-                                if     (_bits.bits[0] == true  && _bits.bits[1] == true)  writer.Write(++super_block.available_clusters_count);
-                                else if(_bits.bits[0] == false && _bits.bits[1] == false) writer.Write(--super_block.available_clusters_count);
+                                writer.Seek((int)SUPERBLOCK_OFFSETS.available_clusters_count, SeekOrigin.Begin);
+                                if (_bit == true)
+                                {
+                                    if (super_block.available_clusters_count == 0) throw new Exception();
+                                    writer.Write(--super_block.available_clusters_count);
+                                }
+                                else if (_bit == false) writer.Write(++super_block.available_clusters_count);
                             } break;
 
                         case FILE_SYSTEM_STRUCTURE.inods_bitmap:
                             {
-                                writer.Seek(15, SeekOrigin.Begin);
-                                if      (_bits.bits[0] == true  && _bits.bits[1] == true)  writer.Write(++super_block.available_inodes_count);
-                                else if (_bits.bits[0] == false && _bits.bits[1] == false) writer.Write(--super_block.available_inodes_count);
+                                writer.Seek((int)SUPERBLOCK_OFFSETS.available_inodes_count, SeekOrigin.Begin);
+                                if (_bit == true)
+                                {
+                                    if (super_block.available_inodes_count == 0) throw new Exception();
+                                    writer.Write(--super_block.available_inodes_count);
+                                }
+                                else if (_bit == false) writer.Write(++super_block.available_inodes_count);
                             } break;
                     }
 
-                    writer.Seek(Get_offset(super_block, _file_system_part) + (_bits_pos - 1) * 2, SeekOrigin.Begin);
+                    writer.Seek(Get_offset(super_block, _file_system_part) + _bit_pos - 1, SeekOrigin.Begin);
 
-                    writer.Write(_bits[0]);
-                    writer.Write(_bits[1]);
+                    writer.Write(_bit);
 
                     Log.Write("File_System | Writing control bits SUCCESS\n");
                 }
@@ -658,7 +660,7 @@ namespace CourseW
         {
             Log.Write($"File_System | Reading inode at {_inode_pos}\n");
 
-            using (BinaryReader reader = new BinaryReader(File.Open(Data_Keeper.file_system_path, FileMode.Open), Encoding.Default))
+            using (BinaryReader reader = new BinaryReader(File.Open(Data_Keeper.file_system_path, FileMode.Open), Encoding.ASCII))
             {
                 if (reader.PeekChar() > -1)
                 {
@@ -696,7 +698,7 @@ namespace CourseW
         {
             Log.Write($"File_System | Writing inode at {_inode_pos}\n");
 
-            using (BinaryWriter writer = new BinaryWriter(File.Open(Data_Keeper.file_system_path, FileMode.OpenOrCreate), Encoding.Default))
+            using (BinaryWriter writer = new BinaryWriter(File.Open(Data_Keeper.file_system_path, FileMode.OpenOrCreate), Encoding.ASCII))
             {
                 try
                 {
@@ -725,7 +727,7 @@ namespace CourseW
         {
             Log.Write($"File_System | Reading user at {_user_pos}\n");
 
-            using (BinaryReader reader = new BinaryReader(File.Open(Data_Keeper.file_system_path, FileMode.Open), Encoding.Default))
+            using (BinaryReader reader = new BinaryReader(File.Open(Data_Keeper.file_system_path, FileMode.Open), Encoding.ASCII))
             {
                 if (reader.PeekChar() > -1)
                 {
@@ -758,12 +760,16 @@ namespace CourseW
         {
             Log.Write($"File_System | Writing user at {_user_pos}\n");
 
-            using (BinaryWriter writer = new BinaryWriter(File.Open(Data_Keeper.file_system_path, FileMode.OpenOrCreate), Encoding.Default))
+            using (BinaryWriter writer = new BinaryWriter(File.Open(Data_Keeper.file_system_path, FileMode.OpenOrCreate), Encoding.ASCII))
             {
                 try
                 {
                     writer.Seek(15, SeekOrigin.Begin);
-                    if      (_user.id > 0)  writer.Write(++super_block.cur_users_count);
+                    if (_user.id > 0)
+                    {
+                        if (super_block.cur_users_count == super_block.max_users_count) throw new Exception();
+                        writer.Write(++super_block.cur_users_count);
+                    }
                     else if (_user.id == 0) writer.Write(--super_block.cur_users_count);
 
                     writer.Seek(Get_offset(super_block, FILE_SYSTEM_STRUCTURE.users_data) + (_user_pos - 1) * super_block.user_record_size, SeekOrigin.Begin);
@@ -788,7 +794,7 @@ namespace CourseW
         {
             Log.Write($"File_System | Reading cluster at {_cluster_pos}\n");
 
-            using (BinaryReader reader = new BinaryReader(File.Open(Data_Keeper.file_system_path, FileMode.Open), Encoding.Default))
+            using (BinaryReader reader = new BinaryReader(File.Open(Data_Keeper.file_system_path, FileMode.Open), Encoding.ASCII))
             {
                 if (reader.PeekChar() > -1)
                 {
@@ -818,9 +824,9 @@ namespace CourseW
 
         public void Write_cluster(int _cluster_pos, Cluster _cluster)
         {
-            Log.Write($"File_System | Writing cluster at {_cluster}\n");
+            Log.Write($"File_System | Writing cluster at {_cluster_pos}\n");
 
-            using (BinaryWriter writer = new BinaryWriter(File.Open(Data_Keeper.file_system_path, FileMode.OpenOrCreate), Encoding.Default))
+            using (BinaryWriter writer = new BinaryWriter(File.Open(Data_Keeper.file_system_path, FileMode.OpenOrCreate), Encoding.ASCII))
             {
                 try
                 {
@@ -828,6 +834,8 @@ namespace CourseW
                                     SeekOrigin.Begin);
 
                     writer.Write(_cluster.next_cluster);
+
+                    _cluster.data.Capacity = ((int)Math.Pow(2, super_block.cluster_size_pow) - 4);
                     writer.Write(_cluster.data.ToArray());
 
                     Log.Write("File_System | Writing cluster SUCCESS\n");
@@ -844,7 +852,6 @@ namespace CourseW
 
         #region Other functions
 
-        public enum FILE_SYSTEM_STRUCTURE { super_block, clusters_bitmap, inods_bitmap, inode_mass, users_data, data };
         public static int Get_offset(Super_Block _super_block, FILE_SYSTEM_STRUCTURE _system_part)
         {
             switch (_system_part)
@@ -855,32 +862,33 @@ namespace CourseW
                 case FILE_SYSTEM_STRUCTURE.clusters_bitmap:
                     return _super_block.super_block_size;
                 case FILE_SYSTEM_STRUCTURE.inods_bitmap:
-                    return _super_block.super_block_size + _super_block.clusters_bitmap_size;
+                    return _super_block.super_block_size + _super_block.clusters_count;
                 case FILE_SYSTEM_STRUCTURE.inode_mass:
-                    return _super_block.super_block_size + _super_block.clusters_bitmap_size + _super_block.inods_bitmap_size;
+                    return _super_block.super_block_size + _super_block.clusters_count + _super_block.inods_count;
                 case FILE_SYSTEM_STRUCTURE.users_data:
-                    return _super_block.super_block_size + _super_block.clusters_bitmap_size + _super_block.inods_bitmap_size +
+                    return _super_block.super_block_size + _super_block.clusters_count + _super_block.inods_count +
                                                            _super_block.inods_count * _super_block.inode_size;
                 case FILE_SYSTEM_STRUCTURE.data:
-                    return _super_block.super_block_size + _super_block.clusters_bitmap_size + _super_block.inods_bitmap_size +
+                    return _super_block.super_block_size + _super_block.clusters_count + _super_block.inods_count +
                                                            _super_block.inods_count * _super_block.inode_size +
                                                            _super_block.max_users_count * _super_block.user_record_size;
             }
         }
 
-        public int Search_available_control_bits(FILE_SYSTEM_STRUCTURE _system_part)
+        public int Search_available_control_bit(FILE_SYSTEM_STRUCTURE _system_part)
         {
             int bitmap_size = 0;
             switch (_system_part)
             {
-                case FILE_SYSTEM_STRUCTURE.clusters_bitmap: bitmap_size = super_block.clusters_bitmap_size; break;
-                case FILE_SYSTEM_STRUCTURE.inods_bitmap: bitmap_size = super_block.inods_bitmap_size; break;
+                case FILE_SYSTEM_STRUCTURE.clusters_bitmap: bitmap_size = super_block.clusters_count; break;
+                case FILE_SYSTEM_STRUCTURE.inods_bitmap: bitmap_size = super_block.inods_count; break;
             }
 
             for (int i = 1; i <= bitmap_size; i++)
             {
-                bool[] bits = Read_control_bits(_system_part, i).Value.bits;
-                if (bits[0] == false && bits[1] == false) return i;
+                bool? bit = Read_control_bits(_system_part, i);
+                if (bit == null) return 0;
+                if (bit.Value == false) return i;
             }
 
             return 0;
@@ -894,6 +902,7 @@ namespace CourseW
             System_Directory directory = Get_directory(_path).Value;
             Inode inode = Read_inode(directory.inode).Value;
             Cluster? cluster = Read_cluster(inode.first_cluster_pos);
+            if (cluster == null) return null;
 
             bool runner = true;
             while (runner)
@@ -913,7 +922,7 @@ namespace CourseW
                 if (cluster.Value.next_cluster != 0)
                 {
                     cluster = Read_cluster(cluster.Value.next_cluster);
-                    if (cluster == null) { return null; }
+                    if (cluster == null) return null;
                 }
                 else runner = false;
             }
@@ -924,14 +933,11 @@ namespace CourseW
 
         #endregion FUNCTIONS
 
-        #region OTHER
+        #region STRUCTURES
 
-        public struct Super_Block                  // 34
+        public struct Super_Block                  // 25
         {
             public byte  super_block_size;         // 1
-            public byte  file_system_type;         // 1
-            public int   clusters_bitmap_size;     // 4
-            public int   inods_bitmap_size;        // 4
             public byte  inode_size;               // 1
             public int   inods_count;              // 4
             public int   available_inodes_count;   // 4
@@ -939,22 +945,19 @@ namespace CourseW
             public short max_users_count;          // 2
             public short cur_users_count;          // 2
             public byte  cluster_size_pow;         // 1
-            public int   data_clusters_count;      // 4
+            public int   clusters_count;           // 4
             public int   available_clusters_count; // 4
             public byte  directory_record_size;    // 1
 
-            public Super_Block(byte _super_block_size, byte _file_system_type,
-                               int _clusters_bitmap_size, byte _cluster_size_pow, int _data_clusters_count, int _available_clusters_count,
-                               int _inode_bitmap_size, byte _inode_size, int _inods_count, int _available_inodes_count,
+            public Super_Block(byte _super_block_size,
+                               byte _cluster_size_pow, int _clusters_count, int _available_clusters_count,
+                               byte _inode_size, int _inods_count, int _available_inodes_count,
                                byte _user_record_size, short _max_users_count, short _cur_users_count, byte _directory_record_size)
             {
                 super_block_size = _super_block_size;
-                file_system_type = _file_system_type;
-                clusters_bitmap_size = _clusters_bitmap_size;
                 cluster_size_pow = _cluster_size_pow;
-                data_clusters_count = _data_clusters_count;
+                clusters_count = _clusters_count;
                 available_clusters_count = _available_clusters_count;
-                inods_bitmap_size = _inode_bitmap_size;
                 inode_size = _inode_size;
                 inods_count = _inods_count;
                 available_inodes_count = _available_inodes_count;
@@ -965,53 +968,15 @@ namespace CourseW
             }
         }
 
-        /// <summary>
-        /// 00 - available, 11 - engaged, 01/10 - error
-        /// </summary>
-        public struct Control_Bits
-        {
-            public bool[] bits;
-            public Control_Bits(bool _bit_1, bool _bit_2)
-            {
-                bits = new[] { _bit_1, _bit_2 };
-            }
-            public Control_Bits(int _bit_1, int _bit_2)
-            {
-                bits = new[] { Convert.ToBoolean(_bit_1), Convert.ToBoolean(_bit_2) };
-            }
-            public bool this[byte _index]
-            {
-                get => bits[_index];
-                set => bits[_index] = value;
-            }
-            public IEnumerator GetEnumerator()
-            {
-                for (int i = 0; i < bits.Length; i++)
-                {
-                    yield return bits[i];
-                }
-            }
-        }
-
-        /// <summary>
-        /// File system inode
-        /// </summary>
-        /// <param name="atributes">0-1 – тип записи (00 – свободна, 10 – каталог, 01 – файл), 2-4 - owner (rwe), 5-7 - group owner (rwe), 8-10 - other (rwe), 11 – hidden, 12 – system, 13-15 – [reserved]</param>
-        /// <param name="owner_id"></param>
-        /// <param name="owner_group_id"></param>
-        /// <param name="first_cluster_pos"></param>
-        /// <param name="file_size">file size or records count in directory</param>
-        /// <param name="creation_date_time"></param>
-        /// <param name="changing_date_time"></param>
         public struct Inode
         {
             public bool[] atributes; /* 2Б: 0-1  – тип записи (00 – свободна, 10 – каталог, 01 – файл),
-                                            2-4   – чтение, запись, исполнение пользователем-владельцем,
-                                            5-7   – чтение, запись, исполнение группой-владельцем,
-                                            8-10  – чтение, запись, исполнение другими,
-                                            11    – «скрытый»,
-                                            12    – «системный»,
-                                            13-15 – зарезервировано.*/
+                                         2-4   – чтение, запись, исполнение пользователем-владельцем,
+                                         5-7   – чтение, запись, исполнение группой-владельцем,
+                                         8-10  – чтение, запись, исполнение другими,
+                                         11    – «скрытый»,
+                                         12    – «системный»,
+                                         13-15 – зарезервировано.*/
 
             public byte owner_id;
             public byte owner_group_id;
@@ -1113,8 +1078,6 @@ namespace CourseW
             }
         }
 
-        public enum FILE_SYSTEM_OBJECT { directory, file };
-
-        #endregion OTHER
+        #endregion STRUCTURES
     }
 }

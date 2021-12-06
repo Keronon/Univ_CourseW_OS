@@ -56,9 +56,12 @@ namespace CourseW
                         path = path.Remove(path.IndexOf('['), 1);
                         path = path.Remove(path.IndexOf(']'), 1);
                     }
-                    Data_Keeper.file_system.Create_system_object(path, File_System.FILE_SYSTEM_OBJECT.file);
-                    Refresh_tree_view();
-                    MessageBox.Show("Created");
+                    if (Data_Keeper.file_system.Create_system_object(path, File_System.FILE_SYSTEM_OBJECT.file))
+                    {
+                        Refresh_tree_view();
+                        MessageBox.Show("Created");
+                    }
+                    else MessageBox.Show("Error");
                 }
                 else
                 {
@@ -83,9 +86,12 @@ namespace CourseW
                         path = path.Remove(path.IndexOf('['), 1);
                         path = path.Remove(path.IndexOf(']'), 1);
                     }
-                    Data_Keeper.file_system.Create_system_object(path, File_System.FILE_SYSTEM_OBJECT.directory);
-                    Refresh_tree_view();
-                    MessageBox.Show("Created");
+                    if (Data_Keeper.file_system.Create_system_object(path, File_System.FILE_SYSTEM_OBJECT.directory))
+                    {
+                        Refresh_tree_view();
+                        MessageBox.Show("Created");
+                    }
+                    else MessageBox.Show("Error");
                 }
                 else
                 {
@@ -109,17 +115,15 @@ namespace CourseW
                     path = path.Remove(path.IndexOf('['), 1);
                     path = path.Remove(path.IndexOf(']'), 1);
                 }
-
                 string file = new string(Encoding.ASCII.GetChars(Data_Keeper.file_system.Read_file(path).Value.data.ToArray())).Trim().Trim('\0');
-                Console.WriteLine(file);
+
                 if (append_dialog.ShowDialog(this, $"{TREE_view.SelectedNode.Name} appending", file) == DialogResult.OK)
                 {
                     Log.Write("FORM_Main | Appending file ACCEPTED\n");
 
                     string append = append_dialog.TXT_append.Text + "\r\n";
-                    Data_Keeper.file_system.Append_file(path, append.ToArray().ToList());
-                    Refresh_tree_view();
-                    MessageBox.Show("Appended");
+                    if (Data_Keeper.file_system.Append_file(path, append.ToArray().ToList())) MessageBox.Show("Appended");
+                    else MessageBox.Show("Error");
                 }
                 else
                 {
@@ -146,8 +150,8 @@ namespace CourseW
                     }
 
                     string write = write_dialog.TXT_write.Text + "\r\n";
-                    Data_Keeper.file_system.Write_file(path, Encoding.ASCII.GetBytes(write.ToArray()).ToList());
-                    MessageBox.Show("Writed");
+                    if (Data_Keeper.file_system.Write_file(path, Encoding.ASCII.GetBytes(write.ToArray()).ToList())) MessageBox.Show("Writed");
+                    else MessageBox.Show("Error");
                 }
                 else
                 {
@@ -240,6 +244,7 @@ namespace CourseW
             Log.Write("FORM_Main | Logout Clicked\n");
 
             Hide();
+            Data_Keeper.FORM_Authorization.Load_users();
             Data_Keeper.FORM_Authorization.Show();
 
             Log.Write("FORM_Main | Logged out\n");
@@ -288,6 +293,7 @@ namespace CourseW
                 {
                     string name = record.name;
                     bool[] atributes = Data_Keeper.file_system.Get_atributes($"{path}\\{name}");
+                    if (atributes == null) throw new Exception();
                     if (atributes[0] == true && atributes[1] == false)
                     {
                         name = $"[{name}]";
@@ -300,7 +306,7 @@ namespace CourseW
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Log.Write($"FORM_Main | Filling node {_node.Name} FAIL\n");
                 return false;
@@ -325,9 +331,12 @@ namespace CourseW
                     path = path.Remove(path.IndexOf(']'), 1);
                 }
 
-                Data_Keeper.file_system.Delete_file_system_object(path);
-                Refresh_tree_view();
-                MessageBox.Show("Deleted");
+                if (Data_Keeper.file_system.Delete_file_system_object(path))
+                {
+                    Refresh_tree_view();
+                    MessageBox.Show("Deleted");
+                }
+                else MessageBox.Show("Error");
             }
             else
             {
