@@ -8,17 +8,6 @@ File_System | Reading user SUCCESS
 FORM_Authorization | Selected user changed
 FORM_Authorization | Loading users SUCCESS
 FORM_Authorization | Initialized
-FORM_Authorization | Reboot file system Clicked
-FORM_Authorization | Rebooting accepted
-File_System | Creating
-File_System | Created
-File_System | Initialization
-File_System | Initialized
-FORM_Authorization | Load users
-File_System | Reading user at 1
-File_System | Reading user SUCCESS
-FORM_Authorization | Selected user changed
-FORM_Authorization | Loading users SUCCESS
 FORM_Authorization | Login Clicked
 FORM_Main | Initialization
 FORM_Main | Refreshing tree view
@@ -43,6 +32,38 @@ File_System | Reading inode at 2
 File_System | Reading inode SUCCESS
 File_System | Reading cluster at 2
 File_System | Reading cluster SUCCESS
+File_System | Getting atributes at /\admin\dir
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+FORM_Main | Filling node [dir]
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+FORM_Main | Filling node [dir] SUCCESS
 FORM_Main | Filling node [admin] SUCCESS
 FORM_Main | Filling node [/] SUCCESS
 FORM_Main | Initialized
@@ -68,12 +89,43 @@ File_System | Reading inode at 2
 File_System | Reading inode SUCCESS
 File_System | Reading cluster at 2
 File_System | Reading cluster SUCCESS
+File_System | Getting atributes at /\admin\dir
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+FORM_Main | Filling node [dir]
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+FORM_Main | Filling node [dir] SUCCESS
 FORM_Main | Filling node [admin] SUCCESS
 FORM_Main | Filling node [/] SUCCESS
 FORM_Authorization | Logged in
 FORM_Main | Create file clicked
 FORM_Main | Creating file ACCEPTED
-File_System | Creating file system object type file
 File_System | Getting directory started
 File_System | Reading cluster at 1
 File_System | Reading cluster SUCCESS
@@ -88,15 +140,41 @@ File_System | Reading inode at 2
 File_System | Reading inode SUCCESS
 File_System | Reading cluster at 2
 File_System | Reading cluster SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Creating file system object type file
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
 File_System | Reading control bits at 1, file system part clusters_bitmap
 File_System | Reading control bits SUCCESS
 File_System | Reading control bits at 2, file system part clusters_bitmap
 File_System | Reading control bits SUCCESS
 File_System | Reading control bits at 3, file system part clusters_bitmap
 File_System | Reading control bits SUCCESS
-File_System | Writing control bits at 3, file system part clusters_bitmap
+File_System | Reading control bits at 4, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Writing control bits at 4, file system part clusters_bitmap
 File_System | Writing control bits SUCCESS
-File_System | Writing cluster at 3
+File_System | Writing cluster at 4
 File_System | Writing cluster SUCCESS
 File_System | Reading control bits at 1, file system part inods_bitmap
 File_System | Reading control bits SUCCESS
@@ -104,11 +182,13 @@ File_System | Reading control bits at 2, file system part inods_bitmap
 File_System | Reading control bits SUCCESS
 File_System | Reading control bits at 3, file system part inods_bitmap
 File_System | Reading control bits SUCCESS
-File_System | Writing control bits at 3, file system part inods_bitmap
+File_System | Reading control bits at 4, file system part inods_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Writing control bits at 4, file system part inods_bitmap
 File_System | Writing control bits SUCCESS
-File_System | Writing inode at 3
+File_System | Writing inode at 4
 File_System | Writing inode SUCCESS
-File_System | Writing cluster at 2
+File_System | Writing cluster at 3
 File_System | Writing cluster SUCCESS
 File_System | Creating file system object SUCCESS
 FORM_Main | Refreshing tree view
@@ -133,7 +213,7 @@ File_System | Reading inode at 2
 File_System | Reading inode SUCCESS
 File_System | Reading cluster at 2
 File_System | Reading cluster SUCCESS
-File_System | Getting atributes at /\admin\new file
+File_System | Getting atributes at /\admin\dir
 File_System | Getting directory started
 File_System | Reading cluster at 1
 File_System | Reading cluster SUCCESS
@@ -146,10 +226,49 @@ File_System | Reading cluster at 2
 File_System | Reading cluster SUCCESS
 File_System | Reading inode at 3
 File_System | Reading inode SUCCESS
+FORM_Main | Filling node [dir]
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Getting atributes at /\admin\dir\file
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 4
+File_System | Reading inode SUCCESS
+FORM_Main | Filling node [dir] SUCCESS
 FORM_Main | Filling node [admin] SUCCESS
 FORM_Main | Filling node [/] SUCCESS
-FORM_Main | Append file clicked
-File_System | Reading file
+FORM_Main | Create file clicked
+FORM_Main | Creating file ACCEPTED
 File_System | Getting directory started
 File_System | Reading cluster at 1
 File_System | Reading cluster SUCCESS
@@ -166,72 +285,6 @@ File_System | Reading cluster at 2
 File_System | Reading cluster SUCCESS
 File_System | Reading inode at 3
 File_System | Reading inode SUCCESS
-File_System | Reading cluster at 3
-File_System | Reading cluster SUCCESS
-FORM_Main | Appending file ACCEPTED
-File_System | Appending file
-File_System | Reading file
-File_System | Getting directory started
-File_System | Reading cluster at 1
-File_System | Reading cluster SUCCESS
-File_System | Getting directory at admin
-File_System | Reading inode at 2
-File_System | Reading inode SUCCESS
-File_System | Reading inode at 2
-File_System | Reading inode SUCCESS
-File_System | Reading cluster at 2
-File_System | Reading cluster SUCCESS
-File_System | Reading inode at 2
-File_System | Reading inode SUCCESS
-File_System | Reading cluster at 2
-File_System | Reading cluster SUCCESS
-File_System | Reading inode at 3
-File_System | Reading inode SUCCESS
-File_System | Reading cluster at 3
-File_System | Reading cluster SUCCESS
-File_System | Writing file
-File_System | Deleting directory
-File_System | Getting directory started
-File_System | Reading cluster at 1
-File_System | Reading cluster SUCCESS
-File_System | Getting directory at admin
-File_System | Reading inode at 2
-File_System | Reading inode SUCCESS
-File_System | Reading inode at 2
-File_System | Reading inode SUCCESS
-File_System | Reading cluster at 2
-File_System | Reading cluster SUCCESS
-File_System | Reading inode at 2
-File_System | Reading inode SUCCESS
-File_System | Reading cluster at 2
-File_System | Reading cluster SUCCESS
-File_System | Reading inode at 3
-File_System | Reading inode SUCCESS
-File_System | Getting directory started
-File_System | Reading cluster at 1
-File_System | Reading cluster SUCCESS
-File_System | Getting directory at admin
-File_System | Reading inode at 2
-File_System | Reading inode SUCCESS
-File_System | Reading inode at 2
-File_System | Reading inode SUCCESS
-File_System | Reading cluster at 2
-File_System | Reading cluster SUCCESS
-File_System | Reading inode at 2
-File_System | Reading inode SUCCESS
-File_System | Reading cluster at 2
-File_System | Reading cluster SUCCESS
-File_System | Writing cluster at 2
-File_System | Writing cluster SUCCESS
-File_System | Reading cluster at 3
-File_System | Reading cluster SUCCESS
-File_System | Writing cluster at 3
-File_System | Writing cluster SUCCESS
-File_System | Writing control bits at 3, file system part clusters_bitmap
-File_System | Writing control bits SUCCESS
-File_System | Writing control bits at 3, file system part inods_bitmap
-File_System | Writing control bits SUCCESS
-File_System | Deleting directory SUCCESS
 File_System | Creating file system object type file
 File_System | Getting directory started
 File_System | Reading cluster at 1
@@ -243,9 +296,16 @@ File_System | Reading inode at 2
 File_System | Reading inode SUCCESS
 File_System | Reading cluster at 2
 File_System | Reading cluster SUCCESS
-File_System | Reading inode at 2
+File_System | Getting directory at dir
+File_System | Reading inode at 3
 File_System | Reading inode SUCCESS
-File_System | Reading cluster at 2
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
 File_System | Reading cluster SUCCESS
 File_System | Reading control bits at 1, file system part clusters_bitmap
 File_System | Reading control bits SUCCESS
@@ -253,9 +313,13 @@ File_System | Reading control bits at 2, file system part clusters_bitmap
 File_System | Reading control bits SUCCESS
 File_System | Reading control bits at 3, file system part clusters_bitmap
 File_System | Reading control bits SUCCESS
-File_System | Writing control bits at 3, file system part clusters_bitmap
+File_System | Reading control bits at 4, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 5, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Writing control bits at 5, file system part clusters_bitmap
 File_System | Writing control bits SUCCESS
-File_System | Writing cluster at 3
+File_System | Writing cluster at 5
 File_System | Writing cluster SUCCESS
 File_System | Reading control bits at 1, file system part inods_bitmap
 File_System | Reading control bits SUCCESS
@@ -263,13 +327,137 @@ File_System | Reading control bits at 2, file system part inods_bitmap
 File_System | Reading control bits SUCCESS
 File_System | Reading control bits at 3, file system part inods_bitmap
 File_System | Reading control bits SUCCESS
-File_System | Writing control bits at 3, file system part inods_bitmap
+File_System | Reading control bits at 4, file system part inods_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 5, file system part inods_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Writing control bits at 5, file system part inods_bitmap
 File_System | Writing control bits SUCCESS
-File_System | Writing inode at 3
+File_System | Writing inode at 5
 File_System | Writing inode SUCCESS
-File_System | Writing cluster at 2
+File_System | Reading control bits at 1, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 2, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 3, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 4, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 5, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 6, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Writing cluster at 3
 File_System | Writing cluster SUCCESS
+File_System | Writing cluster at 6
+File_System | Writing cluster SUCCESS
+File_System | Writing control bits at 6, file system part clusters_bitmap
+File_System | Writing control bits SUCCESS
 File_System | Creating file system object SUCCESS
+FORM_Main | Refreshing tree view
+FORM_Main | Filling node [/]
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting atributes at /\admin
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+FORM_Main | Filling node [admin]
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting atributes at /\admin\dir
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+FORM_Main | Filling node [dir]
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Getting atributes at /\admin\dir\file
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 4
+File_System | Reading inode SUCCESS
+File_System | Getting atributes at /\admin\dir\file 2
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 5
+File_System | Reading inode SUCCESS
+FORM_Main | Filling node [dir] SUCCESS
+FORM_Main | Filling node [admin] SUCCESS
+FORM_Main | Filling node [/] SUCCESS
+FORM_Main | Create directory clicked
+FORM_Main | Creating directory ACCEPTED
 File_System | Getting directory started
 File_System | Reading cluster at 1
 File_System | Reading cluster SUCCESS
@@ -286,12 +474,7 @@ File_System | Reading cluster at 2
 File_System | Reading cluster SUCCESS
 File_System | Reading inode at 3
 File_System | Reading inode SUCCESS
-File_System | Writing cluster at 3
-File_System | Writing cluster SUCCESS
-File_System | Writing file SUCCESS
-File_System | Appending file SUCCESS
-FORM_Main | Append file clicked
-File_System | Reading file
+File_System | Creating file system object type directory
 File_System | Getting directory started
 File_System | Reading cluster at 1
 File_System | Reading cluster SUCCESS
@@ -302,13 +485,957 @@ File_System | Reading inode at 2
 File_System | Reading inode SUCCESS
 File_System | Reading cluster at 2
 File_System | Reading cluster SUCCESS
-File_System | Reading inode at 2
+File_System | Getting directory at dir
+File_System | Reading inode at 3
 File_System | Reading inode SUCCESS
-File_System | Reading cluster at 2
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
 File_System | Reading cluster SUCCESS
 File_System | Reading inode at 3
 File_System | Reading inode SUCCESS
 File_System | Reading cluster at 3
 File_System | Reading cluster SUCCESS
-FORM_Main | Appending file CANCELED
+File_System | Reading control bits at 1, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 2, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 3, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 4, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 5, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 6, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 7, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Writing control bits at 7, file system part clusters_bitmap
+File_System | Writing control bits SUCCESS
+File_System | Writing cluster at 7
+File_System | Writing cluster SUCCESS
+File_System | Reading control bits at 1, file system part inods_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 2, file system part inods_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 3, file system part inods_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 4, file system part inods_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 5, file system part inods_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 6, file system part inods_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Writing control bits at 6, file system part inods_bitmap
+File_System | Writing control bits SUCCESS
+File_System | Writing inode at 6
+File_System | Writing inode SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading control bits at 1, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 2, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 3, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 4, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 5, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 6, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 7, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 8, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Writing cluster at 6
+File_System | Writing cluster SUCCESS
+File_System | Writing cluster at 8
+File_System | Writing cluster SUCCESS
+File_System | Writing control bits at 8, file system part clusters_bitmap
+File_System | Writing control bits SUCCESS
+File_System | Creating file system object SUCCESS
+FORM_Main | Refreshing tree view
+FORM_Main | Filling node [/]
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting atributes at /\admin
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+FORM_Main | Filling node [admin]
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting atributes at /\admin\dir
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+FORM_Main | Filling node [dir]
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Getting atributes at /\admin\dir\file
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 4
+File_System | Reading inode SUCCESS
+File_System | Getting atributes at /\admin\dir\file 2
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 5
+File_System | Reading inode SUCCESS
+File_System | Getting atributes at /\admin\dir\dir 2
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 6
+File_System | Reading inode SUCCESS
+FORM_Main | Filling node [dir 2]
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir 2
+File_System | Reading inode at 6
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 6
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 7
+File_System | Reading cluster SUCCESS
+FORM_Main | Filling node [dir 2] SUCCESS
+FORM_Main | Filling node [dir] SUCCESS
+FORM_Main | Filling node [admin] SUCCESS
+FORM_Main | Filling node [/] SUCCESS
+FORM_Main | Create file clicked
+FORM_Main | Creating file ACCEPTED
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 6
+File_System | Reading inode SUCCESS
+File_System | Creating file system object type file
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir 2
+File_System | Reading inode at 6
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 6
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 7
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 6
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 7
+File_System | Reading cluster SUCCESS
+File_System | Reading control bits at 1, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 2, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 3, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 4, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 5, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 6, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 7, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 8, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 9, file system part clusters_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Writing control bits at 9, file system part clusters_bitmap
+File_System | Writing control bits SUCCESS
+File_System | Writing cluster at 9
+File_System | Writing cluster SUCCESS
+File_System | Reading control bits at 1, file system part inods_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 2, file system part inods_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 3, file system part inods_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 4, file system part inods_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 5, file system part inods_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 6, file system part inods_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Reading control bits at 7, file system part inods_bitmap
+File_System | Reading control bits SUCCESS
+File_System | Writing control bits at 7, file system part inods_bitmap
+File_System | Writing control bits SUCCESS
+File_System | Writing inode at 7
+File_System | Writing inode SUCCESS
+File_System | Writing cluster at 7
+File_System | Writing cluster SUCCESS
+File_System | Creating file system object SUCCESS
+FORM_Main | Refreshing tree view
+FORM_Main | Filling node [/]
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting atributes at /\admin
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+FORM_Main | Filling node [admin]
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting atributes at /\admin\dir
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+FORM_Main | Filling node [dir]
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Getting atributes at /\admin\dir\file
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 4
+File_System | Reading inode SUCCESS
+File_System | Getting atributes at /\admin\dir\file 2
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 5
+File_System | Reading inode SUCCESS
+File_System | Getting atributes at /\admin\dir\dir 2
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 6
+File_System | Reading inode SUCCESS
+FORM_Main | Filling node [dir 2]
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir 2
+File_System | Reading inode at 6
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 6
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 7
+File_System | Reading cluster SUCCESS
+File_System | Getting atributes at /\admin\dir\dir 2\file 3
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir 2
+File_System | Reading inode at 6
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 6
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 7
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 7
+File_System | Reading inode SUCCESS
+FORM_Main | Filling node [dir 2] SUCCESS
+FORM_Main | Filling node [dir] SUCCESS
+FORM_Main | Filling node [admin] SUCCESS
+FORM_Main | Filling node [/] SUCCESS
+FORM_Main | Delete element clicked
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+FORM_Main | Deleting element ACCEPTED
+File_System | Deleting object "dir"
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Deleting object "file"
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 4
+File_System | Reading inode SUCCESS
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Writing cluster at 3
+File_System | Writing cluster SUCCESS
+File_System | Reading cluster at 4
+File_System | Reading cluster SUCCESS
+File_System | Writing cluster at 4
+File_System | Writing cluster SUCCESS
+File_System | Writing control bits at 4, file system part clusters_bitmap
+File_System | Writing control bits SUCCESS
+File_System | Writing control bits at 4, file system part inods_bitmap
+File_System | Writing control bits SUCCESS
+File_System | Deleting directory SUCCESS
+File_System | Deleting object "file 2"
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 5
+File_System | Reading inode SUCCESS
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 5
+File_System | Reading cluster SUCCESS
+File_System | Writing cluster at 5
+File_System | Writing cluster SUCCESS
+File_System | Writing control bits at 5, file system part clusters_bitmap
+File_System | Writing control bits SUCCESS
+File_System | Writing control bits at 5, file system part inods_bitmap
+File_System | Writing control bits SUCCESS
+File_System | Deleting directory SUCCESS
+File_System | Deleting object "dir 2"
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 6
+File_System | Reading inode SUCCESS
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir 2
+File_System | Reading inode at 6
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 6
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 7
+File_System | Reading cluster SUCCESS
+File_System | Deleting object "file 3"
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir 2
+File_System | Reading inode at 6
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 6
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 7
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 6
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 7
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 7
+File_System | Reading inode SUCCESS
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir 2
+File_System | Reading inode at 6
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 6
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 7
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 6
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 7
+File_System | Reading cluster SUCCESS
+File_System | Writing cluster at 7
+File_System | Writing cluster SUCCESS
+File_System | Reading cluster at 9
+File_System | Reading cluster SUCCESS
+File_System | Writing cluster at 9
+File_System | Writing cluster SUCCESS
+File_System | Writing control bits at 9, file system part clusters_bitmap
+File_System | Writing control bits SUCCESS
+File_System | Writing control bits at 7, file system part inods_bitmap
+File_System | Writing control bits SUCCESS
+File_System | Deleting directory SUCCESS
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at dir
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 3
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 7
+File_System | Reading cluster SUCCESS
+File_System | Writing cluster at 7
+File_System | Writing cluster SUCCESS
+File_System | Writing control bits at 7, file system part clusters_bitmap
+File_System | Writing control bits SUCCESS
+File_System | Writing control bits at 6, file system part inods_bitmap
+File_System | Writing control bits SUCCESS
+File_System | Deleting directory SUCCESS
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+File_System | Writing cluster at 2
+File_System | Writing cluster SUCCESS
+File_System | Reading cluster at 3
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 6
+File_System | Reading cluster SUCCESS
+File_System | Reading cluster at 8
+File_System | Reading cluster SUCCESS
+File_System | Writing cluster at 8
+File_System | Writing cluster SUCCESS
+File_System | Writing control bits at 8, file system part clusters_bitmap
+File_System | Writing control bits SUCCESS
+File_System | Writing cluster at 6
+File_System | Writing cluster SUCCESS
+File_System | Writing control bits at 6, file system part clusters_bitmap
+File_System | Writing control bits SUCCESS
+File_System | Writing cluster at 3
+File_System | Writing cluster SUCCESS
+File_System | Writing control bits at 3, file system part clusters_bitmap
+File_System | Writing control bits SUCCESS
+File_System | Writing control bits at 3, file system part inods_bitmap
+File_System | Writing control bits SUCCESS
+File_System | Deleting directory SUCCESS
+FORM_Main | Refreshing tree view
+FORM_Main | Filling node [/]
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting atributes at /\admin
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+FORM_Main | Filling node [admin]
+File_System | Getting directory started
+File_System | Reading cluster at 1
+File_System | Reading cluster SUCCESS
+File_System | Getting directory at admin
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading inode at 2
+File_System | Reading inode SUCCESS
+File_System | Reading cluster at 2
+File_System | Reading cluster SUCCESS
+FORM_Main | Filling node [admin] SUCCESS
+FORM_Main | Filling node [/] SUCCESS
 FORM_Main | Quit Clicked

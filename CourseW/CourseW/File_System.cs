@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CourseW
 {
-    class File_System
+    public class File_System
     {
         #region VARIABLES
 
@@ -134,7 +134,7 @@ namespace CourseW
                         super_block.available_clusters_count = reader.ReadInt32();
                         super_block.directory_record_size = reader.ReadByte();
                     }
-                    catch (Exception)
+                    catch
                     {
                         Log.Write("File_System | Exception while reading file system\n");
                         return;
@@ -167,7 +167,7 @@ namespace CourseW
                     }
                 }
             }
-            catch (Exception)
+            catch
             {
                 Log.Write("File_System | Setting atributes ERROR\n");
                 return false;
@@ -348,6 +348,25 @@ namespace CourseW
                         record.inode = BitConverter.ToInt32(cluster.Value.data.ToArray(), i);
                         if (record.inode == 0)
                         {
+                            if (((cluster.Value.data.Count - i) / super_block.directory_record_size) < 1)
+                            {/*
+                                if (cluster.Value.next_cluster != 0) break;
+                                int available_cluster = Search_available_control_bit(FILE_SYSTEM_STRUCTURE.clusters_bitmap);
+                                if (available_cluster == 0) throw new Exception();
+                                Cluster written_cluster = cluster.Value;
+                                written_cluster.next_cluster = available_cluster;
+                                Write_cluster(dir_cluster_pos, written_cluster);
+
+                                written_cluster.next_cluster = 0;
+                                written_cluster.data.Clear();
+                                written_cluster.data.AddRange(BitConverter.GetBytes(inode_pos).Concat(Encoding.ASCII.GetBytes(creation_name)));
+                                Write_cluster(available_cluster, written_cluster);
+                                Write_control_bits(FILE_SYSTEM_STRUCTURE.clusters_bitmap, available_cluster, true);
+
+                                runner = false;*/
+                                break;
+                            }
+
                             cluster.Value.data.RemoveRange(i, super_block.directory_record_size);
                             int bytes = super_block.directory_record_size - BitConverter.GetBytes(inode_pos).Concat(Encoding.ASCII.GetBytes(creation_name)).ToList().Count;
                             cluster.Value.data.InsertRange(i, BitConverter.GetBytes(inode_pos).Concat(Encoding.ASCII.GetBytes(creation_name)).Concat(new byte[bytes]));
@@ -365,33 +384,23 @@ namespace CourseW
                     }
                     else
                     {
-                        using (BinaryWriter writer = new BinaryWriter(File.Open(Data_Keeper.file_system_path, FileMode.OpenOrCreate), Encoding.ASCII))
-                        {
-                            try
-                            {
-                                writer.Seek(Get_offset(super_block, FILE_SYSTEM_STRUCTURE.data) + (dir_cluster_pos - 1) * (int)Math.Pow(2, super_block.cluster_size_pow),
-                                                SeekOrigin.Begin);
+                        int available_cluster = Search_available_control_bit(FILE_SYSTEM_STRUCTURE.clusters_bitmap);
+                        if (available_cluster == 0) throw new Exception();
+                        Cluster written_cluster = cluster.Value;
+                        written_cluster.next_cluster = available_cluster;
+                        Write_cluster(dir_cluster_pos, written_cluster);
 
-                                dir_cluster_pos = Search_available_control_bit(FILE_SYSTEM_STRUCTURE.clusters_bitmap);
-                                if (dir_cluster_pos == 0) throw new Exception();
-                                writer.Write(dir_cluster_pos);
-                                Write_control_bits(FILE_SYSTEM_STRUCTURE.clusters_bitmap, dir_cluster_pos, true);
-                                Write_cluster(dir_cluster_pos, new Cluster(0, new List<byte>()));
-
-                                cluster = Read_cluster(dir_cluster_pos);
-                                if (cluster == null) throw new Exception();
-                            }
-                            catch (Exception)
-                            {
-                                throw new Exception();
-                            }
-                        }
+                        written_cluster.next_cluster = 0;
+                        written_cluster.data.Clear();
+                        written_cluster.data.AddRange(BitConverter.GetBytes(inode_pos).Concat(Encoding.ASCII.GetBytes(creation_name)));
+                        Write_cluster(available_cluster, written_cluster);
+                        Write_control_bits(FILE_SYSTEM_STRUCTURE.clusters_bitmap, available_cluster, true);
 
                         runner = false;
                     }
                 }
             }
-            catch (Exception)
+            catch
             {
                 Log.Write("File_System | Creating file system object ERROR\n");
                 return false;
@@ -403,7 +412,7 @@ namespace CourseW
 
         public bool Delete_file_system_object(string _path)
         {
-            Log.Write("File_System | Deleting directory\n");
+            Log.Write($"File_System | Deleting object \"{_path.Substring(_path.LastIndexOf('\\') + 1)}\"\n");
 
             try
             {
@@ -445,13 +454,13 @@ namespace CourseW
                 }
                 else throw new Exception();
             }
-            catch (Exception)
+            catch
             {
-                Log.Write("File_System | Deleting directory ERROR\n");
+                Log.Write("File_System | Deleting file system object ERROR\n");
                 return false;
             }
 
-            Log.Write("File_System | Deleting directory SUCCESS\n");
+            Log.Write("File_System | Deleting file system object SUCCESS\n");
             return true;
         }
         private void Clear_cluster_line(int cluster_pos)
@@ -477,7 +486,7 @@ namespace CourseW
                 if (!Create_system_object($"{_target_path}\\{copy_name}", FILE_SYSTEM_OBJECT.file)) throw new Exception();
                 if (!Write_file($"{_target_path}\\{copy_name}", file.data)) throw new Exception();
             }
-            catch (Exception)
+            catch
             {
                 Log.Write("File_System | Copying file ERROR\n");
                 return false;
@@ -547,7 +556,7 @@ namespace CourseW
                     }
                 }
             }
-            catch (Exception)
+            catch
             {
                 Log.Write("File_System | Writing file ERROR\n");
                 return false;
@@ -563,11 +572,11 @@ namespace CourseW
             try
             {
                 System_File file = Read_file(_path).Value;
-                List<char> chars = new List<char>(Encoding.ASCII.GetChars(file.data.ToArray()));
-                chars.AddRange(_append_chars);
-                if (!Write_file(_path, Encoding.ASCII.GetBytes(chars.ToArray()).ToList())) throw new Exception();
+                string old_part = new string(Encoding.ASCII.GetChars(file.data.ToArray())).Trim('\0');
+                old_part += new string(_append_chars.ToArray());
+                if (!Write_file(_path, Encoding.ASCII.GetBytes(old_part.ToArray()).ToList())) throw new Exception();
             }
-            catch (Exception)
+            catch
             {
                 Log.Write("File_System | Appending file ERROR\n");
                 return false;
@@ -598,7 +607,7 @@ namespace CourseW
 
                         return bit;
                     }
-                    catch (Exception)
+                    catch
                     {
                         Log.Write("File_System | Reading control bits ERROR\n");
                         return null;
@@ -648,7 +657,7 @@ namespace CourseW
 
                     Log.Write("File_System | Writing control bits SUCCESS\n");
                 }
-                catch (Exception)
+                catch
                 {
                     Log.Write("File_System | Writing control bits ERROR\n");
                     return;
@@ -683,7 +692,7 @@ namespace CourseW
 
                         return inode;
                     }
-                    catch (Exception)
+                    catch
                     {
                         Log.Write("File_System | Reading inode ERROR\n");
                         return null;
@@ -715,7 +724,7 @@ namespace CourseW
 
                     Log.Write("File_System | Writing inode SUCCESS\n");
                 }
-                catch (Exception)
+                catch
                 {
                     Log.Write("File_System | Writing inode ERROR\n");
                     return;
@@ -745,7 +754,7 @@ namespace CourseW
 
                         return user;
                     }
-                    catch (Exception)
+                    catch
                     {
                         Log.Write("File_System | Reading user ERROR\n");
                         return null;
@@ -782,7 +791,7 @@ namespace CourseW
 
                     Log.Write("File_System | Writing user SUCCESS\n");
                 }
-                catch (Exception)
+                catch
                 {
                     Log.Write("File_System | Writing user ERROR\n");
                     return;
@@ -811,7 +820,7 @@ namespace CourseW
                     {
                         bytes.Add(reader.ReadByte());
                     }
-                    catch (Exception)
+                    catch
                     {
                         Log.Write("File_System | Reading cluster ERROR\n");
                         return null;
@@ -835,12 +844,15 @@ namespace CourseW
 
                     writer.Write(_cluster.next_cluster);
 
-                    _cluster.data.Capacity = ((int)Math.Pow(2, super_block.cluster_size_pow) - 4);
+                    while (_cluster.data.Count != (int)Math.Pow(2, super_block.cluster_size_pow) - 4)
+                    {
+                        _cluster.data.Add((byte)0);
+                    }
                     writer.Write(_cluster.data.ToArray());
 
                     Log.Write("File_System | Writing cluster SUCCESS\n");
                 }
-                catch (Exception)
+                catch
                 {
                     Log.Write("File_System | Writing cluster ERROR\n");
                     return;
@@ -896,6 +908,8 @@ namespace CourseW
 
         public Directory_Record? Search_record_by_name(string _path)
         {
+            if (_path == "/") return new Directory_Record(1, _path);
+
             string record_name = _path.Substring(_path.LastIndexOf('\\') + 1);
             _path = _path.Remove(_path.LastIndexOf('\\'));
 
@@ -970,13 +984,13 @@ namespace CourseW
 
         public struct Inode
         {
-            public bool[] atributes; /* 2Б: 0-1  – тип записи (00 – свободна, 10 – каталог, 01 – файл),
-                                         2-4   – чтение, запись, исполнение пользователем-владельцем,
-                                         5-7   – чтение, запись, исполнение группой-владельцем,
-                                         8-10  – чтение, запись, исполнение другими,
-                                         11    – «скрытый»,
-                                         12    – «системный»,
-                                         13-15 – зарезервировано.*/
+            public bool[] atributes; /* 2Б: 0-1   – тип записи (00 – свободна, 10 – каталог, 01 – файл),
+                                            2-4   – чтение, запись, исполнение пользователем-владельцем,
+                                            5-7   – чтение, запись, исполнение группой-владельцем,
+                                            8-10  – чтение, запись, исполнение другими,
+                                            11    – «скрытый»,
+                                            12    – «системный»,
+                                            13-15 – зарезервировано.*/
 
             public byte owner_id;
             public byte owner_group_id;

@@ -91,6 +91,12 @@
     <Compile Include="FORM_Main.Designer.cs">
       <DependentUpon>FORM_Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="FORM_Properties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FORM_Properties.Designer.cs">
+      <DependentUpon>FORM_Properties.cs</DependentUpon>
+    </Compile>
     <Compile Include="FORM_Write.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -106,6 +112,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FORM_Authorization.resx">
       <DependentUpon>FORM_Authorization.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FORM_Properties.resx">
+      <DependentUpon>FORM_Properties.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FORM_Input.resx">
       <DependentUpon>FORM_Input.cs</DependentUpon>
@@ -163,7 +172,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\file_sys.ico" />
+    <Content Include="Resources\file_sys_great.ico" />
     <Content Include="Resources\folder.ico" />
+    <Content Include="Resources\folder_great.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -31,15 +31,17 @@ namespace CourseW
             ToolStripMenuItem create_directory_item = new ToolStripMenuItem("Directory");
             create_item.DropDownItems.AddRange(new[] { create_file_item, create_directory_item });
             ToolStripMenuItem delete_directory_item = new ToolStripMenuItem("Delete");
+            ToolStripMenuItem properties_directory_item = new ToolStripMenuItem("Properties");
 
             ToolStripMenuItem write_item = new ToolStripMenuItem("Write");
             ToolStripMenuItem append_item = new ToolStripMenuItem("Append");
             ToolStripMenuItem renew_item = new ToolStripMenuItem("Renew");
             write_item.DropDownItems.AddRange(new[] { append_item, renew_item });
             ToolStripMenuItem delete_file_item = new ToolStripMenuItem("Delete");
+            ToolStripMenuItem properties_file_item = new ToolStripMenuItem("Properties");
 
-            CONTEXT_directory.Items.AddRange(new[] { create_item, delete_directory_item });
-            CONTEXT_file.Items.AddRange(new[] { write_item, delete_file_item });
+            CONTEXT_directory.Items.AddRange(new[] { create_item, delete_directory_item, properties_directory_item });
+            CONTEXT_file.Items.AddRange(new[] { write_item, delete_file_item, properties_file_item });
 
             create_file_item.Click += (o, e) =>
             {
@@ -56,6 +58,29 @@ namespace CourseW
                         path = path.Remove(path.IndexOf('['), 1);
                         path = path.Remove(path.IndexOf(']'), 1);
                     }
+
+                    try
+                    {
+                        File_System.Inode? inode = Data_Keeper.file_system.Read_inode(
+                                                        Data_Keeper.file_system.Search_record_by_name(path.Remove(path.LastIndexOf('\\'))).Value.inode);
+                        if (inode == null) { throw new Exception(); }
+
+                        if (Data_Keeper.cur_user.id != inode.Value.owner_id && Data_Keeper.cur_user.id != 1 && inode.Value.atributes[9] != true ||
+                            (inode.Value.owner_id == 0 && new string(Data_Keeper.cur_user.login).Trim().Trim('\0') != path.Remove(path.LastIndexOf('\\')).Substring(2)))
+                        {
+                            MessageBox.Show("You can not create at this folder");
+
+                            Log.Write($"FORM_Main | User can not create at folder\n");
+                            return;
+                        }
+                    }
+                    catch
+                    {
+                        Log.Write($"FORM_Main | Creating ERROR at owner comparing\n");
+                        MessageBox.Show("Error");
+                        return;
+                    }
+
                     if (Data_Keeper.file_system.Create_system_object(path, File_System.FILE_SYSTEM_OBJECT.file))
                     {
                         Refresh_tree_view();
@@ -86,6 +111,29 @@ namespace CourseW
                         path = path.Remove(path.IndexOf('['), 1);
                         path = path.Remove(path.IndexOf(']'), 1);
                     }
+
+                    try
+                    {
+                        File_System.Inode? inode = Data_Keeper.file_system.Read_inode(
+                                                        Data_Keeper.file_system.Search_record_by_name(path.Remove(path.LastIndexOf('\\'))).Value.inode);
+                        if (inode == null) { throw new Exception(); }
+
+                        if (Data_Keeper.cur_user.id != inode.Value.owner_id && Data_Keeper.cur_user.id != 1 && inode.Value.atributes[9] != true ||
+                            (inode.Value.owner_id == 0 && new string(Data_Keeper.cur_user.login).Trim().Trim('\0') != path.Remove(path.LastIndexOf('\\')).Substring(2)))
+                        {
+                            MessageBox.Show("You can not create at this folder");
+
+                            Log.Write($"FORM_Main | User can not create at folder\n");
+                            return;
+                        }
+                    }
+                    catch
+                    {
+                        Log.Write($"FORM_Main | Creating ERROR at owner comparing\n");
+                        MessageBox.Show("Error");
+                        return;
+                    }
+
                     if (Data_Keeper.file_system.Create_system_object(path, File_System.FILE_SYSTEM_OBJECT.directory))
                     {
                         Refresh_tree_view();
@@ -102,12 +150,11 @@ namespace CourseW
                 input_dialog.Dispose();
             };
             delete_directory_item.Click += Delete_element;
+            properties_directory_item.Click += Show_properties;
 
             append_item.Click += (o, e) =>
             {
                 Log.Write("FORM_Main | Append file clicked\n");
-
-                FORM_Append append_dialog = new FORM_Append();
 
                 string path = TREE_view.SelectedNode.FullPath;
                 while (path.IndexOf('[') >= 0)
@@ -115,8 +162,30 @@ namespace CourseW
                     path = path.Remove(path.IndexOf('['), 1);
                     path = path.Remove(path.IndexOf(']'), 1);
                 }
+
+                try
+                {
+                    File_System.Inode? inode = Data_Keeper.file_system.Read_inode(Data_Keeper.file_system.Search_record_by_name(path).Value.inode);
+                    if (inode == null) { throw new Exception(); }
+
+                    if (Data_Keeper.cur_user.id != inode.Value.owner_id && Data_Keeper.cur_user.id != 1 && inode.Value.atributes[9] != true)
+                    {
+                        MessageBox.Show("You can not append this file");
+
+                        Log.Write($"FORM_Main | User can not append file\n");
+                        return;
+                    }
+                }
+                catch
+                {
+                    Log.Write($"FORM_Main | Appending ERROR at owner comparing\n");
+                    MessageBox.Show("Error");
+                    return;
+                }
+
                 string file = new string(Encoding.ASCII.GetChars(Data_Keeper.file_system.Read_file(path).Value.data.ToArray())).Trim().Trim('\0');
 
+                FORM_Append append_dialog = new FORM_Append();
                 if (append_dialog.ShowDialog(this, $"{TREE_view.SelectedNode.Name} appending", file) == DialogResult.OK)
                 {
                     Log.Write("FORM_Main | Appending file ACCEPTED\n");
@@ -137,17 +206,37 @@ namespace CourseW
             {
                 Log.Write("FORM_Main | Renew file clicked\n");
 
+                string path = TREE_view.SelectedNode.FullPath;
+                while (path.IndexOf('[') >= 0)
+                {
+                    path = path.Remove(path.IndexOf('['), 1);
+                    path = path.Remove(path.IndexOf(']'), 1);
+                }
+
+                try
+                {
+                    File_System.Inode? inode = Data_Keeper.file_system.Read_inode(Data_Keeper.file_system.Search_record_by_name(path).Value.inode);
+                    if (inode == null) { throw new Exception(); }
+
+                    if (Data_Keeper.cur_user.id != inode.Value.owner_id && Data_Keeper.cur_user.id != 1 && inode.Value.atributes[9] != true)
+                    {
+                        MessageBox.Show("You can not write this file");
+
+                        Log.Write($"FORM_Main | User can not write file\n");
+                        return;
+                    }
+                }
+                catch
+                {
+                    Log.Write($"FORM_Main | Writing ERROR at owner comparing\n");
+                    MessageBox.Show("Error");
+                    return;
+                }
+
                 FORM_Write write_dialog = new FORM_Write();
                 if (write_dialog.ShowDialog(this, $"{TREE_view.SelectedNode.Name} rewriting") == DialogResult.OK)
                 {
                     Log.Write("FORM_Main | Renewing file ACCEPTED\n");
-
-                    string path = TREE_view.SelectedNode.FullPath;
-                    while (path.IndexOf('[') >= 0)
-                    {
-                        path = path.Remove(path.IndexOf('['), 1);
-                        path = path.Remove(path.IndexOf(']'), 1);
-                    }
 
                     string write = write_dialog.TXT_write.Text + "\r\n";
                     if (Data_Keeper.file_system.Write_file(path, Encoding.ASCII.GetBytes(write.ToArray()).ToList())) MessageBox.Show("Writed");
@@ -162,6 +251,7 @@ namespace CourseW
                 write_dialog.Dispose();
             };
             delete_file_item.Click += Delete_element;
+            properties_file_item.Click += Show_properties;
 
             TREE_view.NodeMouseClick += (o, e) =>
             {
@@ -294,6 +384,7 @@ namespace CourseW
                     string name = record.name;
                     bool[] atributes = Data_Keeper.file_system.Get_atributes($"{path}\\{name}");
                     if (atributes == null) throw new Exception();
+                    if (atributes[11] == true) continue;
                     if (atributes[0] == true && atributes[1] == false)
                     {
                         name = $"[{name}]";
@@ -306,7 +397,7 @@ namespace CourseW
                     }
                 }
             }
-            catch (Exception)
+            catch
             {
                 Log.Write($"FORM_Main | Filling node {_node.Name} FAIL\n");
                 return false;
@@ -320,16 +411,36 @@ namespace CourseW
         {
             Log.Write("FORM_Main | Delete element clicked\n");
 
+            string path = TREE_view.SelectedNode.FullPath;
+            while (path.IndexOf('[') >= 0)
+            {
+                path = path.Remove(path.IndexOf('['), 1);
+                path = path.Remove(path.IndexOf(']'), 1);
+            }
+
+            try
+            {
+                File_System.Inode? inode = Data_Keeper.file_system.Read_inode(Data_Keeper.file_system.Search_record_by_name(path).Value.inode);
+                if (inode == null) { throw new Exception(); }
+
+                if (Data_Keeper.cur_user.id != inode.Value.owner_id && Data_Keeper.cur_user.id != 1 || inode.Value.owner_id == 0)
+                {
+                    MessageBox.Show("You can not delete this object");
+
+                    Log.Write($"FORM_Main | User can not delete object\n");
+                    return;
+                }
+            }
+            catch
+            {
+                Log.Write($"FORM_Main | Deleting ERROR at owner comparing\n");
+                MessageBox.Show("Error");
+                return;
+            }
+
             if (MessageBox.Show("Accept action", "Element deleting", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 Log.Write("FORM_Main | Deleting element ACCEPTED\n");
-
-                string path = TREE_view.SelectedNode.FullPath;
-                while (path.IndexOf('[') >= 0)
-                {
-                    path = path.Remove(path.IndexOf('['), 1);
-                    path = path.Remove(path.IndexOf(']'), 1);
-                }
 
                 if (Data_Keeper.file_system.Delete_file_system_object(path))
                 {
@@ -343,6 +454,40 @@ namespace CourseW
                 Log.Write("FORM_Main | Deleting element CANCELED\n");
 
                 MessageBox.Show("Canceled");
+            }
+        }
+        private void Show_properties(object o, EventArgs e)
+        {
+            Log.Write("FORM_Main | Show properties clicked\n");
+
+            try
+            {
+                string path = $"{TREE_view.SelectedNode.FullPath}";
+                while (path.IndexOf('[') >= 0)
+                {
+                    path = path.Remove(path.IndexOf('['), 1);
+                    path = path.Remove(path.IndexOf(']'), 1);
+                }
+
+                File_System.Directory_Record? record = Data_Keeper.file_system.Search_record_by_name(path);
+                if (record == null) { throw new Exception(); }
+
+                File_System.Inode? inode = Data_Keeper.file_system.Read_inode(record.Value.inode);
+                if (inode == null)  { throw new Exception(); }
+
+                FORM_Properties properties_dialog = new FORM_Properties();
+                properties_dialog.ShowDialog(this, path, inode.Value, record.Value.inode);
+
+                Refresh_tree_view();
+                properties_dialog.Dispose();
+
+                Log.Write("FORM_Main | Showing properties SUCCESS\n");
+            }
+            catch
+            {
+                MessageBox.Show("Error");
+
+                Log.Write("FORM_Main | Showing properties ERROR\n");
             }
         }
 
