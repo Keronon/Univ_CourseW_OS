@@ -37,6 +37,7 @@
             // TXT_input
             // 
             this.TXT_input.Location = new System.Drawing.Point(12, 12);
+            this.TXT_input.MaxLength = 30;
             this.TXT_input.Name = "TXT_input";
             this.TXT_input.Size = new System.Drawing.Size(300, 23);
             this.TXT_input.TabIndex = 0;

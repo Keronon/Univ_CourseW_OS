@@ -144,8 +144,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\debug.log" />
     <None Include="Resources\File_System" />
-    <None Include="Resources\Log" />
     <None Include="to.do" />
     <None Include="version.info" />
   </ItemGroup>

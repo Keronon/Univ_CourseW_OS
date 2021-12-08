@@ -82,8 +82,8 @@ namespace CourseW
                 writer.Write((byte)0);                       // owner group id - 0          - system
                 writer.Write(2);                             // first cluster  - 2
                 writer.Write(0);                             // file size / elements in dir - 0
-                writer.Write((long)DateTime.Now.ToBinary()); // creation date-time          - now
-                writer.Write((long)DateTime.Now.ToBinary()); // changing date-time          - now
+                writer.Write(DateTime.Now.ToBinary()); // creation date-time          - now
+                writer.Write(DateTime.Now.ToBinary()); // changing date-time          - now
                 // users data
                 // --- admin
                 writer.Seek(Get_offset(_super_block, FILE_SYSTEM_STRUCTURE.users_data), SeekOrigin.Begin);
@@ -97,8 +97,8 @@ namespace CourseW
                 writer.Seek(Get_offset(_super_block, FILE_SYSTEM_STRUCTURE.data), SeekOrigin.Begin);
                 writer.Write(0);       // next cluster - neither
                 // --- --- first record - admin home directory
-                writer.Write(2);       // inode pos    - 2
-                writer.Write("admin"); // name         - admin
+                writer.Write(2);                                // inode pos    - 2
+                writer.Write(Encoding.ASCII.GetBytes("admin")); // name         - admin
                 // --- admin directory
                 writer.Seek(Get_offset(_super_block, FILE_SYSTEM_STRUCTURE.data) +
                                       (1 /*(cluster pos) - 1*/ * (int)Math.Pow(2, _super_block.cluster_size_pow)), SeekOrigin.Begin);
@@ -214,7 +214,7 @@ namespace CourseW
                     if (record.inode == 0) continue;
 
                     List<char> chars = new List<char>(Encoding.ASCII.GetChars(cluster.Value.data.GetRange(i + 4, super_block.directory_record_size - 4).ToArray()));
-                    chars = chars.GetRange(1, chars.IndexOf('\0') - 1);
+                    chars = chars.GetRange(0, chars.IndexOf('\0'));
                     record.name = String.Join("", chars);
 
                     if (path_parts.Count > 1 && record.name == path_parts[1]) return Get_directory(record.inode, path_parts);
@@ -253,7 +253,7 @@ namespace CourseW
                     if (record.inode == 0) continue;
 
                     List<char> chars = new List<char>(Encoding.ASCII.GetChars(cluster.Value.data.GetRange(i + 4, super_block.directory_record_size - 4).ToArray()));
-                    chars = chars.GetRange(1, chars.IndexOf('\0') - 1);
+                    chars = chars.GetRange(0, chars.IndexOf('\0'));
                     record.name = String.Join("", chars);
 
                     if (_path_parts.Count > 1 && record.name == _path_parts[1]) return Get_directory(record.inode, _path_parts);
@@ -276,11 +276,26 @@ namespace CourseW
 
             try
             {
-                string creation_name = _path.Substring(_path.LastIndexOf('\\'));
+                if (Search_record_by_name(_path) != null) throw new Exception();
+
+                /*
+                Directory_Record? same_record = Search_record_by_name(_path);
+                if (same_record != null)
+                {
+                    Inode same_inode = Read_inode(same_record.Value.inode).Value;
+                    if ((same_inode.atributes[0] == true  && _object == FILE_SYSTEM_OBJECT.directory) ||
+                        (same_inode.atributes[0] == false && _object == FILE_SYSTEM_OBJECT.file)) throw new Exception();
+                }
+                */
+
+                string creation_name = _path.Substring(_path.LastIndexOf('\\') + 1);
                 _path = _path.Remove(_path.LastIndexOf('\\'));
 
                 System_Directory directory = Get_directory(_path).Value;
                 Inode inode = Read_inode(directory.inode).Value;
+                inode.size++;
+                inode.changing_date_time = DateTime.Now.ToBinary();
+                Write_inode(directory.inode, inode);
 
                 int dir_cluster_pos = inode.first_cluster_pos;
                 Cluster? cluster = Read_cluster(dir_cluster_pos);
@@ -348,24 +363,7 @@ namespace CourseW
                         record.inode = BitConverter.ToInt32(cluster.Value.data.ToArray(), i);
                         if (record.inode == 0)
                         {
-                            if (((cluster.Value.data.Count - i) / super_block.directory_record_size) < 1)
-                            {/*
-                                if (cluster.Value.next_cluster != 0) break;
-                                int available_cluster = Search_available_control_bit(FILE_SYSTEM_STRUCTURE.clusters_bitmap);
-                                if (available_cluster == 0) throw new Exception();
-                                Cluster written_cluster = cluster.Value;
-                                written_cluster.next_cluster = available_cluster;
-                                Write_cluster(dir_cluster_pos, written_cluster);
-
-                                written_cluster.next_cluster = 0;
-                                written_cluster.data.Clear();
-                                written_cluster.data.AddRange(BitConverter.GetBytes(inode_pos).Concat(Encoding.ASCII.GetBytes(creation_name)));
-                                Write_cluster(available_cluster, written_cluster);
-                                Write_control_bits(FILE_SYSTEM_STRUCTURE.clusters_bitmap, available_cluster, true);
-
-                                runner = false;*/
-                                break;
-                            }
+                            if (((cluster.Value.data.Count - i) / super_block.directory_record_size) < 1) break;
 
                             cluster.Value.data.RemoveRange(i, super_block.directory_record_size);
                             int bytes = super_block.directory_record_size - BitConverter.GetBytes(inode_pos).Concat(Encoding.ASCII.GetBytes(creation_name)).ToList().Count;
@@ -410,7 +408,7 @@ namespace CourseW
             return true;
         }
 
-        public bool Delete_file_system_object(string _path)
+        public bool Delete_system_object(string _path)
         {
             Log.Write($"File_System | Deleting object \"{_path.Substring(_path.LastIndexOf('\\') + 1)}\"\n");
 
@@ -425,29 +423,41 @@ namespace CourseW
                     {
                         foreach (Directory_Record record in Get_directory(_path).Value.records)
                         {
-                            if (!Delete_file_system_object($"{_path}\\{record.name}")) throw new Exception();
+                            if (!Delete_system_object($"{_path}\\{record.name}")) throw new Exception();
                         }
                     }
 
                     System_Directory directory = Get_directory(_path.Substring(0, _path.LastIndexOf('\\'))).Value;
                     Inode parent_inode = Read_inode(directory.inode).Value;
+                    parent_inode.size--;
+                    parent_inode.changing_date_time = DateTime.Now.ToBinary();
+                    Write_inode(directory.inode, parent_inode);
 
                     int dir_cluster_pos = parent_inode.first_cluster_pos;
                     Cluster? cluster = Read_cluster(dir_cluster_pos);
                     if (cluster == null) throw new Exception();
-
-                    for (int i = 0; i < cluster.Value.data.Count; i += super_block.directory_record_size)
+                    do
                     {
-                        Directory_Record record = new Directory_Record();
-                        record.inode = BitConverter.ToInt32(cluster.Value.data.ToArray(), i);
-                        if (record.inode == cur_record.Value.inode)
+                        for (int i = 0; i < cluster.Value.data.Count; i += super_block.directory_record_size)
                         {
-                            cluster.Value.data.RemoveRange(i, 4);
-                            cluster.Value.data.InsertRange(i, new List<byte>() { 0, 0, 0, 0 });
-                            Write_cluster(dir_cluster_pos, cluster.Value);
-                            break;
+                            Directory_Record record = new Directory_Record();
+                            record.inode = BitConverter.ToInt32(cluster.Value.data.ToArray(), i);
+                            if (record.inode == cur_record.Value.inode)
+                            {
+                                cluster.Value.data.RemoveRange(i, 4);
+                                cluster.Value.data.InsertRange(i, new List<byte>() { 0, 0, 0, 0 });
+                                Write_cluster(dir_cluster_pos, cluster.Value);
+                                break;
+                            }
                         }
+
+                        if (cluster.Value.next_cluster == 0) break;
+
+                        dir_cluster_pos = cluster.Value.next_cluster;
+                        cluster = Read_cluster(dir_cluster_pos);
+                        if (cluster == null) throw new Exception();
                     }
+                    while (true);
 
                     Clear_cluster_line(inode.first_cluster_pos);
                     Write_control_bits(FILE_SYSTEM_STRUCTURE.inods_bitmap, cur_record.Value.inode, false);
@@ -472,19 +482,81 @@ namespace CourseW
             Write_control_bits(FILE_SYSTEM_STRUCTURE.clusters_bitmap, cluster_pos, false);
         }
 
-        public bool Copy_file(string _file_path, string _target_path)
+        public bool Rename_system_object(string _object_path, string _name)
+        {
+            Log.Write("File_System | Rename file\n");
+
+            try
+            {
+                Directory_Record? cur_record = Search_record_by_name(_object_path);
+
+                System_Directory directory = Get_directory(_object_path.Substring(0, _object_path.LastIndexOf('\\'))).Value;
+                Inode parent_inode = Read_inode(directory.inode).Value;
+
+                int dir_cluster_pos = parent_inode.first_cluster_pos;
+                Cluster? cluster = Read_cluster(dir_cluster_pos);
+                if (cluster == null) throw new Exception();
+                do
+                {
+                    for (int i = 0; i < cluster.Value.data.Count; i += super_block.directory_record_size)
+                    {
+                        Directory_Record record = new Directory_Record();
+                        record.inode = BitConverter.ToInt32(cluster.Value.data.ToArray(), i);
+                        if (record.inode == cur_record.Value.inode)
+                        {
+                            cluster.Value.data.RemoveRange(i + 4, super_block.directory_record_size - 4);
+                            List<byte> bytes = Encoding.ASCII.GetBytes(_name).ToList();
+                            bytes.AddRange(new byte[super_block.directory_record_size - bytes.Count - 4]);
+                            cluster.Value.data.InsertRange(i + 4, bytes);
+                            Write_cluster(dir_cluster_pos, cluster.Value);
+                            break;
+                        }
+                    }
+
+                    if (cluster.Value.next_cluster == 0) break;
+
+                    dir_cluster_pos = cluster.Value.next_cluster;
+                    cluster = Read_cluster(dir_cluster_pos);
+                    if (cluster == null) throw new Exception();
+                }
+                while (true);
+            }
+            catch
+            {
+                Log.Write("File_System | Renaming file ERROR\n");
+                return false;
+            }
+
+            Log.Write("File_System | Renaming file SUCCESS\n");
+            return true;
+        }
+
+        public bool Copy_system_object(string _object_path, string _target_path)
         {
             Log.Write("File_System | Copying file\n");
 
             try
             {
-                string copy_name = _file_path.Substring(_file_path.LastIndexOf('\\') + 1);
-                _file_path = _file_path.Remove(_file_path.LastIndexOf('\\'));
+                string target = $"{_target_path}\\{_object_path.Substring(_object_path.LastIndexOf('\\') + 1)}";
 
-                System_File file = Read_file($"{_file_path}\\{copy_name}").Value;
+                Inode inode = Read_inode(Search_record_by_name(_object_path).Value.inode).Value;
+                if (inode.atributes[0] == false && inode.atributes[1] == true)
+                {
+                    System_File file = Read_file(_object_path).Value;
 
-                if (!Create_system_object($"{_target_path}\\{copy_name}", FILE_SYSTEM_OBJECT.file)) throw new Exception();
-                if (!Write_file($"{_target_path}\\{copy_name}", file.data)) throw new Exception();
+                    if (!Create_system_object(target, FILE_SYSTEM_OBJECT.file)) throw new Exception();
+                    if (!Write_file(target, file.data)) throw new Exception();
+                }
+                else
+                {
+                    if (!Create_system_object(target, FILE_SYSTEM_OBJECT.directory)) throw new Exception();
+
+                    System_Directory directory = Get_directory(_object_path).Value;
+                    foreach (Directory_Record record in directory.records)
+                    {
+                        Copy_system_object($"{_object_path}\\{record.name}", target);
+                    }
+                }
             }
             catch
             {
@@ -528,10 +600,18 @@ namespace CourseW
                 string write_name = _path.Substring(_path.LastIndexOf('\\') + 1);
                 _path = _path.Remove(_path.LastIndexOf('\\'));
 
-                if (!Delete_file_system_object($"{_path}\\{write_name}")) throw new Exception();
+                if (!Delete_system_object($"{_path}\\{write_name}")) throw new Exception();
                 if (!Create_system_object($"{_path}\\{write_name}", FILE_SYSTEM_OBJECT.file)) throw new Exception();
 
-                int cluster_pos = Read_inode(Search_record_by_name($"{_path}\\{write_name}").Value.inode).Value.first_cluster_pos;
+                Directory_Record? record = Search_record_by_name($"{_path}\\{write_name}");
+                if (record == null) throw new Exception();
+                Inode inode = Read_inode(record.Value.inode).Value;
+
+                inode.size = _write_bytes.Count;
+                inode.changing_date_time = DateTime.Now.ToBinary();
+                Write_inode(record.Value.inode, inode);
+
+                int cluster_pos = inode.first_cluster_pos;
 
                 List<List<byte>> clusters_data = new List<List<byte>>();
                 int data_size = ((int)Math.Pow(2, super_block.cluster_size_pow)) - 4;
@@ -773,7 +853,7 @@ namespace CourseW
             {
                 try
                 {
-                    writer.Seek(15, SeekOrigin.Begin);
+                    writer.Seek(13, SeekOrigin.Begin);
                     if (_user.id > 0)
                     {
                         if (super_block.cur_users_count == super_block.max_users_count) throw new Exception();
@@ -814,7 +894,7 @@ namespace CourseW
                     return null;
                 }
                 List<byte> bytes = new List<byte>();
-                for (int i = 0; i < Math.Pow(2, super_block.cluster_size_pow) && reader.PeekChar() > -1; i++)
+                for (int i = 0; i < (int)Math.Pow(2, super_block.cluster_size_pow) && reader.PeekChar() > -1; i++)
                 {
                     try
                     {
@@ -928,7 +1008,7 @@ namespace CourseW
                     if (record.inode == 0) continue;
 
                     List<char> chars = new List<char>(Encoding.ASCII.GetChars(cluster.Value.data.GetRange(i + 4, super_block.directory_record_size - 4).ToArray()));
-                    chars = chars.GetRange(1, chars.IndexOf('\0') - 1);
+                    chars = chars.GetRange(0, chars.IndexOf('\0'));
                     record.name = String.Join("", chars);
 
                     if (record.name == record_name) return record;

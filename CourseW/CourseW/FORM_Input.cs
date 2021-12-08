@@ -15,6 +15,14 @@ namespace CourseW
         public FORM_Input()
         {
             InitializeComponent();
+
+            TXT_input.KeyUp += (o, e) =>
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    BTN_accept.PerformClick();
+                }
+            };
         }
 
         public DialogResult ShowDialog(IWin32Window _owner, string _title)
