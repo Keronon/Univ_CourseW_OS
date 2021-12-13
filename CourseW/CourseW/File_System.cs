@@ -270,23 +270,13 @@ namespace CourseW
             return directory;
         }
 
-        public bool Create_system_object(string _path, FILE_SYSTEM_OBJECT _object)
+        public bool Create_system_object(string _path, FILE_SYSTEM_OBJECT _object, byte _owner_id = 0, byte _owner_group_id = 0)
         {
             Log.Write($"File_System | Creating file system object type {_object}\n");
 
             try
             {
                 if (Search_record_by_name(_path) != null) throw new Exception();
-
-                /*
-                Directory_Record? same_record = Search_record_by_name(_path);
-                if (same_record != null)
-                {
-                    Inode same_inode = Read_inode(same_record.Value.inode).Value;
-                    if ((same_inode.atributes[0] == true  && _object == FILE_SYSTEM_OBJECT.directory) ||
-                        (same_inode.atributes[0] == false && _object == FILE_SYSTEM_OBJECT.file)) throw new Exception();
-                }
-                */
 
                 string creation_name = _path.Substring(_path.LastIndexOf('\\') + 1);
                 _path = _path.Remove(_path.LastIndexOf('\\'));
@@ -301,7 +291,6 @@ namespace CourseW
                 Cluster? cluster = Read_cluster(dir_cluster_pos);
                 if (cluster == null) throw new Exception();
 
-                if (Data_Keeper.cur_user.group != 1 && (Data_Keeper.cur_user.id != inode.owner_id || inode.atributes[3] != true)) throw new Exception();
                 if (super_block.available_clusters_count == 0 || super_block.available_inodes_count == 0) throw new Exception();
 
                 int cluster_pos = Search_available_control_bit(FILE_SYSTEM_STRUCTURE.clusters_bitmap);
@@ -325,7 +314,7 @@ namespace CourseW
                                                 true,  true,  false,   // atributes 5-7  - flag 110 - (rw-) group owner
                                                 true,  false, false,   // atributes 8-10 - flag 100 - (r--) other
                                                 false,                 // hidden         - flag 0   - false
-                                                false,                 // system         - flag 0   - false
+                               _owner_id == 0 ? true : false,          // system         - flag 0   - false
                                                 false, false, false }; // [reserved]
                             break;
                         case FILE_SYSTEM_OBJECT.file:
@@ -334,14 +323,14 @@ namespace CourseW
                                                 true,  true,  true,    // atributes 5-7  - flag 111 - (rwe) group owner
                                                 true,  true,  false,   // atributes 8-10 - flag 110 - (rw-) other
                                                 false,                 // hidden         - flag 0   - false
-                                                false,                 // system         - flag 0   - false
+                               _owner_id == 0 ? true : false,          // system         - flag 0   - false
                                                 false, false, false }; // [reserved]
                             break;
                     }
                     Write_inode(inode_pos, new Inode(atributes,
-                                             Data_Keeper.cur_user.id,   // owner id       - current user
-                                             0,                         // owner group id - 0            - system
-                                             cluster_pos,                   // first cluster  - saved value
+                                             _owner_id,                 // owner id       - current user
+                                             _owner_group_id,           // owner group id - 0            - system
+                                             cluster_pos,               // first cluster  - saved value
                                              0,                         // file size / elements in dir - 0
                                              DateTime.Now.ToBinary(),   // creation date-time          - now
                                              DateTime.Now.ToBinary())); // changing date-time          - now));
@@ -698,7 +687,7 @@ namespace CourseW
             return null;
         }
 
-        public void Write_control_bits(FILE_SYSTEM_STRUCTURE _file_system_part, int _bit_pos, bool _bit)
+        public bool Write_control_bits(FILE_SYSTEM_STRUCTURE _file_system_part, int _bit_pos, bool _bit)
         {
             Log.Write($"File_System | Writing control bits at {_bit_pos}, file system part {_file_system_part}\n");
 
@@ -736,11 +725,12 @@ namespace CourseW
                     writer.Write(_bit);
 
                     Log.Write("File_System | Writing control bits SUCCESS\n");
+                    return true;
                 }
                 catch
                 {
                     Log.Write("File_System | Writing control bits ERROR\n");
-                    return;
+                    return false;
                 }
             }
         }
@@ -783,7 +773,7 @@ namespace CourseW
             return null;
         }
 
-        public void Write_inode(int _inode_pos, Inode _inode)
+        public bool Write_inode(int _inode_pos, Inode _inode)
         {
             Log.Write($"File_System | Writing inode at {_inode_pos}\n");
 
@@ -803,11 +793,12 @@ namespace CourseW
                     writer.Write(_inode.changing_date_time);
 
                     Log.Write("File_System | Writing inode SUCCESS\n");
+                    return true;
                 }
                 catch
                 {
                     Log.Write("File_System | Writing inode ERROR\n");
-                    return;
+                    return false;
                 }
             }
         }
@@ -845,7 +836,7 @@ namespace CourseW
             return null;
         }
 
-        public void Write_user(int _user_pos, User _user)
+        public bool Write_user(int _user_pos, User _user)
         {
             Log.Write($"File_System | Writing user at {_user_pos}\n");
 
@@ -870,11 +861,12 @@ namespace CourseW
                     writer.Write(_user.home_dir_inode);
 
                     Log.Write("File_System | Writing user SUCCESS\n");
+                    return true;
                 }
                 catch
                 {
                     Log.Write("File_System | Writing user ERROR\n");
-                    return;
+                    return false;
                 }
             }
         }
@@ -911,7 +903,7 @@ namespace CourseW
             }
         }
 
-        public void Write_cluster(int _cluster_pos, Cluster _cluster)
+        public bool Write_cluster(int _cluster_pos, Cluster _cluster)
         {
             Log.Write($"File_System | Writing cluster at {_cluster_pos}\n");
 
@@ -931,11 +923,12 @@ namespace CourseW
                     writer.Write(_cluster.data.ToArray());
 
                     Log.Write("File_System | Writing cluster SUCCESS\n");
+                    return true;
                 }
                 catch
                 {
                     Log.Write("File_System | Writing cluster ERROR\n");
-                    return;
+                    return false;
                 }
             }
         }
@@ -1112,7 +1105,8 @@ namespace CourseW
 
             public override string ToString()
             {
-                return new string(login);
+                string name = new string(login).TrimEnd('\0');
+                return $"Login: {name + "              ".Remove(14 - name.Length)} | ID: {id}";
             }
         }
 

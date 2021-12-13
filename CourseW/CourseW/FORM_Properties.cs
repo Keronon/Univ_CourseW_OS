@@ -38,9 +38,9 @@ namespace CourseW
                     CHECK_o_read.Enabled      = true;
                     CHECK_o_write.Enabled     = true;
                     CHECK_o_execute.Enabled   = true;
-                    CHECK_o_g_read.Enabled    = true;
-                    CHECK_o_g_write.Enabled   = true;
-                    CHECK_o_g_execute.Enabled = true;
+                    //CHECK_o_g_read.Enabled    = true;
+                    //CHECK_o_g_write.Enabled   = true;
+                    //CHECK_o_g_execute.Enabled = true;
                     CHECK_oth_read.Enabled    = true;
                     CHECK_oth_write.Enabled   = true;
                     CHECK_oth_execute.Enabled = true;
@@ -56,9 +56,9 @@ namespace CourseW
                         inode.atributes[3] = CHECK_o_write.Checked;
                         inode.atributes[4] = CHECK_o_execute.Checked;
 
-                        inode.atributes[5] = CHECK_o_g_read.Checked;
-                        inode.atributes[6] = CHECK_o_g_write.Checked;
-                        inode.atributes[7] = CHECK_o_g_execute.Checked;
+                        inode.atributes[5] = false; //CHECK_o_g_read.Checked;
+                        inode.atributes[6] = false; //CHECK_o_g_write.Checked;
+                        inode.atributes[7] = false; //CHECK_o_g_execute.Checked;
 
                         inode.atributes[8] = CHECK_oth_read.Checked;
                         inode.atributes[9] = CHECK_oth_write.Checked;
@@ -81,9 +81,9 @@ namespace CourseW
                     CHECK_o_read.Enabled      = false;
                     CHECK_o_write.Enabled     = false;
                     CHECK_o_execute.Enabled   = false;
-                    CHECK_o_g_read.Enabled    = false;
-                    CHECK_o_g_write.Enabled   = false;
-                    CHECK_o_g_execute.Enabled = false;
+                    //CHECK_o_g_read.Enabled    = false;
+                    //CHECK_o_g_write.Enabled   = false;
+                    //CHECK_o_g_execute.Enabled = false;
                     CHECK_oth_read.Enabled    = false;
                     CHECK_oth_write.Enabled   = false;
                     CHECK_oth_execute.Enabled = false;
@@ -101,9 +101,9 @@ namespace CourseW
                 CHECK_o_read.Enabled      = false;
                 CHECK_o_write.Enabled     = false;
                 CHECK_o_execute.Enabled   = false;
-                CHECK_o_g_read.Enabled    = false;
-                CHECK_o_g_write.Enabled   = false;
-                CHECK_o_g_execute.Enabled = false;
+                //CHECK_o_g_read.Enabled    = false;
+                //CHECK_o_g_write.Enabled   = false;
+                //CHECK_o_g_execute.Enabled = false;
                 CHECK_oth_read.Enabled    = false;
                 CHECK_oth_write.Enabled   = false;
                 CHECK_oth_execute.Enabled = false;
@@ -129,6 +129,7 @@ namespace CourseW
                 TXT_path.Text = _path.Remove(_path.LastIndexOf('\\'));
             }
 
+            TXT_owner_id.Text = inode.owner_id.ToString();
             TXT_size.Text = inode.size.ToString();
             TXT_creation_date.Text = DateTime.FromBinary(inode.creation_date_time).ToShortDateString();
             TXT_changing_date.Text = DateTime.FromBinary(inode.changing_date_time).ToShortDateString();
@@ -147,9 +148,9 @@ namespace CourseW
             CHECK_o_write.Checked   = inode.atributes[3];
             CHECK_o_execute.Checked = inode.atributes[4];
 
-            CHECK_o_g_read.Checked    = inode.atributes[5];
-            CHECK_o_g_write.Checked   = inode.atributes[6];
-            CHECK_o_g_execute.Checked = inode.atributes[7];
+            //CHECK_o_g_read.Checked    = inode.atributes[5];
+            //CHECK_o_g_write.Checked   = inode.atributes[6];
+            //CHECK_o_g_execute.Checked = inode.atributes[7];
 
             CHECK_oth_read.Checked    = inode.atributes[8];
             CHECK_oth_write.Checked   = inode.atributes[9];

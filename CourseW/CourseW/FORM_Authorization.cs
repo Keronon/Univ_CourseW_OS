@@ -47,11 +47,10 @@ namespace CourseW
             COMBO_user.Items.Clear();
             try
             {
-                for (int i = 1; i <= Data_Keeper.file_system.super_block.cur_users_count; i++)
+                for (int i = 1; i <= Data_Keeper.file_system.super_block.max_users_count; i++)
                 {
                     File_System.User? user = Data_Keeper.file_system.Read_user(i);
-                    if (user != null) COMBO_user.Items.Add(user.Value);
-                    else throw new Exception();
+                    if (user != null && user.Value.id > 0) COMBO_user.Items.Add(user.Value);
                 }
                 COMBO_user.SelectedIndex = 0;
 
@@ -73,8 +72,8 @@ namespace CourseW
             {
                 Data_Keeper.cur_user = (File_System.User)COMBO_user.SelectedItem;
 
-                if (Data_Keeper.FORM_Main is null) { Hide(); new FORM_Main().Show(); Data_Keeper.FORM_Main.Set_user(); }
-                else                               { Hide(); Data_Keeper.FORM_Main.Show(); Data_Keeper.FORM_Main.Set_user(); }
+                if (Data_Keeper.FORM_Main is null) { Hide(); new FORM_Main().Show(); Data_Keeper.FORM_Main.Load_users(); }
+                else                               { Hide(); Data_Keeper.FORM_Main.Show(); Data_Keeper.FORM_Main.Load_users(); }
 
                 Data_Keeper.FORM_Main.Refresh_tree_view();
 

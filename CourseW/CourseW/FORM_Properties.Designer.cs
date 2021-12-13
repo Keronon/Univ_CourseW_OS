@@ -51,22 +51,22 @@
             this.CHECK_o_read = new System.Windows.Forms.CheckBox();
             this.CHECK_o_write = new System.Windows.Forms.CheckBox();
             this.CHECK_o_execute = new System.Windows.Forms.CheckBox();
-            this.LBL_owner_group = new System.Windows.Forms.Label();
-            this.CHECK_o_g_read = new System.Windows.Forms.CheckBox();
-            this.CHECK_o_g_write = new System.Windows.Forms.CheckBox();
-            this.CHECK_o_g_execute = new System.Windows.Forms.CheckBox();
             this.LBL_other = new System.Windows.Forms.Label();
             this.CHECK_oth_read = new System.Windows.Forms.CheckBox();
             this.CHECK_oth_write = new System.Windows.Forms.CheckBox();
             this.CHECK_oth_execute = new System.Windows.Forms.CheckBox();
             this.BTN_action = new System.Windows.Forms.Button();
             this.BTN_cancel = new System.Windows.Forms.Button();
+            this.TXT_owner_id = new System.Windows.Forms.TextBox();
+            this.LBL_owner_id = new System.Windows.Forms.Label();
+            this.PANEL_owner_id = new System.Windows.Forms.Panel();
             this.TAB_box.SuspendLayout();
             this.TAB_info.SuspendLayout();
             this.FLOW_info.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.IMG_object)).BeginInit();
             this.TAB_rights.SuspendLayout();
             this.FLOW_rights.SuspendLayout();
+            this.PANEL_owner_id.SuspendLayout();
             this.SuspendLayout();
             // 
             // TAB_box
@@ -93,6 +93,7 @@
             // FLOW_info
             // 
             this.FLOW_info.Controls.Add(this.IMG_object);
+            this.FLOW_info.Controls.Add(this.PANEL_owner_id);
             this.FLOW_info.Controls.Add(this.LBL_name);
             this.FLOW_info.Controls.Add(this.TXT_name);
             this.FLOW_info.Controls.Add(this.LBL_path);
@@ -111,7 +112,6 @@
             // IMG_object
             // 
             this.IMG_object.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.FLOW_info.SetFlowBreak(this.IMG_object, true);
             this.IMG_object.Location = new System.Drawing.Point(90, 3);
             this.IMG_object.Margin = new System.Windows.Forms.Padding(90, 3, 3, 3);
             this.IMG_object.Name = "IMG_object";
@@ -137,6 +137,7 @@
             this.TXT_name.ReadOnly = true;
             this.TXT_name.Size = new System.Drawing.Size(258, 23);
             this.TXT_name.TabIndex = 0;
+            this.TXT_name.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // LBL_path
             // 
@@ -155,6 +156,7 @@
             this.TXT_path.ReadOnly = true;
             this.TXT_path.Size = new System.Drawing.Size(258, 23);
             this.TXT_path.TabIndex = 3;
+            this.TXT_path.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // LBL_size
             // 
@@ -173,6 +175,7 @@
             this.TXT_size.ReadOnly = true;
             this.TXT_size.Size = new System.Drawing.Size(258, 23);
             this.TXT_size.TabIndex = 5;
+            this.TXT_size.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // LBL_creation_date
             // 
@@ -191,6 +194,7 @@
             this.TXT_creation_date.ReadOnly = true;
             this.TXT_creation_date.Size = new System.Drawing.Size(258, 23);
             this.TXT_creation_date.TabIndex = 7;
+            this.TXT_creation_date.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // LBL_changing_date
             // 
@@ -209,6 +213,7 @@
             this.TXT_changing_date.ReadOnly = true;
             this.TXT_changing_date.Size = new System.Drawing.Size(258, 23);
             this.TXT_changing_date.TabIndex = 9;
+            this.TXT_changing_date.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // TAB_rights
             // 
@@ -229,10 +234,6 @@
             this.FLOW_rights.Controls.Add(this.CHECK_o_read);
             this.FLOW_rights.Controls.Add(this.CHECK_o_write);
             this.FLOW_rights.Controls.Add(this.CHECK_o_execute);
-            this.FLOW_rights.Controls.Add(this.LBL_owner_group);
-            this.FLOW_rights.Controls.Add(this.CHECK_o_g_read);
-            this.FLOW_rights.Controls.Add(this.CHECK_o_g_write);
-            this.FLOW_rights.Controls.Add(this.CHECK_o_g_execute);
             this.FLOW_rights.Controls.Add(this.LBL_other);
             this.FLOW_rights.Controls.Add(this.CHECK_oth_read);
             this.FLOW_rights.Controls.Add(this.CHECK_oth_write);
@@ -313,56 +314,11 @@
             this.CHECK_o_execute.Text = "Execute";
             this.CHECK_o_execute.UseVisualStyleBackColor = true;
             // 
-            // LBL_owner_group
-            // 
-            this.LBL_owner_group.AutoSize = true;
-            this.FLOW_rights.SetFlowBreak(this.LBL_owner_group, true);
-            this.LBL_owner_group.Location = new System.Drawing.Point(90, 125);
-            this.LBL_owner_group.Margin = new System.Windows.Forms.Padding(90, 15, 3, 0);
-            this.LBL_owner_group.Name = "LBL_owner_group";
-            this.LBL_owner_group.Size = new System.Drawing.Size(84, 15);
-            this.LBL_owner_group.TabIndex = 7;
-            this.LBL_owner_group.Text = "Owner group";
-            // 
-            // CHECK_o_g_read
-            // 
-            this.CHECK_o_g_read.AutoSize = true;
-            this.CHECK_o_g_read.Enabled = false;
-            this.CHECK_o_g_read.Location = new System.Drawing.Point(3, 143);
-            this.CHECK_o_g_read.Name = "CHECK_o_g_read";
-            this.CHECK_o_g_read.Size = new System.Drawing.Size(54, 19);
-            this.CHECK_o_g_read.TabIndex = 8;
-            this.CHECK_o_g_read.Text = "Read";
-            this.CHECK_o_g_read.UseVisualStyleBackColor = true;
-            // 
-            // CHECK_o_g_write
-            // 
-            this.CHECK_o_g_write.AutoSize = true;
-            this.CHECK_o_g_write.Enabled = false;
-            this.CHECK_o_g_write.Location = new System.Drawing.Point(90, 143);
-            this.CHECK_o_g_write.Margin = new System.Windows.Forms.Padding(30, 3, 30, 3);
-            this.CHECK_o_g_write.Name = "CHECK_o_g_write";
-            this.CHECK_o_g_write.Size = new System.Drawing.Size(61, 19);
-            this.CHECK_o_g_write.TabIndex = 9;
-            this.CHECK_o_g_write.Text = "Write";
-            this.CHECK_o_g_write.UseVisualStyleBackColor = true;
-            // 
-            // CHECK_o_g_execute
-            // 
-            this.CHECK_o_g_execute.AutoSize = true;
-            this.CHECK_o_g_execute.Enabled = false;
-            this.CHECK_o_g_execute.Location = new System.Drawing.Point(184, 143);
-            this.CHECK_o_g_execute.Name = "CHECK_o_g_execute";
-            this.CHECK_o_g_execute.Size = new System.Drawing.Size(75, 19);
-            this.CHECK_o_g_execute.TabIndex = 10;
-            this.CHECK_o_g_execute.Text = "Execute";
-            this.CHECK_o_g_execute.UseVisualStyleBackColor = true;
-            // 
             // LBL_other
             // 
             this.LBL_other.AutoSize = true;
             this.FLOW_rights.SetFlowBreak(this.LBL_other, true);
-            this.LBL_other.Location = new System.Drawing.Point(111, 180);
+            this.LBL_other.Location = new System.Drawing.Point(111, 125);
             this.LBL_other.Margin = new System.Windows.Forms.Padding(111, 15, 3, 0);
             this.LBL_other.Name = "LBL_other";
             this.LBL_other.Size = new System.Drawing.Size(42, 15);
@@ -373,7 +329,7 @@
             // 
             this.CHECK_oth_read.AutoSize = true;
             this.CHECK_oth_read.Enabled = false;
-            this.CHECK_oth_read.Location = new System.Drawing.Point(3, 198);
+            this.CHECK_oth_read.Location = new System.Drawing.Point(3, 143);
             this.CHECK_oth_read.Name = "CHECK_oth_read";
             this.CHECK_oth_read.Size = new System.Drawing.Size(54, 19);
             this.CHECK_oth_read.TabIndex = 12;
@@ -384,7 +340,7 @@
             // 
             this.CHECK_oth_write.AutoSize = true;
             this.CHECK_oth_write.Enabled = false;
-            this.CHECK_oth_write.Location = new System.Drawing.Point(90, 198);
+            this.CHECK_oth_write.Location = new System.Drawing.Point(90, 143);
             this.CHECK_oth_write.Margin = new System.Windows.Forms.Padding(30, 3, 30, 3);
             this.CHECK_oth_write.Name = "CHECK_oth_write";
             this.CHECK_oth_write.Size = new System.Drawing.Size(61, 19);
@@ -396,7 +352,7 @@
             // 
             this.CHECK_oth_execute.AutoSize = true;
             this.CHECK_oth_execute.Enabled = false;
-            this.CHECK_oth_execute.Location = new System.Drawing.Point(184, 198);
+            this.CHECK_oth_execute.Location = new System.Drawing.Point(184, 143);
             this.CHECK_oth_execute.Name = "CHECK_oth_execute";
             this.CHECK_oth_execute.Size = new System.Drawing.Size(75, 19);
             this.CHECK_oth_execute.TabIndex = 14;
@@ -407,7 +363,7 @@
             // 
             this.BTN_action.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.BTN_action.ForeColor = System.Drawing.Color.DarkBlue;
-            this.BTN_action.Location = new System.Drawing.Point(3, 285);
+            this.BTN_action.Location = new System.Drawing.Point(3, 230);
             this.BTN_action.Margin = new System.Windows.Forms.Padding(3, 65, 3, 3);
             this.BTN_action.Name = "BTN_action";
             this.BTN_action.Size = new System.Drawing.Size(126, 30);
@@ -419,7 +375,7 @@
             // 
             this.BTN_cancel.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.BTN_cancel.ForeColor = System.Drawing.Color.DarkRed;
-            this.BTN_cancel.Location = new System.Drawing.Point(135, 285);
+            this.BTN_cancel.Location = new System.Drawing.Point(135, 230);
             this.BTN_cancel.Margin = new System.Windows.Forms.Padding(3, 65, 3, 3);
             this.BTN_cancel.Name = "BTN_cancel";
             this.BTN_cancel.Size = new System.Drawing.Size(126, 30);
@@ -427,6 +383,34 @@
             this.BTN_cancel.Text = "Cancel";
             this.BTN_cancel.UseVisualStyleBackColor = true;
             this.BTN_cancel.Visible = false;
+            // 
+            // TXT_owner_id
+            // 
+            this.TXT_owner_id.Location = new System.Drawing.Point(3, 18);
+            this.TXT_owner_id.Name = "TXT_owner_id";
+            this.TXT_owner_id.ReadOnly = true;
+            this.TXT_owner_id.Size = new System.Drawing.Size(69, 23);
+            this.TXT_owner_id.TabIndex = 11;
+            this.TXT_owner_id.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // LBL_owner_id
+            // 
+            this.LBL_owner_id.AutoSize = true;
+            this.LBL_owner_id.Location = new System.Drawing.Point(3, 0);
+            this.LBL_owner_id.Name = "LBL_owner_id";
+            this.LBL_owner_id.Size = new System.Drawing.Size(63, 15);
+            this.LBL_owner_id.TabIndex = 12;
+            this.LBL_owner_id.Text = "Owner id";
+            // 
+            // PANEL_owner_id
+            // 
+            this.PANEL_owner_id.Controls.Add(this.LBL_owner_id);
+            this.PANEL_owner_id.Controls.Add(this.TXT_owner_id);
+            this.PANEL_owner_id.Location = new System.Drawing.Point(186, 49);
+            this.PANEL_owner_id.Margin = new System.Windows.Forms.Padding(3, 49, 3, 3);
+            this.PANEL_owner_id.Name = "PANEL_owner_id";
+            this.PANEL_owner_id.Size = new System.Drawing.Size(75, 44);
+            this.PANEL_owner_id.TabIndex = 13;
             // 
             // FORM_Properties
             // 
@@ -448,6 +432,8 @@
             this.TAB_rights.ResumeLayout(false);
             this.FLOW_rights.ResumeLayout(false);
             this.FLOW_rights.PerformLayout();
+            this.PANEL_owner_id.ResumeLayout(false);
+            this.PANEL_owner_id.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -476,15 +462,14 @@
         private System.Windows.Forms.CheckBox CHECK_o_read;
         private System.Windows.Forms.CheckBox CHECK_o_write;
         private System.Windows.Forms.CheckBox CHECK_o_execute;
-        private System.Windows.Forms.Label LBL_owner_group;
-        private System.Windows.Forms.CheckBox CHECK_o_g_read;
-        private System.Windows.Forms.CheckBox CHECK_o_g_write;
-        private System.Windows.Forms.CheckBox CHECK_o_g_execute;
         private System.Windows.Forms.Label LBL_other;
         private System.Windows.Forms.CheckBox CHECK_oth_read;
         private System.Windows.Forms.CheckBox CHECK_oth_write;
         private System.Windows.Forms.CheckBox CHECK_oth_execute;
         private System.Windows.Forms.Button BTN_action;
         private System.Windows.Forms.Button BTN_cancel;
+        private System.Windows.Forms.Panel PANEL_owner_id;
+        private System.Windows.Forms.Label LBL_owner_id;
+        private System.Windows.Forms.TextBox TXT_owner_id;
     }
 }

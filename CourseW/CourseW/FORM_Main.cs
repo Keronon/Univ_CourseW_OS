@@ -25,6 +25,7 @@ namespace CourseW
             InitializeComponent();
             PANEL_change_password.Hide();
             PANEL_users.Hide();
+            IMG_logo.Show();
 
             ImageList image_list = new ImageList();
             image_list.Images.Add("file", new Bitmap(Data_Keeper.res_folder + "file_sys.ico"));
@@ -71,8 +72,10 @@ namespace CourseW
                     File_System.Inode? inode = Data_Keeper.file_system.Read_inode(Data_Keeper.file_system.Search_record_by_name(path).Value.inode);
                     if (inode == null) { throw new Exception(); }
 
-                    if (Data_Keeper.cur_user.id != inode.Value.owner_id && Data_Keeper.cur_user.id != 1 && inode.Value.atributes[9] != true ||
-                        (inode.Value.owner_id == 0 && new string(Data_Keeper.cur_user.login).Trim().Trim('\0') != path.Substring(2)))
+                    if (Data_Keeper.cur_user.id != inode.Value.owner_id &&
+                        Data_Keeper.cur_user.id != 1 &&
+                        inode.Value.atributes[9] != true &&
+                        new string(Data_Keeper.cur_user.login).Trim('\0') != path.Substring(2))
                     {
                         MessageBox.Show("You can not create at this directory");
 
@@ -93,7 +96,7 @@ namespace CourseW
                     Log.Write("FORM_Main | Creating file ACCEPTED\n");
 
                     path = $"{path}\\{input_dialog.TXT_input.Text}";
-                    if (Data_Keeper.file_system.Create_system_object(path, File_System.FILE_SYSTEM_OBJECT.file))
+                    if (Data_Keeper.file_system.Create_system_object(path, File_System.FILE_SYSTEM_OBJECT.file, Data_Keeper.cur_user.id, Data_Keeper.cur_user.group))
                     {
                         Refresh_tree_view();
                         MessageBox.Show("Created");
@@ -124,8 +127,10 @@ namespace CourseW
                     File_System.Inode? inode = Data_Keeper.file_system.Read_inode(Data_Keeper.file_system.Search_record_by_name(path).Value.inode);
                     if (inode == null) { throw new Exception(); }
 
-                    if (Data_Keeper.cur_user.id != inode.Value.owner_id && Data_Keeper.cur_user.id != 1 && inode.Value.atributes[9] != true ||
-                        (inode.Value.owner_id == 0 && new string(Data_Keeper.cur_user.login).Trim().Trim('\0') != path.Substring(2)))
+                    if (Data_Keeper.cur_user.id != inode.Value.owner_id &&
+                        Data_Keeper.cur_user.id != 1 &&
+                        inode.Value.atributes[9] != true &&
+                        new string(Data_Keeper.cur_user.login).Trim('\0') != path.Substring(2))
                     {
                         MessageBox.Show("You can not create at this directory");
 
@@ -146,7 +151,7 @@ namespace CourseW
                     Log.Write("FORM_Main | Creating directory ACCEPTED\n");
 
                     path = $"{path}\\{input_dialog.TXT_input.Text}";
-                    if (Data_Keeper.file_system.Create_system_object(path, File_System.FILE_SYSTEM_OBJECT.directory))
+                    if (Data_Keeper.file_system.Create_system_object(path, File_System.FILE_SYSTEM_OBJECT.directory, Data_Keeper.cur_user.id, Data_Keeper.cur_user.group))
                     {
                         Refresh_tree_view();
                         MessageBox.Show("Created");
@@ -313,6 +318,8 @@ namespace CourseW
             Log.Write("FORM_Main | Change password Clicked\n");
 
             PANEL_change_password.Show();
+            PANEL_users.Hide();
+            IMG_logo.Hide();
         }
 
         private void BTN_cancel_Click(object sender, EventArgs e)
@@ -321,6 +328,7 @@ namespace CourseW
 
             TXT_old_password.Text = TXT_new_password.Text = TXT_repeat_password.Text = "";
             PANEL_change_password.Hide();
+            IMG_logo.Show();
         }
 
         private void BTN_accept_Click(object sender, EventArgs e)
@@ -344,6 +352,7 @@ namespace CourseW
                     MessageBox.Show("Password changed");
                     TXT_old_password.Text = TXT_new_password.Text = TXT_repeat_password.Text = "";
                     PANEL_change_password.Hide();
+                    IMG_logo.Show();
                 }
                 else MessageBox.Show("Incorrect repeating password");
             }
@@ -356,26 +365,174 @@ namespace CourseW
         {
             Log.Write("FORM_Main | Users Clicked\n");
 
-            if (PANEL_users.Visible) PANEL_users.Hide();
-            else PANEL_users.Show();
+            if (PANEL_users.Visible) { PANEL_users.Hide(); PANEL_change_password.Hide(); IMG_logo.Show(); }
+            else { PANEL_users.Show(); PANEL_change_password.Hide(); IMG_logo.Hide(); }
         }
 
         private void BTN_add_user_Click(object sender, EventArgs e)
         {
             Log.Write("FORM_Main | Add user Clicked\n");
 
+            if (Data_Keeper.file_system.super_block.max_users_count == Data_Keeper.file_system.super_block.cur_users_count) { MessageBox.Show("Maximum users count"); return; }
+
+            FORM_User user_dialog = new FORM_User();
+            if (user_dialog.ShowDialog(this) == DialogResult.OK)
+            {
+                Log.Write("FORM_Main | Adding user ACCEPTED\n");
+
+                for (int i = 1; i <= Data_Keeper.file_system.super_block.max_users_count; i++)
+                {
+                    File_System.User? user = Data_Keeper.file_system.Read_user(i);
+                    if (user != null && user.Value.id != 0)
+                        if (new string(user.Value.login).Trim('\0') == user_dialog.TXT_login.Text)
+                        {
+                            MessageBox.Show("There is user with login like that\nPlease, try again used other login");
+                            return;
+                        }
+                }
+
+                for (int i = 1; i <= Data_Keeper.file_system.super_block.max_users_count; i++)
+                {
+                    File_System.User? user = Data_Keeper.file_system.Read_user(i);
+                    if (user == null || user.Value.id == 0)
+                    {
+                        string path = $"/\\{user_dialog.TXT_login.Text}";
+                        char[] login = new char[10];
+                        for (int j = 0; j < login.Length; j++)
+                        {
+                            login[j] = j < user_dialog.TXT_login.Text.Length ? user_dialog.TXT_login.Text[j] : '\0';
+                        }
+                        if (Data_Keeper.file_system.Create_system_object(path, File_System.FILE_SYSTEM_OBJECT.directory))
+                        {
+                            Refresh_tree_view();
+                            if (Data_Keeper.file_system.Write_user(i, new File_System.User(
+                                                                                (byte)i,
+                                                                                (byte)user_dialog.NUMERIC_group.Value,
+                                                                                login,
+                                                                                user_dialog.TXT_password.Text.GetHashCode(),
+                                                                                Data_Keeper.file_system.Search_record_by_name(path).Value.inode)))
+                            {
+                                Load_users();
+                                MessageBox.Show("Added");
+                                break;
+                            }
+                            else { MessageBox.Show("Error"); break; }
+                        }
+                        else { MessageBox.Show("Error"); break; }
+                        }
+                }
+            }
+            else
+            {
+                Log.Write("FORM_Main | Adding user CANCELED\n");
+
+                MessageBox.Show("Canceled");
+            }
+            user_dialog.Dispose();
         }
 
         private void BTN_delete_user_Click(object sender, EventArgs e)
         {
             Log.Write("FORM_Main | Delete user Clicked\n");
 
+            if (MessageBox.Show("Accept action", "Selected user deleting", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                Log.Write("FORM_Main | Deleting user ACCEPTED\n");
+
+                if (new string(((File_System.User)LIST_users.SelectedItem).login) == new string(Data_Keeper.cur_user.login))
+                {
+                    MessageBox.Show("You can not delete active user");
+                    return;
+                }
+
+                for (int i = 1; i <= Data_Keeper.file_system.super_block.max_users_count; i++)
+                {
+                    File_System.User? user = Data_Keeper.file_system.Read_user(i);
+                    if (user != null && user.Value.id != 0)
+                        if (new string(((File_System.User)LIST_users.SelectedItem).login) == new string(user.Value.login))
+                        {
+                            string path = $"/\\{new string(user.Value.login)}";
+                            if (Data_Keeper.file_system.Delete_system_object(path))
+                            {
+                                Refresh_tree_view();
+                                if (Data_Keeper.file_system.Write_user(i, new File_System.User(0, 0, new char[10], 0, 0)))
+                                {
+                                    Load_users();
+                                    MessageBox.Show("Deleted");
+                                }
+                                else MessageBox.Show("Error");
+                            }
+                            else MessageBox.Show("Error");
+                        }
+                }
+            }
+            else
+            {
+                Log.Write("FORM_Main | Deleting user CANCELED\n");
+
+                MessageBox.Show("Canceled");
+            }
         }
 
         private void BTN_edit_user_Click(object sender, EventArgs e)
         {
             Log.Write("FORM_Main | Edit user Clicked\n");
 
+            if (LIST_users.SelectedIndex < 0) { MessageBox.Show("Select user to edit"); return; }
+
+            File_System.User? user = null;
+            for (int i = 1; i <= Data_Keeper.file_system.super_block.max_users_count; i++)
+            {
+                user = Data_Keeper.file_system.Read_user(i);
+                if (user != null && user.Value.id != 0)
+                    if (LIST_users.FindStringExact(new string(user.Value.login).Trim('\0')) >= 0) break;
+                user = null;
+            }
+            if (user == null) { MessageBox.Show("Error"); return; }
+
+            FORM_User user_dialog = new FORM_User();
+            if (user_dialog.ShowDialog(this, user.Value) == DialogResult.OK)
+            {
+                Log.Write("FORM_Main | Editing user ACCEPTED\n");
+
+                for (int i = 1; i <= Data_Keeper.file_system.super_block.max_users_count; i++)
+                {
+                    File_System.User? same_user = Data_Keeper.file_system.Read_user(i);
+                    if (same_user != null && same_user.Value.id != 0)
+                        if (new string(same_user.Value.login) == user_dialog.TXT_login.Text)
+                        {
+                            MessageBox.Show("There is user with login like that\nPlease, try again used other login");
+                            return;
+                        }
+                }
+
+                if (!Data_Keeper.file_system.Rename_system_object($"/\\{new string(user.Value.login).Trim('\0')}", user_dialog.TXT_login.Text)) throw new Exception();
+                Refresh_tree_view();
+                char[] login = new char[10];
+                for (int j = 0; j < login.Length; j++)
+                {
+                    login[j] = j < user_dialog.TXT_login.Text.Length ? user_dialog.TXT_login.Text[j] : '\0';
+                }
+                File_System.User new_user = new File_System.User(user.Value.id,
+                                                                 (byte)user_dialog.NUMERIC_group.Value,
+                                                                 login,
+                                                                 user.Value.password_hash,
+                                                                 user.Value.home_dir_inode);
+                if (Data_Keeper.file_system.Write_user(user.Value.id, new_user))
+                {
+                    if (new string(user.Value.login) == new string(Data_Keeper.cur_user.login)) Data_Keeper.cur_user = new_user;
+                    Load_users();
+                    MessageBox.Show("Edited");
+                }
+                else MessageBox.Show("Error");
+            }
+            else
+            {
+                Log.Write("FORM_Main | Editing user CANCELED\n");
+
+                MessageBox.Show("Canceled");
+            }
+            user_dialog.Dispose();
         }
         #endregion users
 
@@ -403,17 +560,17 @@ namespace CourseW
 
         #region FUNCTIONS
 
-        public void Set_user()
+        public void Load_users()
         {
-            TXT_user.Text = new string(Data_Keeper.cur_user.login).TrimEnd();
+            TXT_user.Text = new string(Data_Keeper.cur_user.login).TrimEnd('\0');
             if (Data_Keeper.cur_user.id > 1) { BTN_add_user.Enabled = BTN_delete_user.Enabled = BTN_edit_user.Enabled = false; }
+            else { BTN_add_user.Enabled = BTN_delete_user.Enabled = BTN_edit_user.Enabled = true; }
 
             LIST_users.Items.Clear();
-            for (int i = 1; i <= Data_Keeper.file_system.super_block.cur_users_count; i++)
+            for (int i = 1; i <= Data_Keeper.file_system.super_block.max_users_count; i++)
             {
                 File_System.User? user = Data_Keeper.file_system.Read_user(i);
-                if (user != null) LIST_users.Items.Add(user.Value);
-                else throw new Exception();
+                if (user != null && user.Value.id > 0) LIST_users.Items.Add(user.Value);
             }
         }
 
