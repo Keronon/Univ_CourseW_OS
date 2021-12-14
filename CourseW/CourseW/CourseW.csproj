@@ -67,71 +67,72 @@
   <ItemGroup>
     <Compile Include="Data_Keeper.cs" />
     <Compile Include="File_System.cs" />
-    <Compile Include="FORM_Append.cs">
+    <Compile Include="Forms\FORM_Append.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FORM_Append.Designer.cs">
+    <Compile Include="Forms\FORM_Append.Designer.cs">
       <DependentUpon>FORM_Append.cs</DependentUpon>
     </Compile>
-    <Compile Include="FORM_Authorization.cs">
+    <Compile Include="Forms\FORM_Authorization.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FORM_Authorization.Designer.cs">
+    <Compile Include="Forms\FORM_Authorization.Designer.cs">
       <DependentUpon>FORM_Authorization.cs</DependentUpon>
     </Compile>
-    <Compile Include="FORM_Input.cs">
+    <Compile Include="Forms\FORM_Input.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FORM_Input.Designer.cs">
+    <Compile Include="Forms\FORM_Input.Designer.cs">
       <DependentUpon>FORM_Input.cs</DependentUpon>
     </Compile>
-    <Compile Include="FORM_Main.cs">
+    <Compile Include="Forms\FORM_Main.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FORM_Main.Designer.cs">
+    <Compile Include="Forms\FORM_Main.Designer.cs">
       <DependentUpon>FORM_Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="FORM_Properties.cs">
+    <Compile Include="Forms\FORM_Properties.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FORM_Properties.Designer.cs">
+    <Compile Include="Forms\FORM_Properties.Designer.cs">
       <DependentUpon>FORM_Properties.cs</DependentUpon>
     </Compile>
-    <Compile Include="FORM_User.cs">
+    <Compile Include="Forms\FORM_User.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FORM_User.Designer.cs">
+    <Compile Include="Forms\FORM_User.Designer.cs">
       <DependentUpon>FORM_User.cs</DependentUpon>
     </Compile>
-    <Compile Include="FORM_Write.cs">
+    <Compile Include="Forms\FORM_Write.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FORM_Write.Designer.cs">
+    <Compile Include="Forms\FORM_Write.Designer.cs">
       <DependentUpon>FORM_Write.cs</DependentUpon>
     </Compile>
     <Compile Include="Log.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scheduler.cs" />
     <Compile Include="TEST_CLASS.cs" />
-    <EmbeddedResource Include="FORM_Append.resx">
+    <EmbeddedResource Include="Forms\FORM_Append.resx">
       <DependentUpon>FORM_Append.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FORM_Authorization.resx">
+    <EmbeddedResource Include="Forms\FORM_Authorization.resx">
       <DependentUpon>FORM_Authorization.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FORM_Properties.resx">
+    <EmbeddedResource Include="Forms\FORM_Properties.resx">
       <DependentUpon>FORM_Properties.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FORM_Input.resx">
+    <EmbeddedResource Include="Forms\FORM_Input.resx">
       <DependentUpon>FORM_Input.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FORM_Main.resx">
+    <EmbeddedResource Include="Forms\FORM_Main.resx">
       <DependentUpon>FORM_Main.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FORM_User.resx">
+    <EmbeddedResource Include="Forms\FORM_User.resx">
       <DependentUpon>FORM_User.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FORM_Write.resx">
+    <EmbeddedResource Include="Forms\FORM_Write.resx">
       <DependentUpon>FORM_Write.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

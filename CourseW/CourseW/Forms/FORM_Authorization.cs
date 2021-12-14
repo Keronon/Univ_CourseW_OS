@@ -28,6 +28,7 @@ namespace CourseW
                 if (!rbfs_c()) { BTN_login.Enabled = false; return; }
             }
             Data_Keeper.file_system = new File_System();
+            Data_Keeper.scheduler = new Scheduler();
 
             Load_users();
 

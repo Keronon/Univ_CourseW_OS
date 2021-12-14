@@ -1,3 +1,3 @@
 ﻿========== To Do List ==========
 
-Process scheduler
+Scheduler elaborating continue

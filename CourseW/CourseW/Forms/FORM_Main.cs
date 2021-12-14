@@ -310,6 +310,20 @@ namespace CourseW
 
         #endregion File system
 
+        #region Processes
+
+        private async void BTN_run_Click(object sender, EventArgs e)
+        {
+            if (!Data_Keeper.scheduler.Running) await Task.Run(() => Data_Keeper.scheduler.Run((int)NUMERIC_proc_count.Value));
+        }
+
+        private void BTN_stop_Click(object sender, EventArgs e)
+        {
+            if (Data_Keeper.scheduler.Running) Data_Keeper.scheduler.Stop();
+        }
+
+        #endregion Processes
+
         #region System
 
         #region change password
