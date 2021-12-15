@@ -202,7 +202,7 @@ namespace CourseW
             Cluster? cluster = Read_cluster(1);
             if (cluster == null) return null;
 
-            System_Directory directory = new System_Directory(1, new List<Directory_Record>());
+            System_Directory directory = new System_Directory() { inode = 1, records = new List<Directory_Record>() };
 
             bool runner = true;
             while (runner)
@@ -241,7 +241,7 @@ namespace CourseW
             if (cluster == null) return null;
 
             _path_parts.RemoveAt(1);
-            System_Directory directory = new System_Directory(_inode, new List<Directory_Record>());
+            System_Directory directory = new System_Directory() { inode = _inode, records = new List<Directory_Record>() };
 
             bool runner = true;
             while (runner)
@@ -297,7 +297,7 @@ namespace CourseW
                 if (cluster_pos != 0)
                 {
                     Write_control_bits(FILE_SYSTEM_STRUCTURE.clusters_bitmap, cluster_pos, true);
-                    Write_cluster(cluster_pos, new Cluster(0, new List<byte>()));
+                    Write_cluster(cluster_pos, new Cluster() { next_cluster = 0, data = new List<byte>() });
                 }
                 else throw new Exception();
 
@@ -327,13 +327,13 @@ namespace CourseW
                                                 false, false, false }; // [reserved]
                             break;
                     }
-                    Write_inode(inode_pos, new Inode(atributes,
-                                             _owner_id,                 // owner id       - current user
-                                             _owner_group_id,           // owner group id - 0            - system
-                                             cluster_pos,               // first cluster  - saved value
-                                             0,                         // file size / elements in dir - 0
-                                             DateTime.Now.ToBinary(),   // creation date-time          - now
-                                             DateTime.Now.ToBinary())); // changing date-time          - now));
+                    Write_inode(inode_pos, new Inode() { atributes = atributes,
+                                                         owner_id = _owner_id,                            // owner id       - current user
+                                                         owner_group_id = _owner_group_id,                // owner group id - 0            - system
+                                                         first_cluster_pos = cluster_pos,                 // first cluster  - saved value
+                                                         size = 0,                                        // file size / elements in dir - 0
+                                                         creation_date_time = DateTime.Now.ToBinary(),    // creation date-time          - now
+                                                         changing_date_time = DateTime.Now.ToBinary() }); // changing date-time          - now
                 }
                 else throw new Exception();
 
@@ -562,7 +562,7 @@ namespace CourseW
             Log.Write("File_System | Reading file\n");
 
             Cluster file_cluster = new Cluster();
-            System_File file = new System_File(0, new List<byte>());
+            System_File file = new System_File() { inode = 0, data = new List<byte>() };
 
             Directory_Record? record = Search_record_by_name(_path);
             if (record != null)
@@ -570,6 +570,7 @@ namespace CourseW
                 file.inode = record.Value.inode;
                 file_cluster = Read_cluster(Read_inode(file.inode).Value.first_cluster_pos).Value;
             }
+            else return null;
 
             while (true)
             {
@@ -614,12 +615,12 @@ namespace CourseW
 
                 for (i = 0; i < clusters_data.Count; i++)
                 {
-                    if (i == clusters_data.Count - 1) Write_cluster(cluster_pos, new Cluster(0, clusters_data[i]));
+                    if (i == clusters_data.Count - 1) Write_cluster(cluster_pos, new Cluster() { next_cluster = 0, data = clusters_data[i] });
                     else
                     {
                         int available_cluster = Search_available_control_bit(FILE_SYSTEM_STRUCTURE.clusters_bitmap);
                         if (available_cluster == 0) throw new Exception();
-                        Write_cluster(cluster_pos, new Cluster(available_cluster, clusters_data[i]));
+                        Write_cluster(cluster_pos, new Cluster() { next_cluster = available_cluster, data = clusters_data[i] });
                         Write_control_bits(FILE_SYSTEM_STRUCTURE.clusters_bitmap, available_cluster, true);
                         cluster_pos = available_cluster;
                     }
@@ -899,7 +900,7 @@ namespace CourseW
                     }
                 }
                 Log.Write("File_System | Reading cluster SUCCESS\n");
-                return new Cluster(BitConverter.ToInt32(bytes.ToArray(), 0), bytes.GetRange(4, bytes.Count - 4));
+                return new Cluster() { next_cluster = BitConverter.ToInt32(bytes.ToArray(), 0), data = bytes.GetRange(4, bytes.Count - 4) };
             }
         }
 
@@ -981,7 +982,7 @@ namespace CourseW
 
         public Directory_Record? Search_record_by_name(string _path)
         {
-            if (_path == "/") return new Directory_Record(1, _path);
+            if (_path == "/") return new Directory_Record() { inode = 1, name = _path };
 
             string record_name = _path.Substring(_path.LastIndexOf('\\') + 1);
             _path = _path.Remove(_path.LastIndexOf('\\'));
@@ -1022,37 +1023,26 @@ namespace CourseW
 
         #region STRUCTURES
 
-        public struct Super_Block                  // 25
+        /// <summary>
+        /// size 25 : super_block_size 1,
+        ///           inode_size 1,           inods_count 4,     available_inodes_count 4,
+        ///           user_record_size 1,     max_users_count 2, cur_users_count 2,
+        ///           cluster_size_pow 1,     clusters_count 4,  available_clusters_count 4,
+        ///           directory_record_size 1
+        /// </summary>
+        public struct Super_Block
         {
-            public byte  super_block_size;         // 1
-            public byte  inode_size;               // 1
-            public int   inods_count;              // 4
-            public int   available_inodes_count;   // 4
-            public byte  user_record_size;         // 1
-            public short max_users_count;          // 2
-            public short cur_users_count;          // 2
-            public byte  cluster_size_pow;         // 1
-            public int   clusters_count;           // 4
-            public int   available_clusters_count; // 4
-            public byte  directory_record_size;    // 1
-
-            public Super_Block(byte _super_block_size,
-                               byte _cluster_size_pow, int _clusters_count, int _available_clusters_count,
-                               byte _inode_size, int _inods_count, int _available_inodes_count,
-                               byte _user_record_size, short _max_users_count, short _cur_users_count, byte _directory_record_size)
-            {
-                super_block_size = _super_block_size;
-                cluster_size_pow = _cluster_size_pow;
-                clusters_count = _clusters_count;
-                available_clusters_count = _available_clusters_count;
-                inode_size = _inode_size;
-                inods_count = _inods_count;
-                available_inodes_count = _available_inodes_count;
-                user_record_size = _user_record_size;
-                max_users_count = _max_users_count;
-                cur_users_count = _cur_users_count;
-                directory_record_size = _directory_record_size;
-            }
+            public byte  super_block_size;
+            public byte  cluster_size_pow;
+            public int   clusters_count;
+            public int   available_clusters_count;
+            public byte  inode_size;
+            public int   inods_count;
+            public int   available_inodes_count;
+            public byte  user_record_size;
+            public short max_users_count;
+            public short cur_users_count;
+            public byte  directory_record_size;
         }
 
         public struct Inode
@@ -1067,23 +1057,10 @@ namespace CourseW
 
             public byte owner_id;
             public byte owner_group_id;
-            public int first_cluster_pos;
-            public int size;
+            public int  first_cluster_pos;
+            public int  size;
             public long creation_date_time;
             public long changing_date_time;
-
-            public Inode(bool[] _atributes, byte _owner_id, byte _owner_group_id,
-                                            int _first_cluster_pos, int _file_size,
-                                            long _creation_date_time, long _changing_date_time)
-            {
-                atributes = _atributes;
-                owner_id = _owner_id;
-                owner_group_id = _owner_group_id;
-                first_cluster_pos = _first_cluster_pos;
-                size = _file_size;
-                creation_date_time = _creation_date_time;
-                changing_date_time = _changing_date_time;
-            }
         }
 
         public struct User
@@ -1093,15 +1070,6 @@ namespace CourseW
             public char[] login; // 10
             public int password_hash;
             public int home_dir_inode;
-
-            public User(byte _id, byte _group, char[] _login, int _password_hash, int _home_dir_inode)
-            {
-                id = _id;
-                group = _group;
-                login = _login;
-                password_hash = _password_hash;
-                home_dir_inode = _home_dir_inode;
-            }
 
             public override string ToString()
             {
@@ -1114,36 +1082,18 @@ namespace CourseW
         {
             public int next_cluster;
             public List<byte> data;
-
-            public Cluster(int _next_cluster, List<byte> _data)
-            {
-                next_cluster = _next_cluster;
-                data = _data;
-            }
         }
 
         public struct Directory_Record
         {
             public int inode;
-            public String name;
-
-            public Directory_Record(int _inode, String _name)
-            {
-              inode = _inode;
-              name = _name;
-            }
+            public string name;
         }
 
         public struct System_Directory
         {
             public int inode;
             public List<Directory_Record> records;
-
-            public System_Directory(int _inode, List<Directory_Record> _records)
-            {
-                inode = _inode;
-                records = _records;
-            }
 
             public IEnumerator GetEnumerator()
             {
@@ -1158,12 +1108,6 @@ namespace CourseW
         {
             public int inode;
             public List<byte> data;
-
-            public System_File(int _inode, List<byte> _data)
-            {
-                inode = _inode;
-                data = _data;
-            }
         }
 
         #endregion STRUCTURES

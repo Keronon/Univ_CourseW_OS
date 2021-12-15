@@ -29,6 +29,7 @@ namespace CourseW
             }
             Data_Keeper.file_system = new File_System();
             Data_Keeper.scheduler = new Scheduler();
+            Data_Keeper.reflected_files = new Dictionary<string, FileStream>();
 
             Load_users();
 
@@ -104,7 +105,17 @@ namespace CourseW
             {
                 Log.Write("FORM_Authorization | Rebooting accepted\n");
 
-                File_System.Create(new File_System.Super_Block(25, 6, 512, 510, 42, 512, 510, 20, 32, 1, 36)); // 25, 12, 512, 510, 42, 512, 510, 20, 32, 1, 36
+                File_System.Create(new File_System.Super_Block() { super_block_size         = 25,
+                                                                   cluster_size_pow         = 6,
+                                                                   clusters_count           = 512,
+                                                                   available_clusters_count = 510,
+                                                                   inode_size               = 42,
+                                                                   inods_count              = 512,
+                                                                   available_inodes_count   = 510,
+                                                                   user_record_size         = 20,
+                                                                   max_users_count          = 32,
+                                                                   cur_users_count          = 1,
+                                                                   directory_record_size    = 36});
                 Data_Keeper.file_system = new File_System();
 
                 Load_users();

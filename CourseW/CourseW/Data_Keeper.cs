@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,10 +15,11 @@ namespace CourseW
 
         public const string res_folder = "../../Resources/";
         public const string file_system_path = res_folder + "File_System";
-        public static File_System file_system = null;
+        public static File_System file_system;
         public static File_System.User cur_user;
 
-        public static Scheduler scheduler = null;
+        public static Scheduler scheduler;
+        public static Dictionary<string, FileStream> reflected_files;
         #endregion DATA
 
         #region FORMS

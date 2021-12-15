@@ -314,7 +314,7 @@ namespace CourseW
 
         private async void BTN_run_Click(object sender, EventArgs e)
         {
-            if (!Data_Keeper.scheduler.Running) await Task.Run(() => Data_Keeper.scheduler.Run((int)NUMERIC_proc_count.Value));
+            if (!Data_Keeper.scheduler.Running) await Task.Run(() => { Data_Keeper.scheduler.Run((int)NUMERIC_proc_count.Value); MessageBox.Show("Stopped"); });
         }
 
         private void BTN_stop_Click(object sender, EventArgs e)
@@ -387,7 +387,8 @@ namespace CourseW
         {
             Log.Write("FORM_Main | Add user Clicked\n");
 
-            if (Data_Keeper.file_system.super_block.max_users_count == Data_Keeper.file_system.super_block.cur_users_count) { MessageBox.Show("Maximum users count"); return; }
+            if (Data_Keeper.file_system.super_block.max_users_count == Data_Keeper.file_system.super_block.cur_users_count)
+            { MessageBox.Show("Maximum users count"); return; }
 
             FORM_User user_dialog = new FORM_User();
             if (user_dialog.ShowDialog(this) == DialogResult.OK)
@@ -419,12 +420,12 @@ namespace CourseW
                         if (Data_Keeper.file_system.Create_system_object(path, File_System.FILE_SYSTEM_OBJECT.directory))
                         {
                             Refresh_tree_view();
-                            if (Data_Keeper.file_system.Write_user(i, new File_System.User(
-                                                                                (byte)i,
-                                                                                (byte)user_dialog.NUMERIC_group.Value,
-                                                                                login,
-                                                                                user_dialog.TXT_password.Text.GetHashCode(),
-                                                                                Data_Keeper.file_system.Search_record_by_name(path).Value.inode)))
+                            if (Data_Keeper.file_system.Write_user(i, new File_System.User() {
+                                                                                id             = (byte)i,
+                                                                                group          = (byte)user_dialog.NUMERIC_group.Value,
+                                                                                login          = login,
+                                                                                password_hash  = user_dialog.TXT_password.Text.GetHashCode(),
+                                                                                home_dir_inode = Data_Keeper.file_system.Search_record_by_name(path).Value.inode}))
                             {
                                 Load_users();
                                 MessageBox.Show("Added");
@@ -449,15 +450,15 @@ namespace CourseW
         {
             Log.Write("FORM_Main | Delete user Clicked\n");
 
+            if (new string(((File_System.User)LIST_users.SelectedItem).login) == new string(Data_Keeper.cur_user.login))
+            {
+                MessageBox.Show("You can not delete active user");
+                return;
+            }
+
             if (MessageBox.Show("Accept action", "Selected user deleting", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 Log.Write("FORM_Main | Deleting user ACCEPTED\n");
-
-                if (new string(((File_System.User)LIST_users.SelectedItem).login) == new string(Data_Keeper.cur_user.login))
-                {
-                    MessageBox.Show("You can not delete active user");
-                    return;
-                }
 
                 for (int i = 1; i <= Data_Keeper.file_system.super_block.max_users_count; i++)
                 {
@@ -465,18 +466,22 @@ namespace CourseW
                     if (user != null && user.Value.id != 0)
                         if (new string(((File_System.User)LIST_users.SelectedItem).login) == new string(user.Value.login))
                         {
-                            string path = $"/\\{new string(user.Value.login)}";
+                            string path = $"/\\{new string(user.Value.login).TrimEnd('\0')}";
                             if (Data_Keeper.file_system.Delete_system_object(path))
                             {
                                 Refresh_tree_view();
-                                if (Data_Keeper.file_system.Write_user(i, new File_System.User(0, 0, new char[10], 0, 0)))
+                                if (Data_Keeper.file_system.Write_user(i, new File_System.User() {id = 0, group = 0,
+                                                                                                  login = new char[10],
+                                                                                                  password_hash = 0,
+                                                                                                  home_dir_inode = 0}))
                                 {
                                     Load_users();
                                     MessageBox.Show("Deleted");
+                                    break;
                                 }
-                                else MessageBox.Show("Error");
+                                else { MessageBox.Show("Error"); break; }
                             }
-                            else MessageBox.Show("Error");
+                            else { MessageBox.Show("Error"); break; }
                         }
                 }
             }
@@ -499,7 +504,7 @@ namespace CourseW
             {
                 user = Data_Keeper.file_system.Read_user(i);
                 if (user != null && user.Value.id != 0)
-                    if (LIST_users.FindStringExact(new string(user.Value.login).Trim('\0')) >= 0) break;
+                    if (new string(((File_System.User)LIST_users.SelectedItem).login) == new string(user.Value.login)) break;
                 user = null;
             }
             if (user == null) { MessageBox.Show("Error"); return; }
@@ -527,11 +532,11 @@ namespace CourseW
                 {
                     login[j] = j < user_dialog.TXT_login.Text.Length ? user_dialog.TXT_login.Text[j] : '\0';
                 }
-                File_System.User new_user = new File_System.User(user.Value.id,
-                                                                 (byte)user_dialog.NUMERIC_group.Value,
-                                                                 login,
-                                                                 user.Value.password_hash,
-                                                                 user.Value.home_dir_inode);
+                File_System.User new_user = new File_System.User() {id             = user.Value.id,
+                                                                    group          = (byte)user_dialog.NUMERIC_group.Value,
+                                                                    login          = login,
+                                                                    password_hash  = user.Value.password_hash,
+                                                                    home_dir_inode = user.Value.home_dir_inode};
                 if (Data_Keeper.file_system.Write_user(user.Value.id, new_user))
                 {
                     if (new string(user.Value.login) == new string(Data_Keeper.cur_user.login)) Data_Keeper.cur_user = new_user;

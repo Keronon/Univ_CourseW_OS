@@ -1,4 +1,6 @@
-﻿=== version: 0.6.1 ===
+﻿=== version: 0.6.2 ===
 
-Scheduler elaboration started
-Queue of created processes work made
+Scheduler elaboration ending
+Scheduler works
+File reflection created
+Process messages created
