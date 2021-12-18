@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,15 +14,17 @@ namespace CourseW
         #region VARIABLES
 
         private const byte TICK                  = 50;
-        private const byte MAX_PROCESSES_TOTAL   = 15;
-        private const byte MAX_PROCESSES_WORKING = 10;
+        private const byte MAX_PROCESSES_TOTAL   = 5;
+        private const byte MAX_PROCESSES_WORKING = 4;
 
         /// <summary>
         /// 0 - created; 1 - ready; 2 - high prior; 3 - common prior; 4 - low prior; 5 - wait; 6 - zombie;
         /// </summary>
         private List<Queue<Process>> queues;
         private int cur_queue;
-        public bool Running { set; get; }
+
+        private static byte steps;
+        public bool running;
 
         #endregion VARIABLES
 
@@ -29,11 +32,11 @@ namespace CourseW
 
         public void Run(int _processes_count)
         {
+            Queues_Tracing.Start();
+            Burst_Tracing.Start();
             Log.Write("Scheduler | Ran\n");
-            Running = true;
-
-            StringBuilder tracing_part = new StringBuilder("========== TRACING START ==========\r\n");
-
+            running = true;
+            steps = 0;
 
             queues = new List<Queue<Process>>() { new Queue<Process>(),   // created
                                                   new Queue<Process>(),   // ready
@@ -43,44 +46,23 @@ namespace CourseW
                                                   new Queue<Process>(),   // wait
                                                   new Queue<Process>() }; // zombie
 
-            for (int i = 0; i < _processes_count; i++) { Create_proc(new Process()); tracing_part.Append("process created\r\n"); }
-
-            tracing_part.Append("=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===\r\n");
-            tracing_part.Append("===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===\r\n");
-
-            Data_Keeper.FORM_Main.TXT_tracing.Invoke(new Action(() => {
-                Data_Keeper.FORM_Main.TXT_tracing.Text = tracing_part.ToString(); }));
+            for (int i = 0; i < _processes_count; i++) { Create_proc(new Process()); Queues_Tracing.Write("process created\n"); }
+            Queues_Tracing.Write("========================================\n");
 
             _processes_count = 0;
             cur_queue = 0;
             do
             {
-                Log.Write("Scheduler | New iteration\n");
-                tracing_part = new StringBuilder("========== NEW ITERATION ==========\r\n");
-
-                StringBuilder line = null;
-                for (int i = 0; i < queues.Count; i++)
-                {
-                    if (i != cur_queue) line = new StringBuilder($"Queue {i}: ");
-                    else                line = new StringBuilder($"Queue {i}> ");
-                    foreach (Process process in queues[i])
-                    {
-                        if (process.Id == 0) line.Append("[0]");
-                        else line.Append($"[{process.Id:d2}|{process.CPU_burst:d3}|{process.IO_burst:d3}]");
-                    }
-                    tracing_part.Append($"{line.ToString()}\r\n");
-                }
-                Data_Keeper.FORM_Main.TXT_tracing.Invoke(new Action(() => {
-                    Data_Keeper.FORM_Main.TXT_tracing.Text += tracing_part.ToString(); }));
-
+                Show_queues_state();
                 switch (cur_queue)
                 {
                     case 0: // created queue
                         {
                             int created_count = queues[cur_queue].Count;
-                            tracing_part = new StringBuilder("    === initialize created processes\r\n");
                             for (int i = 0; i < created_count; i++)
                             {
+                                Make_step();
+
                                 Process process = queues[cur_queue].Dequeue();
                                 process.State = Process.STATES.ready;
                                 for (int id = 1; id <= MAX_PROCESSES_TOTAL; id++)
@@ -98,9 +80,6 @@ namespace CourseW
                                 }
                                 if (process.Id == 0)
                                 {
-                                    tracing_part.Append($"    Can not initialize process\r\n");
-
-                                    Log.Write("Scheduler | Can not initialize process\n");
                                     continue;
                                 }
 
@@ -111,10 +90,8 @@ namespace CourseW
                                 queues[1].Enqueue(process);
                                 _processes_count++;
 
-                                tracing_part.Append($"    ID: {process.Id:d2}; Parent ID: {process.Parent_id:d2}; Priority: {process.Priority}; CPU burst: {process.CPU_burst:d3}; IO burst: {process.IO_burst:d3}\r\n");
+                                Show_queues_state();
                             }
-                            if (created_count > 0) Data_Keeper.FORM_Main.TXT_tracing.Invoke(new Action(() => {
-                                Data_Keeper.FORM_Main.TXT_tracing.Text += tracing_part.ToString(); }));
                         }
                     break;
                     case 1: // ready queue
@@ -145,6 +122,9 @@ namespace CourseW
                                     queues[queue_num].Enqueue(queue_process);
                                 }
                                 if (!setted) queues[queue_num].Enqueue(process);
+
+                                Make_step();
+                                Show_queues_state();
                             }
                         }
                     break;
@@ -157,12 +137,15 @@ namespace CourseW
                             for (int i = 0; i < processes_count; i++)
                             {
                                 Process process = queues[cur_queue].Dequeue();
-                                if (process.IO_ticking(5))
+                                if (process.IO_ticking(cur_queue))
                                 {
                                     process.State = Process.STATES.ready;
                                     queues[1].Enqueue(process);
                                 }
                                 else queues[cur_queue].Enqueue(process);
+
+                                Make_step();
+                                Show_queues_state();
                             }
                         }
                     break;
@@ -178,6 +161,9 @@ namespace CourseW
                                 if (process.Parent_id == 0) parent_zombie = true;
                                 if (!parent_zombie) queues[cur_queue].Enqueue(process);
                                 else _processes_count--;
+
+                                Make_step();
+                                Show_queues_state();
                             }
                         }
                     break;
@@ -186,14 +172,16 @@ namespace CourseW
                 {
                     Log.Write("Scheduler | Stopped becouse processes ended\n");
 
-                    Running = false;
+                    running = false;
                 }
                 if (cur_queue != 6) cur_queue++;
                 else cur_queue = 0;
             }
-            while (Running);
+            while (running);
+
+            Data_Keeper.FORM_Main.TXT_tracing.Invoke(new Action(() => { Data_Keeper.FORM_Main.TXT_work.Text = "!!!!!"; }));
             Data_Keeper.FORM_Main.TXT_tracing.Invoke(new Action(() => {
-                Data_Keeper.FORM_Main.TXT_tracing.Text += "========== TRACING ENDED =========="; }));
+                Data_Keeper.FORM_Main.TXT_tracing.Text = "===================================\r\n\r\n========== TRACING ENDED ==========\r\n\r\n==================================="; }));
         }
         private void Process_work_queue(byte _prior_major_num)
         {
@@ -203,6 +191,7 @@ namespace CourseW
             for (int i = 0; i < processes_count; i++)
             {
                 Process process = queues[cur_queue].Dequeue();
+                // >>>
                 if (process.IO_burst > 0)
                 {
                     process.State = Process.STATES.wait;
@@ -211,7 +200,7 @@ namespace CourseW
                 else
                 {
                     process.State = Process.STATES.task;
-                    if (process.CPU_ticking(_prior_major_num * 3))
+                    if (process.CPU_ticking(_prior_major_num))
                     {
                         process.State = Process.STATES.zombie;
                         queues[6].Enqueue(process);
@@ -222,14 +211,56 @@ namespace CourseW
                         queues[cur_queue].Enqueue(process);
                     }
                 }
+
+                Make_step();
+                Show_queues_state();
             }
+        }
+        private void Show_queues_state()
+        {
+            StringBuilder tracing_part;
+            tracing_part = new StringBuilder("=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===\r\n");
+            tracing_part             .Append("===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===\r\n");
+            tracing_part             .Append("========================================\r\n");
+            tracing_part             .Append("States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5\r\n");
+            tracing_part             .Append("========================================\r\n");
+            tracing_part             .Append("[id|priority|state|cpu|io]\r\n");
+            tracing_part             .Append("========================================\r\n");
+
+            StringBuilder line;
+            int process_num = 0;
+            for (int i = 0; i < queues.Count; i++)
+            {
+                if (i != cur_queue) line = new StringBuilder($"Queue {i}: ");
+                else                line = new StringBuilder($"Queue {i}> ");
+                foreach (Process process in queues[i])
+                {
+                    process_num++;
+                    if (process.Id == 0) line.Append("[0]");
+                    else if (process_num > MAX_PROCESSES_TOTAL) line.Append("[X]");
+                    else line.Append($"[{process.Id:d2}|{process.Priority}|{(int)process.State}|{process.CPU_burst:d3}|{process.IO_burst:d3}] ");
+                }
+                tracing_part.Append($"{line.ToString()}\r\n");
+            }
+            Data_Keeper.FORM_Main.TXT_tracing.Invoke(new Action(() => {
+                Data_Keeper.FORM_Main.TXT_tracing.Text = tracing_part.ToString(); }));
+            tracing_part.Append("========================================\r\n");
+            Queues_Tracing.Write(tracing_part.ToString());
+        }
+        private static void Make_step()
+        {
+            steps++;
+            if (steps > 5) steps = 1;
+            Data_Keeper.FORM_Main.TXT_tracing.Invoke(new Action(() => { Data_Keeper.FORM_Main.TXT_work.Text = new String('|', steps); }));
+            Thread.Sleep(500);
         }
 
         public void Stop()
         {
             Log.Write("Scheduler | Stopped by user\n");
+            Data_Keeper.FORM_Main.TXT_work.Text = "";
 
-            Running = false;
+            running = false;
         }
 
         public void Create_proc(Process _parent_process)
@@ -263,55 +294,6 @@ namespace CourseW
                 if (breaker) break;
             }
         }
-
-        /*
-        public int Reflect_file(int _address_for_file, int _memory_size, bool[] _can_operate, bool[] _reflection_params, int _file_descriptor, int _file_offset)
-        {
-            if (!Get_file(_file_descriptor)) return -1;
-            //Get_file_size();
-            if (_memory_size < file_size) return -1;
-            if (!Can_write_in_memory_at(_address_for_file, file_size)) return -1;
-
-            if (_reflection_params.must_reflect_at_this_address)
-            {
-                if (!Can_reflect_at_this_address()) return -1;
-            }
-            else
-            {
-                if (!Can_reflect_at_this_address()) _address_for_file = Search_suitable_address(file_size);
-
-                memory = Get_memory_at(_address_for_file);
-                Reflect_file(memory);
-                Set_show_params(params);
-                Set_rights_for_memory(rights);
-            }
-
-            return _address_for_file;
-        }
-
-        public bool Free_file_reflect(int _addres_for_file, int _memory_size)
-        {
-            if (!Get_memory_at(_address_for_file);) return false;
-            if (size > memory_size) return false;
-
-            Free_file(_addres_for_file);
-            Notify_processes_with_mempry_work(_addres_for_file, free);
-            Free_memory(_addres_for_file);
-
-            return true;
-        }
-
-        public bool Sync_file_and_reflecion(int _address_for_file, int _memory_size, bool[] _flags)
-        {
-            if (!Get_memory_at(_address_for_file);) return false;
-            if (size > memory_size) return false;
-
-            foreach(address in _address_for_file.data_addresses)
-                Write_file(_address_for_file.file, address.data);
-
-            return true;
-        }
-        */
 
         public bool Reflect_file(string _full_file_path)
         {
@@ -353,19 +335,40 @@ namespace CourseW
 
             public bool CPU_ticking(int _ticks)
             {
+                Burst_Tracing.Write($"===== {Id} | CPU burst =====\n");
+                Make_step();
+                Show_queues_state(true);
+
                 while (CPU_burst > 0 && _ticks > 0)
                 {
                     _ticks--;
                     CPU_burst -= TICK;
                     if (CPU_burst < 0) CPU_burst = 0;
                     Thread.Sleep(TICK);
+
+                    Make_step();
+                    Show_queues_state(true);
                 }
-                if (CPU_burst > 0) return false;
-                else               return true;
+                if (CPU_burst > 0)
+                {
+                    Data_Keeper.FORM_Main.TXT_burst.Invoke(new Action(() => { Data_Keeper.FORM_Main.TXT_burst.Text = ""; }));
+                    Burst_Tracing.Write("=========================\n");
+                    return false;
+                }
+                else
+                {
+                    Data_Keeper.FORM_Main.TXT_burst.Invoke(new Action(() => { Data_Keeper.FORM_Main.TXT_burst.Text = ""; }));
+                    Burst_Tracing.Write("=========================\n");
+                    return true;
+                }
             }
             public bool IO_ticking(int _ticks, bool _received = true, Message? message_holder = null,
                                                Process _recepient = null, string _message_header = "", string _message_body = "", bool _can_wait = true)
             {
+                Burst_Tracing.Write($"===== {Id} | I/O burst =====\n");
+                Make_step();
+                Show_queues_state(true);
+
                 Wake_up_for_receiving = _received;
                 bool sent = false;
                 while (IO_burst > 0 && _ticks > 0 || !sent || !_received)
@@ -380,9 +383,22 @@ namespace CourseW
                         if (IO_burst < 0) IO_burst = 0;
                     }
                     Thread.Sleep(TICK);
+
+                    Make_step();
+                    Show_queues_state(false);
                 }
-                if (IO_burst > 0) return false;
-                else              return true;
+                if (IO_burst > 0)
+                {
+                    Data_Keeper.FORM_Main.TXT_burst.Invoke(new Action(() => { Data_Keeper.FORM_Main.TXT_burst.Text = ""; }));
+                    Burst_Tracing.Write("=========================\n");
+                    return false;
+                }
+                else
+                {
+                    Data_Keeper.FORM_Main.TXT_burst.Invoke(new Action(() => { Data_Keeper.FORM_Main.TXT_burst.Text = ""; }));
+                    Burst_Tracing.Write("=========================\n");
+                    return true;
+                }
             }
 
             public Process()
@@ -401,101 +417,17 @@ namespace CourseW
                 Priority  = _parent_process.Priority;
             }
 
-            /*
-            public int Get_proc_messages_queue_descriptor(string _key, bool[] _flags)
+            private void Show_queues_state(bool _CPU_burst)
             {
-                if (queue[key].IsExist())
-                {
-                    if (!flags.need_new_queue) return queue[key].descriptor;
-                }
-                else
-                {
-                    if (can_create_queue) { Create_queue(key); return queue[key]}
-                }
+                Burst_Tracing.Write($"{CPU_burst:d3} | {IO_burst:d3}\n");
 
-                return -1;
+                Data_Keeper.FORM_Main.TXT_burst.Invoke(new Action(() => { Data_Keeper.FORM_Main.TXT_burst.Text =
+                     "| Type: CPU\r\n" +
+                    $"| ID: {Id}\r\n" +
+                    $"| State: {State}\r\n" +
+                    $"{(_CPU_burst ? '>' : '|')} CPU burst: {CPU_burst}\r\n" +
+                    $"{(_CPU_burst ? '|' : '>')} IO burst: {IO_burst}"; }));
             }
-
-            public bool Setting_message_queue(int _queue_descriptor, int _operation, string _buffer)
-            {
-                switch (_operation)
-                {
-                    case 1: // get info
-                        {
-                            Get_proc_messages_queue_descriptor(queue key, queue flags);
-                            string info = "";
-                            if (can read info) _buffer = info;
-                            else return false;
-                        }
-                        break;
-                    case 2: // set info
-                        {
-                            Get_proc_messages_queue_descriptor(queue key, queue flags);
-                            string info = "";
-                            if (can write info) info = _buffer;
-                            else return false;
-                        }
-                        break;
-                    case 3: // del queue
-                        {
-                            Get_proc_messages_queue_descriptor(queue key, queue flags);
-                            if (can del queue) Delete_queue(key);
-                            else return false;
-                        }
-                        break;
-                }
-                return true;
-            }
-
-            public int Send_message(int _queue_descriptor, int _send_message_memory_address, int _send_message_size, bool[] _flags)
-            {
-                if (!has_send_rights) return -1;
-                if (!Get_proc_messages_queue(_queue_descriptor)) return -1;
-                while (have'n available place)
-                {
-                    if (flags.cant_wait) return -1;
-                    wait(10);
-                }
-
-                Get_message_header();
-                Read_message_from_task_to_core();
-                Setting_data_structures();
-                Wake_up_waited_to_read_msg_processes();
-
-                return _send_message_size;
-            }
-
-            public int Get_message(int _queue_descriptor, int _receive_message_memory_address, int _receive_message_size, bool[] _flags, int _message_type)
-            {
-                if (!can_receive_rights) return -1;
-                if (!Get_proc_messages_queue(_queue_descriptor)) return -1;
-                while (queue.IsHollow())
-                {
-                    if (flags.cant_wait) return -1;
-                    wait(10);
-                }
-
-                if (_message_type == 0) message = queue[0];
-                else if (_message_type > 0) message = queue.First(_message_type);
-                else
-                {
-                    min = foreach(queue.message_type) < queue[min].message_type;
-                    message = queue.[min];
-                }
-
-                if (message != null)
-                {
-                    if (_receive_message_size< message.Length()) return -1;
-                    else
-                    {
-                        _receive_message_memory_address = message.address;
-                        Delete_message(message.id)
-                    }
-                }
-
-                return message.Length();
-            }
-            */
 
             public bool Send_message(Process _recepient, string _message_header, string _message_body, bool _can_wait)
             {

@@ -1,0 +1,438 @@
+========= QUEUES TRACING START =========
+process created
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0> [0]
+Queue 1: 
+Queue 2: 
+Queue 3: 
+Queue 4: 
+Queue 5: 
+Queue 6: 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0> 
+Queue 1: [01|8|1|229|008] 
+Queue 2: 
+Queue 3: 
+Queue 4: 
+Queue 5: 
+Queue 6: 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0: 
+Queue 1> [01|8|1|229|008] 
+Queue 2: 
+Queue 3: 
+Queue 4: 
+Queue 5: 
+Queue 6: 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0: 
+Queue 1> 
+Queue 2: 
+Queue 3: 
+Queue 4: [01|8|2|229|008] 
+Queue 5: 
+Queue 6: 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0: 
+Queue 1: 
+Queue 2> 
+Queue 3: 
+Queue 4: [01|8|2|229|008] 
+Queue 5: 
+Queue 6: 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0: 
+Queue 1: 
+Queue 2: 
+Queue 3> 
+Queue 4: [01|8|2|229|008] 
+Queue 5: 
+Queue 6: 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0: 
+Queue 1: 
+Queue 2: 
+Queue 3: 
+Queue 4> [01|8|2|229|008] 
+Queue 5: 
+Queue 6: 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0: 
+Queue 1: 
+Queue 2: 
+Queue 3: 
+Queue 4> 
+Queue 5: [01|8|4|229|008] 
+Queue 6: 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0: 
+Queue 1: 
+Queue 2: 
+Queue 3: 
+Queue 4: 
+Queue 5> [01|8|4|229|008] 
+Queue 6: 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0: 
+Queue 1: [01|8|1|229|000] 
+Queue 2: 
+Queue 3: 
+Queue 4: 
+Queue 5> 
+Queue 6: 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0: 
+Queue 1: [01|8|1|229|000] 
+Queue 2: 
+Queue 3: 
+Queue 4: 
+Queue 5: 
+Queue 6> 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0> 
+Queue 1: [01|8|1|229|000] 
+Queue 2: 
+Queue 3: 
+Queue 4: 
+Queue 5: 
+Queue 6: 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0: 
+Queue 1> [01|8|1|229|000] 
+Queue 2: 
+Queue 3: 
+Queue 4: 
+Queue 5: 
+Queue 6: 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0: 
+Queue 1> 
+Queue 2: 
+Queue 3: 
+Queue 4: [01|8|2|229|000] 
+Queue 5: 
+Queue 6: 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0: 
+Queue 1: 
+Queue 2> 
+Queue 3: 
+Queue 4: [01|8|2|229|000] 
+Queue 5: 
+Queue 6: 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0: 
+Queue 1: 
+Queue 2: 
+Queue 3> 
+Queue 4: [01|8|2|229|000] 
+Queue 5: 
+Queue 6: 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0: 
+Queue 1: 
+Queue 2: 
+Queue 3: 
+Queue 4> [01|8|2|229|000] 
+Queue 5: 
+Queue 6: 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0: 
+Queue 1: 
+Queue 2: 
+Queue 3: 
+Queue 4> [01|8|2|079|000] 
+Queue 5: 
+Queue 6: 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0: 
+Queue 1: 
+Queue 2: 
+Queue 3: 
+Queue 4: [01|8|2|079|000] 
+Queue 5> 
+Queue 6: 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0: 
+Queue 1: 
+Queue 2: 
+Queue 3: 
+Queue 4: [01|8|2|079|000] 
+Queue 5: 
+Queue 6> 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0> 
+Queue 1: 
+Queue 2: 
+Queue 3: 
+Queue 4: [01|8|2|079|000] 
+Queue 5: 
+Queue 6: 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0: 
+Queue 1> 
+Queue 2: 
+Queue 3: 
+Queue 4: [01|8|2|079|000] 
+Queue 5: 
+Queue 6: 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0: 
+Queue 1: 
+Queue 2> 
+Queue 3: 
+Queue 4: [01|8|2|079|000] 
+Queue 5: 
+Queue 6: 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0: 
+Queue 1: 
+Queue 2: 
+Queue 3> 
+Queue 4: [01|8|2|079|000] 
+Queue 5: 
+Queue 6: 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0: 
+Queue 1: 
+Queue 2: 
+Queue 3: 
+Queue 4> [01|8|2|079|000] 
+Queue 5: 
+Queue 6: 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0: 
+Queue 1: 
+Queue 2: 
+Queue 3: 
+Queue 4> 
+Queue 5: 
+Queue 6: [01|8|5|000|000] 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0: 
+Queue 1: 
+Queue 2: 
+Queue 3: 
+Queue 4: 
+Queue 5> 
+Queue 6: [01|8|5|000|000] 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0: 
+Queue 1: 
+Queue 2: 
+Queue 3: 
+Queue 4: 
+Queue 5: 
+Queue 6> [01|8|5|000|000] 
+========================================
+=== Queues: 0 - created      | 1 - ready     | 2 - high prior |            ===
+===         3 - common prior | 4 - low prior | 5 - wait       | 6 - zombie ===
+========================================
+States: created = 0, ready = 1, core = 2, task = 3, wait = 4, zombie = 5
+========================================
+[id|priority|state|cpu|io]
+========================================
+Queue 0: 
+Queue 1: 
+Queue 2: 
+Queue 3: 
+Queue 4: 
+Queue 5: 
+Queue 6> 
+========================================

@@ -40,6 +40,9 @@
             this.TREE_view = new System.Windows.Forms.TreeView();
             this.TAB_processes = new System.Windows.Forms.TabPage();
             this.GROUP_tracing = new System.Windows.Forms.GroupBox();
+            this.TXT_burst = new System.Windows.Forms.TextBox();
+            this.LBL_burst = new System.Windows.Forms.Label();
+            this.TXT_work = new System.Windows.Forms.TextBox();
             this.TXT_tracing = new System.Windows.Forms.TextBox();
             this.GROUP_scheduler = new System.Windows.Forms.GroupBox();
             this.LBL_proc_count = new System.Windows.Forms.Label();
@@ -181,6 +184,9 @@
             // 
             // GROUP_tracing
             // 
+            this.GROUP_tracing.Controls.Add(this.TXT_burst);
+            this.GROUP_tracing.Controls.Add(this.LBL_burst);
+            this.GROUP_tracing.Controls.Add(this.TXT_work);
             this.GROUP_tracing.Controls.Add(this.TXT_tracing);
             this.GROUP_tracing.Location = new System.Drawing.Point(179, 6);
             this.GROUP_tracing.Name = "GROUP_tracing";
@@ -189,14 +195,40 @@
             this.GROUP_tracing.TabStop = false;
             this.GROUP_tracing.Text = "Tracing";
             // 
+            // TXT_burst
+            // 
+            this.TXT_burst.Location = new System.Drawing.Point(6, 265);
+            this.TXT_burst.Multiline = true;
+            this.TXT_burst.Name = "TXT_burst";
+            this.TXT_burst.ReadOnly = true;
+            this.TXT_burst.Size = new System.Drawing.Size(587, 157);
+            this.TXT_burst.TabIndex = 4;
+            // 
+            // LBL_burst
+            // 
+            this.LBL_burst.AutoSize = true;
+            this.LBL_burst.ForeColor = System.Drawing.Color.Black;
+            this.LBL_burst.Location = new System.Drawing.Point(6, 247);
+            this.LBL_burst.Name = "LBL_burst";
+            this.LBL_burst.Size = new System.Drawing.Size(42, 15);
+            this.LBL_burst.TabIndex = 2;
+            this.LBL_burst.Text = "BURST";
+            // 
+            // TXT_work
+            // 
+            this.TXT_work.Location = new System.Drawing.Point(552, 221);
+            this.TXT_work.Name = "TXT_work";
+            this.TXT_work.ReadOnly = true;
+            this.TXT_work.Size = new System.Drawing.Size(41, 23);
+            this.TXT_work.TabIndex = 1;
+            // 
             // TXT_tracing
             // 
             this.TXT_tracing.Location = new System.Drawing.Point(6, 22);
             this.TXT_tracing.Multiline = true;
             this.TXT_tracing.Name = "TXT_tracing";
             this.TXT_tracing.ReadOnly = true;
-            this.TXT_tracing.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.TXT_tracing.Size = new System.Drawing.Size(587, 400);
+            this.TXT_tracing.Size = new System.Drawing.Size(587, 222);
             this.TXT_tracing.TabIndex = 0;
             this.TXT_tracing.TabStop = false;
             // 
@@ -602,5 +634,8 @@
         private System.Windows.Forms.Button BTN_stop;
         public System.Windows.Forms.TextBox TXT_tracing;
         private System.Windows.Forms.NumericUpDown NUMERIC_proc_count;
+        public System.Windows.Forms.TextBox TXT_work;
+        public System.Windows.Forms.TextBox TXT_burst;
+        private System.Windows.Forms.Label LBL_burst;
     }
 }

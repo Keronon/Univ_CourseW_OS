@@ -314,12 +314,12 @@ namespace CourseW
 
         private async void BTN_run_Click(object sender, EventArgs e)
         {
-            if (!Data_Keeper.scheduler.Running) await Task.Run(() => { Data_Keeper.scheduler.Run((int)NUMERIC_proc_count.Value); MessageBox.Show("Stopped"); });
+            if (!Data_Keeper.scheduler.running) await Task.Run(() => { Data_Keeper.scheduler.Run((int)NUMERIC_proc_count.Value); MessageBox.Show("Stopped"); });
         }
 
         private void BTN_stop_Click(object sender, EventArgs e)
         {
-            if (Data_Keeper.scheduler.Running) Data_Keeper.scheduler.Stop();
+            if (Data_Keeper.scheduler.running) Data_Keeper.scheduler.Stop();
         }
 
         #endregion Processes

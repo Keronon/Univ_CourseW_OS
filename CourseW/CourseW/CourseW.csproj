@@ -109,6 +109,8 @@
     <Compile Include="Forms\FORM_Write.Designer.cs">
       <DependentUpon>FORM_Write.cs</DependentUpon>
     </Compile>
+    <Compile Include="Burst_Tracing.cs" />
+    <Compile Include="Queues_Tracing.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
