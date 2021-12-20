@@ -296,7 +296,7 @@ namespace CourseW
                 int cluster_pos = Search_available_control_bit(FILE_SYSTEM_STRUCTURE.clusters_bitmap);
                 if (cluster_pos != 0)
                 {
-                    Write_control_bits(FILE_SYSTEM_STRUCTURE.clusters_bitmap, cluster_pos, true);
+                    Write_control_bit(FILE_SYSTEM_STRUCTURE.clusters_bitmap, cluster_pos, true);
                     Write_cluster(cluster_pos, new Cluster() { next_cluster = 0, data = new List<byte>() });
                 }
                 else throw new Exception();
@@ -304,7 +304,7 @@ namespace CourseW
                 int inode_pos = Search_available_control_bit(FILE_SYSTEM_STRUCTURE.inods_bitmap);
                 if (inode_pos != 0)
                 {
-                    Write_control_bits(FILE_SYSTEM_STRUCTURE.inods_bitmap, inode_pos, true);
+                    Write_control_bit(FILE_SYSTEM_STRUCTURE.inods_bitmap, inode_pos, true);
                     bool[] atributes = null;
                     switch (_object)
                     {
@@ -381,7 +381,7 @@ namespace CourseW
                         written_cluster.data.Clear();
                         written_cluster.data.AddRange(BitConverter.GetBytes(inode_pos).Concat(Encoding.ASCII.GetBytes(creation_name)));
                         Write_cluster(available_cluster, written_cluster);
-                        Write_control_bits(FILE_SYSTEM_STRUCTURE.clusters_bitmap, available_cluster, true);
+                        Write_control_bit(FILE_SYSTEM_STRUCTURE.clusters_bitmap, available_cluster, true);
 
                         runner = false;
                     }
@@ -449,7 +449,7 @@ namespace CourseW
                     while (true);
 
                     Clear_cluster_line(inode.first_cluster_pos);
-                    Write_control_bits(FILE_SYSTEM_STRUCTURE.inods_bitmap, cur_record.Value.inode, false);
+                    Write_control_bit(FILE_SYSTEM_STRUCTURE.inods_bitmap, cur_record.Value.inode, false);
                 }
                 else throw new Exception();
             }
@@ -468,7 +468,7 @@ namespace CourseW
             if (cluster.next_cluster != 0) Clear_cluster_line(cluster.next_cluster);
             cluster.next_cluster = 0; cluster.data.Clear();
             Write_cluster(cluster_pos, cluster);
-            Write_control_bits(FILE_SYSTEM_STRUCTURE.clusters_bitmap, cluster_pos, false);
+            Write_control_bit(FILE_SYSTEM_STRUCTURE.clusters_bitmap, cluster_pos, false);
         }
 
         public bool Rename_system_object(string _object_path, string _name)
@@ -621,7 +621,7 @@ namespace CourseW
                         int available_cluster = Search_available_control_bit(FILE_SYSTEM_STRUCTURE.clusters_bitmap);
                         if (available_cluster == 0) throw new Exception();
                         Write_cluster(cluster_pos, new Cluster() { next_cluster = available_cluster, data = clusters_data[i] });
-                        Write_control_bits(FILE_SYSTEM_STRUCTURE.clusters_bitmap, available_cluster, true);
+                        Write_control_bit(FILE_SYSTEM_STRUCTURE.clusters_bitmap, available_cluster, true);
                         cluster_pos = available_cluster;
                     }
                 }
@@ -660,7 +660,7 @@ namespace CourseW
 
         #region System control functions
 
-        public bool? Read_control_bits(FILE_SYSTEM_STRUCTURE _file_system_part, int _bit_pos)
+        public bool? Read_control_bit(FILE_SYSTEM_STRUCTURE _file_system_part, int _bit_pos)
         {
             Log.Write($"File_System | Reading control bits at {_bit_pos}, file system part {_file_system_part}\n");
 
@@ -688,7 +688,7 @@ namespace CourseW
             return null;
         }
 
-        public bool Write_control_bits(FILE_SYSTEM_STRUCTURE _file_system_part, int _bit_pos, bool _bit)
+        public bool Write_control_bit(FILE_SYSTEM_STRUCTURE _file_system_part, int _bit_pos, bool _bit)
         {
             Log.Write($"File_System | Writing control bits at {_bit_pos}, file system part {_file_system_part}\n");
 
@@ -972,7 +972,7 @@ namespace CourseW
 
             for (int i = 1; i <= bitmap_size; i++)
             {
-                bool? bit = Read_control_bits(_system_part, i);
+                bool? bit = Read_control_bit(_system_part, i);
                 if (bit == null) return 0;
                 if (bit.Value == false) return i;
             }
@@ -1025,9 +1025,9 @@ namespace CourseW
 
         /// <summary>
         /// size 25 : super_block_size 1,
+        ///           cluster_size_pow 1,     clusters_count 4,  available_clusters_count 4,
         ///           inode_size 1,           inods_count 4,     available_inodes_count 4,
         ///           user_record_size 1,     max_users_count 2, cur_users_count 2,
-        ///           cluster_size_pow 1,     clusters_count 4,  available_clusters_count 4,
         ///           directory_record_size 1
         /// </summary>
         public struct Super_Block

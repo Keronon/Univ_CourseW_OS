@@ -13,7 +13,11 @@ namespace CourseW
         #region DATA
         public static Random random = new Random(Environment.TickCount);
 
+        #if DEBUG
         public const string res_folder = "../../Resources/";
+        #else
+        public const string res_folder = "Resources/";
+        #endif
         public const string file_system_path = res_folder + "File_System";
         public static File_System file_system;
         public static File_System.User cur_user;

@@ -5,6 +5,7 @@
 
 # Addition project rules
 CourseW/Addition resources
+*.tracing
 
 # User-specific files
 *.rsuser

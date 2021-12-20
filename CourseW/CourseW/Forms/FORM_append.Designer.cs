@@ -41,6 +41,7 @@
             this.TXT_file.Multiline = true;
             this.TXT_file.Name = "TXT_file";
             this.TXT_file.ReadOnly = true;
+            this.TXT_file.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.TXT_file.Size = new System.Drawing.Size(700, 250);
             this.TXT_file.TabIndex = 0;
             // 
@@ -49,6 +50,7 @@
             this.TXT_append.Location = new System.Drawing.Point(12, 268);
             this.TXT_append.Multiline = true;
             this.TXT_append.Name = "TXT_append";
+            this.TXT_append.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.TXT_append.Size = new System.Drawing.Size(700, 250);
             this.TXT_append.TabIndex = 1;
             // 
